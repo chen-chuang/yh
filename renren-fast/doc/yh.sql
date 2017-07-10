@@ -1,4 +1,4 @@
-/*==============================================================*/
+ï»¿/*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
 /* Created on:     2017-7-10 14:09:07                           */
 /*==============================================================*/
@@ -34,12 +34,12 @@ drop table if exists sys_withdraw;
 create table sys_ccount
 (
    id                   int not null auto_increment,
-   enterprise_id        bigint comment 'ÇøÓò¾­ÏúÉÌid',
-   price                decimal(18,3) comment '×Ü½ğ¶î',
+   enterprise_id        bigint comment 'åŒºåŸŸç»é”€å•†id',
+   price                decimal(18,3) comment 'æ€»é‡‘é¢',
    primary key (id)
 );
 
-alter table sys_ccount comment '×Ê½ğÕË»§±í';
+alter table sys_ccount comment 'èµ„é‡‘è´¦æˆ·è¡¨';
 
 /*==============================================================*/
 /* Table: sys_configTable                                       */
@@ -47,18 +47,18 @@ alter table sys_ccount comment '×Ê½ğÕË»§±í';
 create table sys_configTable
 (
    id                   int not null auto_increment,
-   config_key           varchar(100) comment 'ÅäÖÃkey',
-   config_name          varchar(100) comment 'ÅäÖÃÃû³Æ',
-   config_value         varchar(5000) comment 'ÅäÖÃÖµ',
-   config_user_id       bigint comment 'ÅäÖÃÈËid',
-   config_user_name     varchar(50) comment 'ÅäÖÃÈËÃû³Æ',
-   config_region_id     int comment 'ÅäÖÃÈËÇøÓòid',
-   config_regin_name    varchar(100) comment 'ÅäÖÃÈËÇøÓòÃû',
-   config_create_time   datetime comment 'ÅäÖÃÊ±¼ä',
+   config_key           varchar(100) comment 'é…ç½®key',
+   config_name          varchar(100) comment 'é…ç½®åç§°',
+   config_value         varchar(5000) comment 'é…ç½®å€¼',
+   config_user_id       bigint comment 'é…ç½®äººid',
+   config_user_name     varchar(50) comment 'é…ç½®äººåç§°',
+   config_region_id     int comment 'é…ç½®äººåŒºåŸŸid',
+   config_regin_name    varchar(100) comment 'é…ç½®äººåŒºåŸŸå',
+   config_create_time   datetime comment 'é…ç½®æ—¶é—´',
    primary key (id)
 );
 
-alter table sys_configTable comment 'ÅäÖÃ±í';
+alter table sys_configTable comment 'é…ç½®è¡¨';
 
 /*==============================================================*/
 /* Table: sys_enterpriseInfo                                    */
@@ -66,21 +66,21 @@ alter table sys_configTable comment 'ÅäÖÃ±í';
 create table sys_enterpriseInfo
 (
    enterprise_id        bigint not null,
-   enterprise_name      varchar(100) comment 'ÆóÒµÃû³Æ',
-   enterprise_image_url varchar(1024) comment 'ÆóÒµÍ¼Æ¬',
-   enterprise_address   varchar(200) comment 'ÆóÒµµØÖ·',
-   enterprise_phone     varchar(20) comment 'ÊÖ»ú',
-   enterprise_tel       varchar(20) comment 'µç»°',
-   enterprise_contact   varchar(50) comment 'ÁªÏµÈË',
-   enterprise_introduction text comment '¼ò½é',
-   enterprise_longitude varchar(50) comment '¾­¶È',
-   enterprise_latitude  varchar(50) comment 'Î³¶È',
-   enterprise_area_id   varchar(50) comment 'ĞĞÕşÇøÓò',
-   enterprise_type      int comment 'ÀàĞÍ£¨1£ºÉú²ú³§¼Ò£¬2£º¾­ÏúÉÌ£©',
+   enterprise_name      varchar(100) comment 'ä¼ä¸šåç§°',
+   enterprise_image_url varchar(1024) comment 'ä¼ä¸šå›¾ç‰‡',
+   enterprise_address   varchar(200) comment 'ä¼ä¸šåœ°å€',
+   enterprise_phone     varchar(20) comment 'æ‰‹æœº',
+   enterprise_tel       varchar(20) comment 'ç”µè¯',
+   enterprise_contact   varchar(50) comment 'è”ç³»äºº',
+   enterprise_introduction text comment 'ç®€ä»‹',
+   enterprise_longitude varchar(50) comment 'ç»åº¦',
+   enterprise_latitude  varchar(50) comment 'çº¬åº¦',
+   enterprise_area_id   varchar(50) comment 'è¡Œæ”¿åŒºåŸŸ',
+   enterprise_type      int comment 'ç±»å‹ï¼ˆ1ï¼šç”Ÿäº§å‚å®¶ï¼Œ2ï¼šç»é”€å•†ï¼‰',
    primary key (enterprise_id)
 );
 
-alter table sys_enterpriseInfo comment 'ÆóÒµĞÅÏ¢±í';
+alter table sys_enterpriseInfo comment 'ä¼ä¸šä¿¡æ¯è¡¨';
 
 /*==============================================================*/
 /* Table: sys_integrationCash                                   */
@@ -88,17 +88,17 @@ alter table sys_enterpriseInfo comment 'ÆóÒµĞÅÏ¢±í';
 create table sys_integrationCash
 (
    id                   int not null auto_increment,
-   apply_user_id        bigint comment 'ÉêÇëÓÃ»§id',
-   integration          bigint comment '¶ÒÏÖ»ı·Ö',
-   withdrawalAmount     decimal(18,3) comment 'ÌáÏÖ½ğ¶î',
-   apply_time           datetime comment 'ÌáÏÖÉêÇëÊ±¼ä',
-   withdraw_status      int comment 'ÌáÏÖ×´Ì¬',
-   operate_time         datetime comment '²Ù×÷Ê±¼ä£¨Õë¶Ô×´Ì¬£©',
-   user_id              bigint comment '¹ÜÀíÔ±id',
+   apply_user_id        bigint comment 'ç”³è¯·ç”¨æˆ·id',
+   integration          bigint comment 'å…‘ç°ç§¯åˆ†',
+   withdrawalAmount     decimal(18,3) comment 'æç°é‡‘é¢',
+   apply_time           datetime comment 'æç°ç”³è¯·æ—¶é—´',
+   withdraw_status      int comment 'æç°çŠ¶æ€',
+   operate_time         datetime comment 'æ“ä½œæ—¶é—´ï¼ˆé’ˆå¯¹çŠ¶æ€ï¼‰',
+   user_id              bigint comment 'ç®¡ç†å‘˜id',
    primary key (id)
 );
 
-alter table sys_integrationCash comment '»ı·Ö¶ÒÏÖ±í£¨ÏúÊÛÈËÔ±£©';
+alter table sys_integrationCash comment 'ç§¯åˆ†å…‘ç°è¡¨ï¼ˆé”€å”®äººå‘˜ï¼‰';
 
 /*==============================================================*/
 /* Table: sys_order                                             */
@@ -106,23 +106,23 @@ alter table sys_integrationCash comment '»ı·Ö¶ÒÏÖ±í£¨ÏúÊÛÈËÔ±£©';
 create table sys_order
 (
    order_id             varchar(100) not null,
-   user_id              bigint comment 'ÏúÊÛÔ±id',
-   order_create_time    datetime comment '¶©µ¥Éú³ÉÊ±¼ä',
-   user_integral_count  bigint comment 'Ê¹ÓÃ»ı·ÖÊı',
-   order_all_price      decimal(18,3) comment '¶©µ¥×Ü¼Û¸ñ',
-   order_type           int comment '¶©µ¥×´Ì¬(0´ıÖ§¸¶ 1ÒÑÖ§¸¶ 2´úÅäËÍ 3ÒÑÍê³É)',
-   down_id              int comment 'ÏÂµ¥µØÖ·ID',
-   order_address        varchar(100) comment 'ÏÂµ¥µØÖ·',
-   order_send_time      datetime comment 'ÒªÇóÅäËÍÊ±¼ä',
-   order_detail_address varchar(200) comment 'ÏêÏ¸µØÖ·',
-   receiver_phone       varchar(100) comment 'ÂòÕßµç»°',
-   receiver_name        varchar(50) comment 'ÂòÕßĞÕÃû',
-   mark                 text comment '±¸×¢',
-   order_pay_type       int comment '¶©µ¥Ö§¸¶·½Ê½£¨1£ºÖ§¸¶±¦£¬2£ºÎ¢ĞÅ£©',
+   user_id              bigint comment 'é”€å”®å‘˜id',
+   order_create_time    datetime comment 'è®¢å•ç”Ÿæˆæ—¶é—´',
+   user_integral_count  bigint comment 'ä½¿ç”¨ç§¯åˆ†æ•°',
+   order_all_price      decimal(18,3) comment 'è®¢å•æ€»ä»·æ ¼',
+   order_type           int comment 'è®¢å•çŠ¶æ€(0å¾…æ”¯ä»˜ 1å·²æ”¯ä»˜ 2ä»£é…é€ 3å·²å®Œæˆ)',
+   down_id              int comment 'ä¸‹å•åœ°å€ID',
+   order_address        varchar(100) comment 'ä¸‹å•åœ°å€',
+   order_send_time      datetime comment 'è¦æ±‚é…é€æ—¶é—´',
+   order_detail_address varchar(200) comment 'è¯¦ç»†åœ°å€',
+   receiver_phone       varchar(100) comment 'ä¹°è€…ç”µè¯',
+   receiver_name        varchar(50) comment 'ä¹°è€…å§“å',
+   mark                 text comment 'å¤‡æ³¨',
+   order_pay_type       int comment 'è®¢å•æ”¯ä»˜æ–¹å¼ï¼ˆ1ï¼šæ”¯ä»˜å®ï¼Œ2ï¼šå¾®ä¿¡ï¼‰',
    primary key (order_id)
 );
 
-alter table sys_order comment '¶©µ¥±í';
+alter table sys_order comment 'è®¢å•è¡¨';
 
 /*==============================================================*/
 /* Table: sys_orderDetail                                       */
@@ -141,7 +141,7 @@ create table sys_orderDetail
    primary key (order_id, product_id)
 );
 
-alter table sys_orderDetail comment '¶©µ¥Ã÷Ï¸±í';
+alter table sys_orderDetail comment 'è®¢å•æ˜ç»†è¡¨';
 
 /*==============================================================*/
 /* Table: sys_orderIntegration                                  */
@@ -149,37 +149,37 @@ alter table sys_orderDetail comment '¶©µ¥Ã÷Ï¸±í';
 create table sys_orderIntegration
 (
    id                   int not null auto_increment,
-   user_id              bigint comment 'ÓÃ»§id',
-   order_id             varchar(100) not null comment '¶©µ¥id',
-   order_sum_price      decimal(18,3) comment '¶©µ¥½ğ¶î',
-   integration          bigint comment 'Éú³É»ı·Ö',
-   price_integration_type int comment '¼Û¸ñ»ı·ÖÀàĞÍ£¨1£ºÅäËÍ»ı·Ö?£¬2£ºÏúÊÛ»ı·Ö£©',
+   user_id              bigint comment 'ç”¨æˆ·id',
+   order_id             varchar(100) not null comment 'è®¢å•id',
+   order_sum_price      decimal(18,3) comment 'è®¢å•é‡‘é¢',
+   integration          bigint comment 'ç”Ÿæˆç§¯åˆ†',
+   price_integration_type int comment 'ä»·æ ¼ç§¯åˆ†ç±»å‹ï¼ˆ1ï¼šé…é€ç§¯åˆ†?ï¼Œ2ï¼šé”€å”®ç§¯åˆ†ï¼‰',
    primary key (id)
 );
 
-alter table sys_orderIntegration comment '¶©µ¥»ı·Ö±í£¨ÏúÊÛÈËÔ±¡¢ÅäËÍÔ±£©';
+alter table sys_orderIntegration comment 'è®¢å•ç§¯åˆ†è¡¨ï¼ˆé”€å”®äººå‘˜ã€é…é€å‘˜ï¼‰';
 
 /*==============================================================*/
 /* Table: sys_product                                           */
 /*==============================================================*/
 create table sys_product
 (
-   product_id           bigint not null auto_increment comment '²úÆ·ID',
-   product_name         varchar(100) comment '²úÆ·Ãû³Æ',
-   product_picture_url  varchar(1024) comment 'Í¼Æ¬µØÖ·',
-   product_detail       text comment '¼ò½é',
-   product_type         int comment '²úÆ·ÀàĞÍ£º1.ÑÌ»¨ 2.±¬Öñ 3.Ì×²Í 4.Ğ¡ÑÌ»¨',
-   product_video_url    varchar(1024) comment 'ÊÓÆµµØÖ·',
-   product_num          bigint comment '¿â´æ',
-   product_trade_price  decimal(18,3) comment 'Åú·¢¼Û',
-   product_retail_price decimal(18,3) comment 'ÁãÊÛ¼Û',
-   enterprise_id        bigint comment 'ÆóÒµID',
-   is_hot               int comment 'ÊÇ·ñÈÈÏú£¨1£ºÈÈÏú£¬2£º²»ÈÈÏú£©',
-   enter_type           int comment 'Â¼ÈëÀàĞÍ£¨1£º¹ÜÀíÔ±£¬2£ºÇøÓò´úÀí£©',
+   product_id           bigint not null auto_increment comment 'äº§å“ID',
+   product_name         varchar(100) comment 'äº§å“åç§°',
+   product_picture_url  varchar(1024) comment 'å›¾ç‰‡åœ°å€',
+   product_detail       text comment 'ç®€ä»‹',
+   product_type         int comment 'äº§å“ç±»å‹ï¼š1.çƒŸèŠ± 2.çˆ†ç«¹ 3.å¥—é¤ 4.å°çƒŸèŠ±',
+   product_video_url    varchar(1024) comment 'è§†é¢‘åœ°å€',
+   product_num          bigint comment 'åº“å­˜',
+   product_trade_price  decimal(18,3) comment 'æ‰¹å‘ä»·',
+   product_retail_price decimal(18,3) comment 'é›¶å”®ä»·',
+   enterprise_id        bigint comment 'ä¼ä¸šID',
+   is_hot               int comment 'æ˜¯å¦çƒ­é”€ï¼ˆ1ï¼šçƒ­é”€ï¼Œ2ï¼šä¸çƒ­é”€ï¼‰',
+   enter_type           int comment 'å½•å…¥ç±»å‹ï¼ˆ1ï¼šç®¡ç†å‘˜ï¼Œ2ï¼šåŒºåŸŸä»£ç†ï¼‰',
    primary key (product_id)
 );
 
-alter table sys_product comment '²úÆ·±í';
+alter table sys_product comment 'äº§å“è¡¨';
 
 /*==============================================================*/
 /* Table: sys_productType                                       */
@@ -191,7 +191,7 @@ create table sys_productType
    primary key (id)
 );
 
-alter table sys_productType comment '²úÆ··ÖÀà±í';
+alter table sys_productType comment 'äº§å“åˆ†ç±»è¡¨';
 
 /*==============================================================*/
 /* Table: sys_region                                            */
@@ -199,36 +199,36 @@ alter table sys_productType comment '²úÆ··ÖÀà±í';
 create table sys_region
 (
    id                   int not null,
-   name                 varchar(100) comment 'ĞĞÕşÇø»®Ãû³Æ',
-   pid                  int comment '¸¸ID',
+   name                 varchar(100) comment 'è¡Œæ”¿åŒºåˆ’åç§°',
+   pid                  int comment 'çˆ¶ID',
    primary key (id)
 );
 
-alter table sys_region comment 'ĞĞÕşÇø»®±í';
+alter table sys_region comment 'è¡Œæ”¿åŒºåˆ’è¡¨';
 
 /*==============================================================*/
 /* Table: sys_user                                              */
 /*==============================================================*/
 create table sys_user
 (
-   user_id              bigint not null comment 'ÓÃ»§id',
-   username             varchar(50) not null comment 'ÓÃ»§Ãû',
-   password             varchar(100) comment 'ÃÜÂë',
-   salt                 varchar(20) comment 'ÑÎ',
-   email                varchar(100) comment 'ÓÊÏä',
-   mobile               varchar(100) comment 'ÊÖ»úºÅ',
-   "expiry date"        datetime comment '¹ıÆÚÈÕÆÚ',
-   create_user_id       bigint comment '´´½¨ÕßID',
-   create_time          datetime comment '´´½¨Ê±¼ä',
-   area_id              varchar(50) comment 'ËùÊôÇøÓòID',
-   user_area            varchar(100) comment 'ËùÊôÇøÓòÃû',
-   belong_to_agency     bigint comment 'ËùÊô¾­ÏúÉÌID',
-   user_permission      int comment 'ÓÃ»§È¨ÏŞ£¨1£º¹ÜÀíÔ±£¬2£ºÉú³É³§¼Ò£¬3£º¾­ÏúÉÌ£¬4£ºÅäËÍÔ±£¬5£º·¢»õÔ±£¬6£ºÏúÊÛÔ±£©',
-   user_integral        bigint comment '»ı·Ö',
+   user_id              bigint not null comment 'ç”¨æˆ·id',
+   username             varchar(50) not null comment 'ç”¨æˆ·å',
+   password             varchar(100) comment 'å¯†ç ',
+   salt                 varchar(20) comment 'ç›',
+   email                varchar(100) comment 'é‚®ç®±',
+   mobile               varchar(100) comment 'æ‰‹æœºå·',
+   "expiry date"        datetime comment 'è¿‡æœŸæ—¥æœŸ',
+   create_user_id       bigint comment 'åˆ›å»ºè€…ID',
+   create_time          datetime comment 'åˆ›å»ºæ—¶é—´',
+   area_id              varchar(50) comment 'æ‰€å±åŒºåŸŸID',
+   user_area            varchar(100) comment 'æ‰€å±åŒºåŸŸå',
+   belong_to_agency     bigint comment 'æ‰€å±ç»é”€å•†ID',
+   user_permission      int comment 'ç”¨æˆ·æƒé™ï¼ˆ1ï¼šç®¡ç†å‘˜ï¼Œ2ï¼šç”Ÿæˆå‚å®¶ï¼Œ3ï¼šç»é”€å•†ï¼Œ4ï¼šé…é€å‘˜ï¼Œ5ï¼šå‘è´§å‘˜ï¼Œ6ï¼šé”€å”®å‘˜ï¼‰',
+   user_integral        bigint comment 'ç§¯åˆ†',
    primary key (user_id)
 );
 
-alter table sys_user comment 'ÏµÍ³ÓÃ»§';
+alter table sys_user comment 'ç³»ç»Ÿç”¨æˆ·';
 
 /*==============================================================*/
 /* Table: sys_withdraw                                          */
@@ -236,14 +236,14 @@ alter table sys_user comment 'ÏµÍ³ÓÃ»§';
 create table sys_withdraw
 (
    id                   int not null auto_increment,
-   apply_user_id        bigint comment 'ÉêÇëÓÃ»§id',
-   withdrawalAmount     decimal(18,3) comment 'ÌáÏÖ½ğ¶î',
-   apply_time           datetime comment 'ÌáÏÖÉêÇëÊ±¼ä',
-   withdraw_status      int comment 'ÌáÏÖ×´Ì¬',
-   operate_time         datetime comment '²Ù×÷Ê±¼ä£¨Õë¶Ô×´Ì¬£©',
-   user_id              bigint comment '¹ÜÀíÔ±id',
+   apply_user_id        bigint comment 'ç”³è¯·ç”¨æˆ·id',
+   withdrawalAmount     decimal(18,3) comment 'æç°é‡‘é¢',
+   apply_time           datetime comment 'æç°ç”³è¯·æ—¶é—´',
+   withdraw_status      int comment 'æç°çŠ¶æ€',
+   operate_time         datetime comment 'æ“ä½œæ—¶é—´ï¼ˆé’ˆå¯¹çŠ¶æ€ï¼‰',
+   user_id              bigint comment 'ç®¡ç†å‘˜id',
    primary key (id)
 );
 
-alter table sys_withdraw comment 'ÌáÏÖ¼ÇÂ¼±í£¨ÇøÓò¾­ÏúÉÌ£©';
+alter table sys_withdraw comment 'æç°è®°å½•è¡¨ï¼ˆåŒºåŸŸç»é”€å•†ï¼‰';
 
