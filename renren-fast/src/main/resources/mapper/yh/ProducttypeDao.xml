@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.yh.dao.ProducttypeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.yh.entity.ProducttypeEntity" id="producttypeMap">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProducttypeEntity">
+		select * from sys_producttype where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.yh.entity.ProducttypeEntity">
+		select * from sys_producttype
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_producttype 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.yh.entity.ProducttypeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_producttype
+		(
+			`type`
+		)
+		values
+		(
+			#{type}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.yh.entity.ProducttypeEntity">
+		update sys_producttype 
+		<set>
+			<if test="type != null">`type` = #{type}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_producttype where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_producttype where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

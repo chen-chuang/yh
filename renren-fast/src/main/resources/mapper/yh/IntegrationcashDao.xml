@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.yh.dao.IntegrationcashDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.yh.entity.IntegrationcashEntity" id="integrationcashMap">
+        <result property="id" column="id"/>
+        <result property="applyUserId" column="apply_user_id"/>
+        <result property="integration" column="integration"/>
+        <result property="withdrawalamount" column="withdrawalAmount"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="withdrawStatus" column="withdraw_status"/>
+        <result property="operateTime" column="operate_time"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
+		select * from sys_integrationcash where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
+		select * from sys_integrationcash
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_integrationcash 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.yh.entity.IntegrationcashEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_integrationcash
+		(
+			`apply_user_id`, 
+			`integration`, 
+			`withdrawalAmount`, 
+			`apply_time`, 
+			`withdraw_status`, 
+			`operate_time`, 
+			`user_id`
+		)
+		values
+		(
+			#{applyUserId}, 
+			#{integration}, 
+			#{withdrawalamount}, 
+			#{applyTime}, 
+			#{withdrawStatus}, 
+			#{operateTime}, 
+			#{userId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.yh.entity.IntegrationcashEntity">
+		update sys_integrationcash 
+		<set>
+			<if test="applyUserId != null">`apply_user_id` = #{applyUserId}, </if>
+			<if test="integration != null">`integration` = #{integration}, </if>
+			<if test="withdrawalamount != null">`withdrawalAmount` = #{withdrawalamount}, </if>
+			<if test="applyTime != null">`apply_time` = #{applyTime}, </if>
+			<if test="withdrawStatus != null">`withdraw_status` = #{withdrawStatus}, </if>
+			<if test="operateTime != null">`operate_time` = #{operateTime}, </if>
+			<if test="userId != null">`user_id` = #{userId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_integrationcash where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_integrationcash where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.yh.dao.ConfigtableDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.yh.entity.ConfigtableEntity" id="configtableMap">
+        <result property="id" column="id"/>
+        <result property="configKey" column="config_key"/>
+        <result property="configName" column="config_name"/>
+        <result property="configValue" column="config_value"/>
+        <result property="configUserId" column="config_user_id"/>
+        <result property="configUserName" column="config_user_name"/>
+        <result property="configRegionId" column="config_region_id"/>
+        <result property="configReginName" column="config_regin_name"/>
+        <result property="configCreateTime" column="config_create_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.ConfigtableEntity">
+		select * from sys_configtable where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.yh.entity.ConfigtableEntity">
+		select * from sys_configtable
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_configtable 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.yh.entity.ConfigtableEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_configtable
+		(
+			`config_key`, 
+			`config_name`, 
+			`config_value`, 
+			`config_user_id`, 
+			`config_user_name`, 
+			`config_region_id`, 
+			`config_regin_name`, 
+			`config_create_time`
+		)
+		values
+		(
+			#{configKey}, 
+			#{configName}, 
+			#{configValue}, 
+			#{configUserId}, 
+			#{configUserName}, 
+			#{configRegionId}, 
+			#{configReginName}, 
+			#{configCreateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.yh.entity.ConfigtableEntity">
+		update sys_configtable 
+		<set>
+			<if test="configKey != null">`config_key` = #{configKey}, </if>
+			<if test="configName != null">`config_name` = #{configName}, </if>
+			<if test="configValue != null">`config_value` = #{configValue}, </if>
+			<if test="configUserId != null">`config_user_id` = #{configUserId}, </if>
+			<if test="configUserName != null">`config_user_name` = #{configUserName}, </if>
+			<if test="configRegionId != null">`config_region_id` = #{configRegionId}, </if>
+			<if test="configReginName != null">`config_regin_name` = #{configReginName}, </if>
+			<if test="configCreateTime != null">`config_create_time` = #{configCreateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_configtable where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_configtable where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

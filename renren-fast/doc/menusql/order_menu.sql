@@ -1,6 +1,6 @@
 -- 菜单SQL
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ('1', '订单表', 'modules/sys/order.html', NULL, '1', 'fa fa-file-code-o', '6');
+    VALUES ('1', '订单表', 'modules/yh/order.html', NULL, '1', 'fa fa-file-code-o', '6');
 
 -- 按钮父菜单ID
 set @parentId = @@identity;

@@ -1,6 +1,6 @@
 -- 菜单SQL
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ('1', '提现记录表（区域经销商）', 'modules/sys/withdraw.html', NULL, '1', 'fa fa-file-code-o', '6');
+    VALUES ('1', '提现记录表（区域经销商）', 'modules/yh/withdraw.html', NULL, '1', 'fa fa-file-code-o', '6');
 
 -- 按钮父菜单ID
 set @parentId = @@identity;

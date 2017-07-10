@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.yh.dao.ProductDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.yh.entity.ProductEntity" id="productMap">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPictureUrl" column="product_picture_url"/>
+        <result property="productDetail" column="product_detail"/>
+        <result property="productType" column="product_type"/>
+        <result property="productVideoUrl" column="product_video_url"/>
+        <result property="productNum" column="product_num"/>
+        <result property="productTradePrice" column="product_trade_price"/>
+        <result property="productRetailPrice" column="product_retail_price"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="isHot" column="is_hot"/>
+        <result property="enterType" column="enter_type"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProductEntity">
+		select * from sys_product where product_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.yh.entity.ProductEntity">
+		select * from sys_product
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_product 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.yh.entity.ProductEntity" useGeneratedKeys="true" keyProperty="productId">
+		insert into sys_product
+		(
+			`product_name`, 
+			`product_picture_url`, 
+			`product_detail`, 
+			`product_type`, 
+			`product_video_url`, 
+			`product_num`, 
+			`product_trade_price`, 
+			`product_retail_price`, 
+			`enterprise_id`, 
+			`is_hot`, 
+			`enter_type`
+		)
+		values
+		(
+			#{productName}, 
+			#{productPictureUrl}, 
+			#{productDetail}, 
+			#{productType}, 
+			#{productVideoUrl}, 
+			#{productNum}, 
+			#{productTradePrice}, 
+			#{productRetailPrice}, 
+			#{enterpriseId}, 
+			#{isHot}, 
+			#{enterType}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.yh.entity.ProductEntity">
+		update sys_product 
+		<set>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="productPictureUrl != null">`product_picture_url` = #{productPictureUrl}, </if>
+			<if test="productDetail != null">`product_detail` = #{productDetail}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="productVideoUrl != null">`product_video_url` = #{productVideoUrl}, </if>
+			<if test="productNum != null">`product_num` = #{productNum}, </if>
+			<if test="productTradePrice != null">`product_trade_price` = #{productTradePrice}, </if>
+			<if test="productRetailPrice != null">`product_retail_price` = #{productRetailPrice}, </if>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
+			<if test="isHot != null">`is_hot` = #{isHot}, </if>
+			<if test="enterType != null">`enter_type` = #{enterType}</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_product where product_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_product where product_id in 
+		<foreach item="productId" collection="array" open="(" separator="," close=")">
+			#{productId}
+		</foreach>
+	</delete>
+
+</mapper>
