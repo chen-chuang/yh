@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.renren.modules.yh.dao.CcountDao">
+<mapper namespace="io.renren.modules.yh.dao.AccountDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="io.renren.modules.yh.entity.CcountEntity" id="ccountMap">
+    <resultMap type="io.renren.modules.yh.entity.AccountEntity" id="accountMap">
         <result property="id" column="id"/>
         <result property="enterpriseId" column="enterprise_id"/>
         <result property="price" column="price"/>
     </resultMap>
 
-	<select id="queryObject" resultType="io.renren.modules.yh.entity.CcountEntity">
-		select * from sys_ccount where id = #{value}
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.AccountEntity">
+		select * from sys_account where id = #{value}
 	</select>
 
-	<select id="queryList" resultType="io.renren.modules.yh.entity.CcountEntity">
-		select * from sys_ccount
+	<select id="queryList" resultType="io.renren.modules.yh.entity.AccountEntity">
+		select * from sys_account
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -30,11 +30,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_ccount 
+		select count(*) from sys_account 
 	</select>
 	 
-	<insert id="save" parameterType="io.renren.modules.yh.entity.CcountEntity" useGeneratedKeys="true" keyProperty="id">
-		insert into sys_ccount
+	<insert id="save" parameterType="io.renren.modules.yh.entity.AccountEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_account
 		(
 			`enterprise_id`, 
 			`price`
@@ -46,8 +46,8 @@
 		)
 	</insert>
 	 
-	<update id="update" parameterType="io.renren.modules.yh.entity.CcountEntity">
-		update sys_ccount 
+	<update id="update" parameterType="io.renren.modules.yh.entity.AccountEntity">
+		update sys_account 
 		<set>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="price != null">`price` = #{price}</if>
@@ -56,11 +56,11 @@
 	</update>
 	
 	<delete id="delete">
-		delete from sys_ccount where id = #{value}
+		delete from sys_account where id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from sys_ccount where id in 
+		delete from sys_account where id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>

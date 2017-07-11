@@ -31,7 +31,7 @@ drop table if exists sys_withdraw;
 /*==============================================================*/
 /* Table: sys_ccount                                            */
 /*==============================================================*/
-create table sys_ccount
+create table sys_account
 (
    id                   int not null auto_increment,
    enterprise_id        bigint comment '区域经销商id',
@@ -39,7 +39,7 @@ create table sys_ccount
    primary key (id)
 );
 
-alter table sys_ccount comment '资金账户表';
+alter table sys_acount comment '资金账户表';
 
 /*==============================================================*/
 /* Table: sys_configTable                                       */
@@ -217,7 +217,7 @@ create table sys_user
    salt                 varchar(20) comment '盐',
    email                varchar(100) comment '邮箱',
    mobile               varchar(100) comment '手机号',
-   "expiry date"        datetime comment '过期日期',
+   expiry_date          datetime comment '过期日期',
    create_user_id       bigint comment '创建者ID',
    create_time          datetime comment '创建时间',
    area_id              varchar(50) comment '所属区域ID',

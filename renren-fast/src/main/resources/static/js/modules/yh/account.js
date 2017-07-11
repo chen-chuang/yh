@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'ccount/list',
+        url: baseURL + 'account/list',
         datatype: "json",
         colModel: [			
 			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
@@ -39,7 +39,7 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		ccount: {}
+		account: {}
 	},
 	methods: {
 		query: function () {
@@ -48,7 +48,7 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.ccount = {};
+			vm.account = {};
 		},
 		update: function (event) {
 			var id = getSelectedRow();
@@ -61,12 +61,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.ccount.id == null ? "ccount/save" : "ccount/update";
+			var url = vm.account.id == null ? "account/save" : "account/update";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
                 contentType: "application/json",
-			    data: JSON.stringify(vm.ccount),
+			    data: JSON.stringify(vm.account),
 			    success: function(r){
 			    	if(r.code === 0){
 						alert('操作成功', function(index){
@@ -87,7 +87,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "ccount/delete",
+				    url: baseURL + "account/delete",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
@@ -103,8 +103,8 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get(baseURL + "ccount/info/"+id, function(r){
-                vm.ccount = r.ccount;
+			$.get(baseURL + "account/info/"+id, function(r){
+                vm.account = r.account;
             });
 		},
 		reload: function (event) {

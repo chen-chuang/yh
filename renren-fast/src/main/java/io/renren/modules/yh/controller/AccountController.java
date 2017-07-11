@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.yh.entity.CcountEntity;
-import io.renren.modules.yh.service.CcountService;
+import io.renren.modules.yh.entity.AccountEntity;
+import io.renren.modules.yh.service.AccountService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -25,27 +25,27 @@ import io.renren.common.utils.R;
  * 
  * @author achuang
  * @email 317402777@qq.com
- * @date 2017-07-10 16:34:30
+ * @date 2017-07-11 17:54:19
  */
 @RestController
-@RequestMapping("ccount")
-public class CcountController {
+@RequestMapping("account")
+public class AccountController {
 	@Autowired
-	private CcountService ccountService;
+	private AccountService accountService;
 	
 	/**
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("ccount:list")
+	@RequiresPermissions("account:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
 
-		List<CcountEntity> ccountList = ccountService.queryList(query);
-		int total = ccountService.queryTotal(query);
+		List<AccountEntity> accountList = accountService.queryList(query);
+		int total = accountService.queryTotal(query);
 		
-		PageUtils pageUtil = new PageUtils(ccountList, total, query.getLimit(), query.getPage());
+		PageUtils pageUtil = new PageUtils(accountList, total, query.getLimit(), query.getPage());
 		
 		return R.ok().put("page", pageUtil);
 	}
@@ -55,20 +55,20 @@ public class CcountController {
 	 * 信息
 	 */
 	@RequestMapping("/info/{id}")
-	@RequiresPermissions("ccount:info")
+	@RequiresPermissions("account:info")
 	public R info(@PathVariable("id") Integer id){
-		CcountEntity ccount = ccountService.queryObject(id);
+		AccountEntity account = accountService.queryObject(id);
 		
-		return R.ok().put("ccount", ccount);
+		return R.ok().put("account", account);
 	}
 	
 	/**
 	 * 保存
 	 */
 	@RequestMapping("/save")
-	@RequiresPermissions("ccount:save")
-	public R save(@RequestBody CcountEntity ccount){
-		ccountService.save(ccount);
+	@RequiresPermissions("account:save")
+	public R save(@RequestBody AccountEntity account){
+		accountService.save(account);
 		
 		return R.ok();
 	}
@@ -77,9 +77,9 @@ public class CcountController {
 	 * 修改
 	 */
 	@RequestMapping("/update")
-	@RequiresPermissions("ccount:update")
-	public R update(@RequestBody CcountEntity ccount){
-		ccountService.update(ccount);
+	@RequiresPermissions("account:update")
+	public R update(@RequestBody AccountEntity account){
+		accountService.update(account);
 		
 		return R.ok();
 	}
@@ -88,9 +88,9 @@ public class CcountController {
 	 * 删除
 	 */
 	@RequestMapping("/delete")
-	@RequiresPermissions("ccount:delete")
+	@RequiresPermissions("account:delete")
 	public R delete(@RequestBody Integer[] ids){
-		ccountService.deleteBatch(ids);
+		accountService.deleteBatch(ids);
 		
 		return R.ok();
 	}

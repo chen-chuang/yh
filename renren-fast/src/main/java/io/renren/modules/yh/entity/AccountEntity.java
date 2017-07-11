@@ -10,9 +10,9 @@ import java.math.BigDecimal;
  * 
  * @author achuang
  * @email 317402777@qq.com
- * @date 2017-07-10 16:34:30
+ * @date 2017-07-11 17:54:19
  */
-public class CcountEntity implements Serializable {
+public class AccountEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	//
