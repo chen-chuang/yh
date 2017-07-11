@@ -44,7 +44,15 @@ public class OrderEntity implements Serializable {
 	private String mark;
 	//订单支付方式（1：支付宝，2：微信）
 	private Integer orderPayType;
+	//是否配送返点（已返点，未返点）
+	private Integer isRebate;
 
+	public Integer getIsRebate() {
+		return isRebate;
+	}
+	public void setIsRebate(Integer isRebate) {
+		this.isRebate = isRebate;
+	}
 	/**
 	 * 设置：
 	 */

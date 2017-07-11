@@ -17,8 +17,9 @@
         <result property="orderDetailAddress" column="order_detail_address"/>
         <result property="receiverPhone" column="receiver_phone"/>
         <result property="receiverName" column="receiver_name"/>
-        <result property="mark" column="mark"/>
+        <result property="mark" column="mark"/>        
         <result property="orderPayType" column="order_pay_type"/>
+        <result property="isRebate" column="is_rebate"/>
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderEntity">
@@ -60,7 +61,9 @@
 			`receiver_phone`, 
 			`receiver_name`, 
 			`mark`, 
-			`order_pay_type`
+			`order_pay_type`,
+			'is_rebate'
+			
 		)
 		values
 		(
@@ -77,7 +80,8 @@
 			#{receiverPhone}, 
 			#{receiverName}, 
 			#{mark}, 
-			#{orderPayType}
+			#{orderPayType},
+			#{isRebate}
 		)
 	</insert>
 	 
@@ -96,7 +100,8 @@
 			<if test="receiverPhone != null">`receiver_phone` = #{receiverPhone}, </if>
 			<if test="receiverName != null">`receiver_name` = #{receiverName}, </if>
 			<if test="mark != null">`mark` = #{mark}, </if>
-			<if test="orderPayType != null">`order_pay_type` = #{orderPayType}</if>
+			<if test="orderPayType != null">`order_pay_type` = #{orderPayType},</if>
+			<if test="isRebate != null">'is_rebate' = #{isRebate}</if>
 		</set>
 		where order_id = #{orderId}
 	</update>

@@ -27,7 +27,15 @@ public class OrderintegrationEntity implements Serializable {
 	private Long integration;
 	//价格积分类型（1：配送积分?，2：销售积分）
 	private Integer priceIntegrationType;
+	//是否配送返点（已返点，未返点）
+	private Integer isRebate;
 
+	public Integer getIsRebate() {
+		return isRebate;
+	}
+	public void setIsRebate(Integer isRebate) {
+		this.isRebate = isRebate;
+	}
 	/**
 	 * 设置：
 	 */
