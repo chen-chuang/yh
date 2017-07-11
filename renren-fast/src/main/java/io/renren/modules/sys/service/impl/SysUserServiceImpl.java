@@ -134,4 +134,9 @@ public class SysUserServiceImpl implements SysUserService {
 			throw new RRException("新增用户所选角色，不是本人创建");
 		}
 	}
+	
+	@Override
+	public void setPermission(Long userId){
+		sysUserDao.setPermission(userId);
+	}
 }

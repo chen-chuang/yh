@@ -151,4 +151,14 @@ public class SysUserController extends AbstractController {
 		
 		return R.ok();
 	}
+	
+	
+	@RequestMapping("/setPermission")
+	public R setPermission(@RequestParam("userId") Long userId){
+		 
+		sysUserService.setPermission(userId);
+		return R.ok();
+	}
+	
+	
 }

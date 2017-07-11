@@ -224,7 +224,7 @@ create table sys_user
    user_area            varchar(100) comment '所属区域名',
    belong_to_agency     bigint comment '所属经销商ID',
    user_permission      int comment '用户权限（1：管理员，2：生成厂家，3：经销商，4：配送员，5：发货员，6：销售员）',
-   user_integral        bigint comment '积分',
+   user_integral        bigint comment '积分' DEFAULT '0',
    primary key (user_id)
 );
 
