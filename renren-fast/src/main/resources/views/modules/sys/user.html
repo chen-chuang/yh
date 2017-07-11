@@ -30,8 +30,9 @@
 			<a v-if="hasPermission('sys:user:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
 			<a v-if="hasPermission('sys:user:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
 			<a v-if="hasPermission('sys:user:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			<a class="btn btn-primary" onclick="tanchu()"><i class="fa fa-trash-o"></i>&nbsp;弹弹弹</a>
 		</div>
-	    <table id="jqGrid"></table>
+		<table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
     </div>
     
@@ -128,5 +129,30 @@
 </div>
 
 <script src="../../js/modules/sys/user.js"></script>
+<script>
+function tanchu(){
+	layer.open({
+		 type: 2 //此处以iframe举例
+	        ,title: '当你选择该窗体时，即会在最顶端'
+	        ,area: ['390px', '260px']
+	        ,shade: 0
+	        ,maxmin: true
+	        ,offset: [ //为了演示，随机坐标
+	          Math.random()*($(window).height()-300)
+	          ,Math.random()*($(window).width()-390)
+	        ] 
+	        ,content: 'http://layer.layui.com/test/settop.html'
+	        ,btn: ['继续弹出', '全部关闭'] //只是为了演示
+	        ,yes: function(){
+	          alert('继续');
+	        }
+	        ,btn2: function(){
+	          layer.closeAll();
+	        }
+		}); 
+}
+
+</script>
+
 </body>
 </html>
