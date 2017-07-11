@@ -31,7 +31,7 @@ drop table if exists sys_withdraw;
 /*==============================================================*/
 /* Table: sys_ccount                                            */
 /*==============================================================*/
-create table sys_ccount
+create table sys_acount
 (
    id                   int not null auto_increment,
    enterprise_id        bigint comment '区域经销商id',
@@ -39,7 +39,7 @@ create table sys_ccount
    primary key (id)
 );
 
-alter table sys_ccount comment '资金账户表';
+alter table sys_acount comment '资金账户表';
 
 /*==============================================================*/
 /* Table: sys_configTable                                       */
