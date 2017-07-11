@@ -31,7 +31,7 @@ drop table if exists sys_withdraw;
 /*==============================================================*/
 /* Table: sys_ccount                                            */
 /*==============================================================*/
-create table sys_acount
+create table sys_account
 (
    id                   int not null auto_increment,
    enterprise_id        bigint comment '区域经销商id',
