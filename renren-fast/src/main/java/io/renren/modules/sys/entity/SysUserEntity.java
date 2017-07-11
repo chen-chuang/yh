@@ -72,6 +72,18 @@ public class SysUserEntity implements Serializable {
 	 * 创建时间
 	 */
 	private Date createTime;
+	
+	private Date expiryDate;
+	
+	private String areaId;
+	
+	private String userArea;
+	
+	private Long belongToAgency;
+	
+	private Integer userPermission;
+	
+	private Long userIntegral;
 
 	/**
 	 * 设置：
@@ -207,5 +219,53 @@ public class SysUserEntity implements Serializable {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getUserArea() {
+		return userArea;
+	}
+
+	public void setUserArea(String userArea) {
+		this.userArea = userArea;
+	}
+
+	public Long getBelongToAgency() {
+		return belongToAgency;
+	}
+
+	public void setBelongToAgency(Long belongToAgency) {
+		this.belongToAgency = belongToAgency;
+	}
+
+	public Integer getUserPermission() {
+		return userPermission;
+	}
+
+	public void setUserPermission(Integer userPermission) {
+		this.userPermission = userPermission;
+	}
+
+	public Long getUserIntegral() {
+		return userIntegral;
+	}
+
+	public void setUserIntegral(Long userIntegral) {
+		this.userIntegral = userIntegral;
 	}
 }

@@ -12,7 +12,13 @@ $(function () {
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
 			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 80}
+			{ label: '创建时间', name: 'createTime', index: "create_time", width: 80},
+			{ label: '过期日期', name: 'expiryDate', width: 75 },
+			{ label: '所属区域', name: 'userArea', width: 75 },
+			{ label: '所属经销商', name: 'belongToAgency', width: 75 },
+			{ label: '用户权限', name: 'userPermission', width: 75 },
+			{ label: '积分', name: 'userIntegral', width: 75 }
+			
         ],
 		viewrecords: true,
         height: 385,
