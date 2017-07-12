@@ -143,5 +143,9 @@
 	<update id="setPermission">
 	    update sys_user set user_permission = #{permissionId} where user_id = #{userId}
 	</update>
+	
+	<update id="setExpiryDate">
+	    update sys_user set expiry_date = #{expiryDate} where user_id = #{userId}
+	</update>
 
 </mapper>

@@ -1,5 +1,6 @@
 package io.renren.common.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,5 +27,18 @@ public class DateUtils {
             return df.format(date);
         }
         return null;
+    }
+    
+    public static Date parse(String date, String pattern) {
+    	Date d = null;
+        if(date != null){
+            SimpleDateFormat df = new SimpleDateFormat(pattern);
+            try {
+				d = df.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+        }
+        return d;
     }
 }

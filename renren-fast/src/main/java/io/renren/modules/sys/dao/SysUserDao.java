@@ -4,6 +4,7 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,4 +40,6 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	int updatePassword(Map<String, Object> map);
 
 	void setPermission(@Param("userId") Long userId,@Param("permissionId") int permissionId);
+
+	void setExpiryDate(@Param("userId") Long userId,@Param("expiryDate")  Date expiryDate);
 }

@@ -2,6 +2,7 @@ package io.renren.modules.sys.controller;
 
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.Constant;
+import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -167,11 +168,12 @@ public class SysUserController extends AbstractController {
 	
 	@RequestMapping("/setExpiryDate")
 	public R setExpiryDate(@RequestParam("userId") Long userId,
-			@RequestParam("expiryDate") Date expiryDate){	
+			@RequestParam("expiryDate") String expiryDate){
 		
-		System.out.println(expiryDate);
+		Date newDate = DateUtils.parse(expiryDate, DateUtils.DATE_PATTERN);
+		System.out.println(expiryDate);		
+		sysUserService.setExpiryDate(userId,newDate);
 		
-		//sysUserService.setPermission(userId,permissionId);
 		return R.ok();
 	}
 	

@@ -2,6 +2,7 @@ package io.renren.modules.sys.service;
 
 import io.renren.modules.sys.entity.SysUserEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -72,4 +73,6 @@ public interface SysUserService {
 	int updatePassword(Long userId, String password, String newPassword);
 
 	void setPermission(Long userId, int permissionId);
+
+	void setExpiryDate(Long userId, Date expiryDate);
 }

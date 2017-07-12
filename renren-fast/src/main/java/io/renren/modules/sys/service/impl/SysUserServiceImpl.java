@@ -140,4 +140,8 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserDao.setPermission(userId,permissionId);
 		
 	}
+	
+	public void setExpiryDate(Long userId, Date expiryDate){
+		sysUserDao.setExpiryDate(userId, expiryDate);
+	}
 }

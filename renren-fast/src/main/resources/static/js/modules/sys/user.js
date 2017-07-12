@@ -15,14 +15,14 @@ $(function () {
 			{ label: '创建时间', name: 'createTime', index: "create_time", width: 80},
 			{ label: '过期日期', name: 'expiryDate', index:"expiry_date",align: 'center', formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
-					return '<a class="btn btn-app" onclick=setexpiryDate("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+					return '<a class="btn-app" onclick=setExpiryDate("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}else{
 					return value;
 				}
 			}},
 			{ label: '所属区域', name: 'userArea', index:"user_area", width: 75, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
-					return '<a class="btn btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}else{
 					return value;
 				}
@@ -42,11 +42,8 @@ $(function () {
 				}else if(value===6){
 					return "销售员";
 				}else {
-					return '<a class="btn btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}
-				/*return value === 0 ? 
-						'<span class="label label-danger">禁用</span>' : 
-						'<span class="label label-success">正常</span>';*/
 			}},
 			{ label: '积分', name: 'userIntegral',  index:"user_integral", formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
@@ -86,6 +83,20 @@ $(function () {
 
 function setPermission(userId){
 	
+	var content = '<div class="form-group">'
+			   	+'<div class="col-sm-2 control-label">用户权限</div>'
+			   	+'<div class="col-sm-10" >'
+			   	 + '<select id="permissionSelect"  class="form-control">'
+			   	  +    '<option value="1">管理员</option>'
+			   	   +   '<option value="2">生产厂家</option>'
+			   	    +  '<option value="3">区域经销商</option>'
+			   	    + ' <option value="4">配送员</option>'
+			   	    +  '<option value="5">发货员</option>'
+			   	    + ' <option value="6">销售员</option>'
+			   	  +'</select>'
+			    +'</div>'
+			+'</div>';
+	
    layer.open({
         type: 1
         ,title: '设置权限' 
@@ -94,10 +105,9 @@ function setPermission(userId){
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: $("#permissionDIV").html()	
+        ,content: content
     	 ,yes: function(){
-    		 var permissionId = vm.user.userPermission;
-    		 console.log(permissionId);
+    		 var permissionId = $('#permissionSelect').val();
     		 $.ajax({
     				type: "POST",
     			    url: baseURL + "sys/user/setPermission",
@@ -121,7 +131,14 @@ function setPermission(userId){
 }
 
 
-function setexpiryDate(userId){
+function setExpiryDate(userId){
+	
+   var content='<div class="form-group">'
+				    +'<div class="col-sm-2 control-label">过期日期</div>'
+				   	+'<div class="col-sm-10">'
+				    +'   <input class="layui-input" id="expiryDate1" placeholder="过期日期" v-model="user.expiryDate" onClick="WdatePicker()">'
+				    +'</div>'
+				+'</div>';
 	
    layer.open({
         type: 1
@@ -131,9 +148,9 @@ function setexpiryDate(userId){
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: $("#expiryDateDIV").html()	
+        ,content: content
     	 ,yes: function(){
-    		 var expiryDate = $('#expiryDate').val();
+    		 var expiryDate = $('#expiryDate1').val();
     		 console.log(expiryDate);
     		 $.ajax({
     				type: "POST",
