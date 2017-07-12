@@ -141,7 +141,7 @@
 	</delete>
 	
 	<update id="setPermission">
-	    update sys_user set user_permission = 1 where user_id = #{userId}
+	    update sys_user set user_permission = #{permissionId} where user_id = #{userId}
 	</update>
 
 </mapper>

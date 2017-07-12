@@ -5,6 +5,8 @@ import io.renren.common.validator.group.UpdateGroup;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +75,7 @@ public class SysUserEntity implements Serializable {
 	 */
 	private Date createTime;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date expiryDate;
 	
 	private String areaId;

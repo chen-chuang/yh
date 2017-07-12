@@ -12,12 +12,16 @@ import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.entity.enums.EnumPermission;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -154,9 +158,20 @@ public class SysUserController extends AbstractController {
 	
 	
 	@RequestMapping("/setPermission")
-	public R setPermission(@RequestParam("userId") Long userId){
-		 
-		sysUserService.setPermission(userId);
+	public R setPermission(@RequestParam("userId") Long userId,
+			@RequestParam("permissionId") int permissionId){		
+		
+		sysUserService.setPermission(userId,permissionId);
+		return R.ok();
+	}
+	
+	@RequestMapping("/setExpiryDate")
+	public R setExpiryDate(@RequestParam("userId") Long userId,
+			@RequestParam("expiryDate") Date expiryDate){	
+		
+		System.out.println(expiryDate);
+		
+		//sysUserService.setPermission(userId,permissionId);
 		return R.ok();
 	}
 	

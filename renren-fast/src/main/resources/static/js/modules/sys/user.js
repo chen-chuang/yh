@@ -13,8 +13,20 @@ $(function () {
 					'<span class="label label-success">正常</span>';
 			}},
 			{ label: '创建时间', name: 'createTime', index: "create_time", width: 80},
-			{ label: '过期日期', name: 'expiryDate', index:"expiry_date",align: 'center', valign: 'middle' },
-			{ label: '所属区域', name: 'userArea', index:"user_area", width: 75 },
+			{ label: '过期日期', name: 'expiryDate', index:"expiry_date",align: 'center', formatter: function(value, options, row){
+				if(value==""||value==null||value=="null"){
+					return '<a class="btn btn-app" onclick=setexpiryDate("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+				}else{
+					return value;
+				}
+			}},
+			{ label: '所属区域', name: 'userArea', index:"user_area", width: 75, formatter: function(value, options, row){
+				if(value==""||value==null||value=="null"){
+					return '<a class="btn btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+				}else{
+					return value;
+				}
+			}},
 			{ label: '所属经销商', name: 'belongToAgency',  index:"belong_to_agency",width: 75 },
 			{ label: '用户权限', name: 'userPermission',  index:"user_permission",width: 75, formatter: function(value, options, row){
 				if(value===1){
@@ -73,21 +85,79 @@ $(function () {
 });
 
 function setPermission(userId){
-	$.ajax({
-		type: "POST",
-	    url: baseURL + "sys/user/setPermission",
-	    data: {userId:userId},
-	    success: function(r){
-			if(r.code == 0){
-				alert('操作成功', function(){
-                    vm.reload();
-				});
-			}else{
-				alert(r.msg);
-			}
-		}
-	});
+	
+   layer.open({
+        type: 1
+        ,title: '设置权限' 
+        ,area: ['390px', '260px']
+        ,shade: 0
+        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+        ,btn: ['确定', '关闭']
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: $("#permissionDIV").html()	
+    	 ,yes: function(){
+    		 var permissionId = vm.user.userPermission;
+    		 console.log(permissionId);
+    		 $.ajax({
+    				type: "POST",
+    			    url: baseURL + "sys/user/setPermission",
+    			    data: {userId:userId,permissionId:permissionId},
+    			    success: function(r){
+    					if(r.code == 0){
+    						alert('操作成功', function(){
+    		                    vm.reload();
+    						});
+    					}else{
+    						alert(r.msg);
+    					}
+    				}
+    			});
+        }
+        ,btn2: function(){
+          layer.closeAll();
+        }
+      });
+	
 }
+
+
+function setexpiryDate(userId){
+	
+   layer.open({
+        type: 1
+        ,title: '设置权限' 
+        ,area: ['390px', '260px']
+        ,shade: 0
+        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+        ,btn: ['确定', '关闭']
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: $("#expiryDateDIV").html()	
+    	 ,yes: function(){
+    		 var expiryDate = $('#expiryDate').val();
+    		 console.log(expiryDate);
+    		 $.ajax({
+    				type: "POST",
+    			    url: baseURL + "sys/user/setExpiryDate",
+    			    data: {userId:userId,expiryDate:expiryDate},
+    			    success: function(r){
+    					if(r.code == 0){
+    						alert('操作成功', function(){
+    		                    vm.reload();
+    						});
+    					}else{
+    						alert(r.msg);
+    					}
+    				}
+    			});
+        }
+        ,btn2: function(){
+          layer.closeAll();
+        }
+      });
+	
+}
+
+
 
 
 var vm = new Vue({
@@ -155,7 +225,9 @@ var vm = new Vue({
 			});
 		},
 		saveOrUpdate: function () {
-			var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
+			var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";		
+		
+			vm.user.expiryDate=$('#expiryDate').val();
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,

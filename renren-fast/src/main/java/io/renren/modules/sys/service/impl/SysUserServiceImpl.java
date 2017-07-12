@@ -136,7 +136,8 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 	
 	@Override
-	public void setPermission(Long userId){
-		sysUserDao.setPermission(userId);
+	public void setPermission(Long userId, int permissionId) {
+		sysUserDao.setPermission(userId,permissionId);
+		
 	}
 }

@@ -82,11 +82,11 @@
 				</label>
 			</div>
 			
-			<div class="form-group">
+			<div class="form-group" id="expiryDateDIV">
 			    <div class="col-sm-2 control-label">过期日期</div>
 			   	<div class="col-sm-10">
 			     <!--  <input type="text" class="form-control" v-model="user.expiryDate" placeholder="过期日期"/> -->
-			       <input class="layui-input" placeholder="过期日期" v-model="user.expiryDate" onClick="WdatePicker()">
+			       <input class="layui-input" id="expiryDate" placeholder="过期日期" v-model="user.expiryDate" onClick="WdatePicker()">
 			    </div>
 			</div>
 			<div class="form-group">
@@ -107,10 +107,10 @@
 			      <input type="text" class="form-control" v-model="user.belongToAgency" placeholder="所属经销商"/>
 			    </div>
 			</div> -->
-			<div class="form-group">
+			<div class="form-group" id="permissionDIV">
 			   	<div class="col-sm-2 control-label">用户权限</div>
-			   	<div class="col-sm-10">
-			   	  <select v-model="user.userPermission" class="form-control">
+			   	<div class="col-sm-10" >
+			   	  <select v-model="user.userPermission"  id="permissionSelect" class="form-control">
 			   	      <option value="1">管理员</option>
 			   	      <option value="2">生产厂家</option>
 			   	      <option value="3">区域经销商</option>
@@ -137,9 +137,6 @@
 		</form>
 	</div>
 </div>
-
-<input class="layui-input" placeholder="过期日期" onClick="WdatePicker()">
-
 <script src="../../js/modules/sys/user.js"></script>
 <script>
 function tanchu(){

@@ -71,5 +71,5 @@ public interface SysUserService {
 	 */
 	int updatePassword(Long userId, String password, String newPassword);
 
-	void setPermission(Long userId);
+	void setPermission(Long userId, int permissionId);
 }
