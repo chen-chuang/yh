@@ -51,5 +51,11 @@ public class RegionServiceImpl implements RegionService {
 	public void deleteBatch(Integer[] ids){
 		regionDao.deleteBatch(ids);
 	}
+
+	@Override
+	public List<RegionEntity> queryListByPid(int pid) {
+		regionDao.queryListByPid(pid);
+		return null;
+	}
 	
 }

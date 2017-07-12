@@ -22,7 +22,7 @@ $(function () {
 			}},
 			{ label: '所属区域', name: 'userArea', index:"user_area", width: 75, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
-					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+					return '<a class="btn-app" onclick=setRegion("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}else{
 					return value;
 				}
@@ -80,6 +80,62 @@ $(function () {
         }
     });
 });
+
+function setRegion(userId){
+	var content = 	'<div class="form-group">'
+					   	+'<div class="col-sm-2 control-label">省</div>'
+					   	+'<div class="col-sm-10" >'
+					   	+'<select   class="form-control" id="province">'
+					   	+' </select>'
+					   	+' </div>'
+					   	+'	</div>'
+					   	+'<div class="form-group">'
+					   	+'	<div class="col-sm-2 control-label">市</div>'
+					   	+' 	<div class="col-sm-10" >'
+					   	+' 	  <select   class="form-control" id="city">'
+					   	+' 	  </select>'
+					   	+'  </div>'
+					   	+'</div>'
+					   	+'<div class="form-group">'
+					   	+'	<div class="col-sm-2 control-label">区、县</div>'
+					   	+'<div class="col-sm-10" >'
+					   	+'  <select   class="form-control" id="county">'
+					   	+'	  </select>'
+					   	+' </div>'
+					   	+'</div>';
+	
+ layer.open({
+        type: 1
+        ,title: '设置权限' 
+        ,area: ['390px', '260px']
+        ,shade: 0
+        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+        ,btn: ['确定', '关闭']
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: content
+    	 ,yes: function(){
+    		 var permissionId = $('#permissionSelect').val();
+    		 $.ajax({
+    				type: "POST",
+    			    url: baseURL + "sys/user/setPermission",
+    			    data: {userId:userId,permissionId:permissionId},
+    			    success: function(r){
+    					if(r.code == 0){
+    						alert('操作成功', function(){
+    		                    vm.reload();
+    						});
+    					}else{
+    						alert(r.msg);
+    					}
+    				}
+    			});
+        }
+        ,btn2: function(){
+          layer.closeAll();
+        }
+      });
+	 
+}
 
 function setPermission(userId){
 	

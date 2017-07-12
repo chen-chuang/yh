@@ -27,4 +27,8 @@ public interface RegionService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+	
+	List<RegionEntity> queryListByPid(int pid);
+	
+	
 }

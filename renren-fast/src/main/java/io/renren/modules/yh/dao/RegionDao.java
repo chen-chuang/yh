@@ -13,5 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface RegionDao extends BaseDao<RegionEntity> {
+
+	void queryListByPid(int pid);
 	
 }
