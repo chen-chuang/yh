@@ -105,14 +105,14 @@ function setRegion(userId){
 					   	+'</div>';
 	
  layer.open({
-        type: 1
+        type: 2
         ,title: '设置权限' 
-        ,area: ['390px', '260px']
+        ,area: ['450px', '300px']
         ,shade: 0
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: content
+        ,content: 'http://127.0.0.1:8000/renren-fast/modules/yh/select.html'
     	 ,yes: function(){
     		 var permissionId = $('#permissionSelect').val();
     		 $.ajax({
@@ -152,7 +152,7 @@ function setPermission(userId){
 			   	  +'</select>'
 			    +'</div>'
 			+'</div>';
-	
+ 	
    layer.open({
         type: 1
         ,title: '设置权限' 

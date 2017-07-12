@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
 <link rel="stylesheet" href="../../css/main.css">
 <script src="../../libs/jquery.min.js"></script>
-<!-- <script src="../../plugins/layer/layer.js"></script> -->
+<script src="../../plugins/layer/layer.js"></script>
 <script src="../../libs/bootstrap.min.js"></script>
 <script src="../../libs/vue.min.js"></script>
 <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
@@ -20,8 +20,6 @@
 <script src="../../js/common.js"></script>
 <script src="../../plugins/My97DatePicker/WdatePicker.js"></script>
 
-<link rel="stylesheet" href="../../plugins/layui/css/layui.css">
-<script src="../../plugins/layui/layui.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -145,9 +143,7 @@
 <script src="../../js/modules/sys/user.js"></script>
 <script>
 function tanchu(){
-	layui.use('layer', function(){ //独立版的layer无需执行这一句
-		  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-	
+
 	layer.open({
 		 type: 2 //此处以iframe举例
 	        ,title: '当你选择该窗体时，即会在最顶端'
@@ -167,7 +163,6 @@ function tanchu(){
 	          layer.closeAll();
 	        }
 		}); 
-	});
 }
 
 </script>

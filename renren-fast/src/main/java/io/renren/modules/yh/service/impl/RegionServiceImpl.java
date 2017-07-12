@@ -54,8 +54,8 @@ public class RegionServiceImpl implements RegionService {
 
 	@Override
 	public List<RegionEntity> queryListByPid(int pid) {
-		regionDao.queryListByPid(pid);
-		return null;
+		
+		return regionDao.queryListByPid(pid);
 	}
 	
 }

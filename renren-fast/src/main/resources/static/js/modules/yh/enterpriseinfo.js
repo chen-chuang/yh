@@ -14,7 +14,13 @@ $(function () {
 			{ label: '经度', name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
 			{ label: '纬度', name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
 			{ label: '行政区域', name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
-			{ label: '类型（1：生产厂家，2：经销商）', name: 'enterpriseType', index: 'enterprise_type', width: 80 }			
+			{ label: '类型（1：生产厂家，2：经销商）', name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
+				if(value===1){
+					return "生产厂家";
+				}else if(value===2){
+					return "区域经销商";
+				}
+			}}		
         ],
 		viewrecords: true,
         height: 385,
@@ -41,6 +47,9 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+
+
 });
 
 var vm = new Vue({
@@ -69,7 +78,7 @@ var vm = new Vue({
             
             vm.getInfo(enterpriseId)
 		},
-		saveOrUpdate: function (event) {
+		/*saveOrUpdate: function (event) {
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
 			$.ajax({
 				type: "POST",
@@ -86,6 +95,51 @@ var vm = new Vue({
 					}
 				}
 			});
+		},*/
+		saveOrUpdate:function(event){
+			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
+			var picFile = $("#picFile").val();
+			alert(picFile);
+			if(picFile==null||picFile==""){
+				$.ajax({
+					type: "POST",
+				    url: baseURL + url,
+	                contentType: "application/json",
+				    data: JSON.stringify(vm.enterpriseinfo),
+				    success: function(r){
+				    	if(r.code === 0){
+							alert('操作成功', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
+					}
+				});
+			}else{
+				  $.AjaxUpload({
+				        action: baseURL + url+'?token=' + token,
+				        id:"picFile",
+				        data:JSON.stringify(vm.enterpriseinfo),
+				        autoSubmit:true,
+				        responseType:"json",
+				        onSubmit:function(file, extension){
+				            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
+				                alert('只支持jpg、png、gif格式的图片！');
+				                return false;
+				            }
+				        },
+				        onComplete : function(file, r){
+				            if(r.code == 0){
+				                alert(r.url);
+				                vm.reload();
+				            }else{
+				                alert(r.msg);
+				            }
+				        }
+				    });
+			}
+		  
 		},
 		del: function (event) {
 			var enterpriseIds = getSelectedRows();

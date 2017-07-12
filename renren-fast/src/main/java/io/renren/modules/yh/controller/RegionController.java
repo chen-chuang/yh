@@ -95,4 +95,11 @@ public class RegionController {
 		return R.ok();
 	}
 	
+	@RequestMapping("/getCitys/{pid}")
+	public R getCitys(@PathVariable("pid") int pid){
+		List<RegionEntity> regionList = regionService.queryListByPid(pid);
+		
+		return R.ok().put("citys", regionList);
+	}
+	
 }

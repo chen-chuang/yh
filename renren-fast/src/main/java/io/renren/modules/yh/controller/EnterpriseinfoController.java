@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 import io.renren.common.utils.PageUtils;
@@ -29,7 +32,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("enterpriseinfo")
-public class EnterpriseinfoController {
+public class EnterpriseinfoController extends AbstractController {
 	@Autowired
 	private EnterpriseinfoService enterpriseinfoService;
 	
@@ -67,7 +70,12 @@ public class EnterpriseinfoController {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("enterpriseinfo:save")
-	public R save(@RequestBody EnterpriseinfoEntity enterpriseinfo){
+	public R save(@RequestBody EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
+		
+		if(file!=null){
+			System.out.println(file.getName());
+		}		
+		
 		enterpriseinfoService.save(enterpriseinfo);
 		
 		return R.ok();
