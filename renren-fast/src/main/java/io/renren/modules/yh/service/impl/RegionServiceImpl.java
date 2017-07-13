@@ -57,5 +57,10 @@ public class RegionServiceImpl implements RegionService {
 		
 		return regionDao.queryListByPid(pid);
 	}
+
+	@Override
+	public String getRegionFullName(int regionId) {
+		return null;
+	}
 	
 }

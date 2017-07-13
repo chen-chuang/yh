@@ -7,6 +7,8 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.service.RegionService;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -37,6 +39,8 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Autowired
+	private RegionService regionService;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -143,5 +147,11 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	public void setExpiryDate(Long userId, Date expiryDate){
 		sysUserDao.setExpiryDate(userId, expiryDate);
+	}
+
+	@Override
+	public void setRegion(Long userId, int regionId,String regionName) {
+		 
+		sysUserDao.setRegion(userId,regionId,regionName);
 	}
 }

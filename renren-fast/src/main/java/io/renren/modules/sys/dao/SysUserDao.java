@@ -42,4 +42,6 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	void setPermission(@Param("userId") Long userId,@Param("permissionId") int permissionId);
 
 	void setExpiryDate(@Param("userId") Long userId,@Param("expiryDate")  Date expiryDate);
+
+	void setRegion(@Param("userId") Long userId, @Param("regionId")int regionId, @Param("regionName")String regionName);
 }

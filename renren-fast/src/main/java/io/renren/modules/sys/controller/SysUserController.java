@@ -177,5 +177,14 @@ public class SysUserController extends AbstractController {
 		return R.ok();
 	}
 	
+	@RequestMapping("/setRegion")
+	public R setRegion(@RequestParam("userId") Long userId,
+			@RequestParam("regionId") int regionId,
+			@RequestParam("regionName") String regionName){		
+		
+		sysUserService.setRegion(userId,regionId,regionName);
+		return R.ok();
+	}
+	
 	
 }

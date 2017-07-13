@@ -75,4 +75,6 @@ public interface SysUserService {
 	void setPermission(Long userId, int permissionId);
 
 	void setExpiryDate(Long userId, Date expiryDate);
+
+	void setRegion(Long userId, int regionId, String regionName);
 }

@@ -147,5 +147,9 @@
 	<update id="setExpiryDate">
 	    update sys_user set expiry_date = #{expiryDate} where user_id = #{userId}
 	</update>
+	
+	<update id="setRegion">
+	    update sys_user set area_id = #{regionId},user_area = #{regionName} where user_id = #{userId}
+	</update>
 
 </mapper>

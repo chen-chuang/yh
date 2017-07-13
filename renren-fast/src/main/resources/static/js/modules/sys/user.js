@@ -113,12 +113,15 @@ function setRegion(userId){
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
         ,content: 'http://127.0.0.1:8000/renren-fast/modules/yh/select.html'
-    	 ,yes: function(){
-    		 var permissionId = $('#permissionSelect').val();
+    	 ,yes: function(){    		 
+    		
+    		 var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
+    		 var regionName = $(window.frames["layui-layer-iframe1"].document).find("#regionName").val();
+    		
     		 $.ajax({
     				type: "POST",
-    			    url: baseURL + "sys/user/setPermission",
-    			    data: {userId:userId,permissionId:permissionId},
+    			    url: baseURL + "sys/user/setRegion",
+    			    data: {userId:userId,regionId:regionId,regionName:regionName},
     			    success: function(r){
     					if(r.code == 0){
     						alert('操作成功', function(){
