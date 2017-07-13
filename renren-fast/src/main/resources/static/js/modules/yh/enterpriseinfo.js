@@ -99,7 +99,6 @@ var vm = new Vue({
 		saveOrUpdate:function(event){
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
 			var picFile = $("#picFile").val();
-			alert(picFile);
 			if(picFile==null||picFile==""){
 				$.ajax({
 					type: "POST",
@@ -117,7 +116,29 @@ var vm = new Vue({
 					}
 				});
 			}else{
-				  $.AjaxUpload({
+				 if(picFile.indexOf("jpg")!=-1 || picFile.indexOf("jpeg")!=-1 || picFile.indexOf("png")!=-1 || picFile.indexOf("gif")!=-1){
+				    	
+				    	$.ajaxFileUpload({  
+					        url : baseURL + url,//用于文件上传的服务器端请求地址  
+					        secureuri : false,          //一般设置为false  
+					        fileElementId : 'picFile',     //文件上传空间的id属性  <input type="file" id="file" name="file" />  
+					        dataType : 'json',//返回值类型 一般设置为json
+					        data : JSON.stringify(vm.enterpriseinfo), 
+					        success : function(data, r) { 
+					        	console.log(r);
+					        	  if(r.code == 0){
+						                vm.reload();
+						            }else{
+						                alert(r.msg);
+						            }				        	
+					        }  
+					    });
+				    }else{
+				       	alert("请上传图片格式的文件！");
+				        return false;
+				    }	
+				
+				 /* $.AjaxUpload({
 				        action: baseURL + url+'?token=' + token,
 				        id:"picFile",
 				        data:JSON.stringify(vm.enterpriseinfo),
@@ -137,7 +158,7 @@ var vm = new Vue({
 				                alert(r.msg);
 				            }
 				        }
-				    });
+				    });*/
 			}
 		  
 		},
