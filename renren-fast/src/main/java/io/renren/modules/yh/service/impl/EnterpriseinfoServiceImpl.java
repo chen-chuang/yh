@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.yh.dao.EnterpriseinfoDao;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
@@ -52,4 +53,13 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 		enterpriseinfoDao.deleteBatch(enterpriseIds);
 	}
 	
+	@Override
+	public List<EnterpriseinfoEntity> apiQueryList(Map<String, Object> map){
+		return enterpriseinfoDao.apiQueryList(map);
+	}
+	
+	@Override
+	public EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId){
+		return enterpriseinfoDao.apiEnterpriseByID(enterpriseId); 
+	}
 }

@@ -1,8 +1,13 @@
 package io.renren.modules.yh.dao;
 
-import io.renren.modules.yh.entity.EnterpriseinfoEntity;
-import io.renren.modules.sys.dao.BaseDao;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
+import io.renren.modules.sys.dao.BaseDao;
+import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 
 /**
  * 企业信息表
@@ -13,5 +18,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
+
+	List<EnterpriseinfoEntity> apiQueryList(Map<String, Object> map);
+	
+	EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId); 
 	
 }

@@ -1,5 +1,7 @@
 package io.renren.modules.yh.service;
 
+import io.renren.common.utils.Query;
+import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 
 import java.util.List;
@@ -27,4 +29,8 @@ public interface EnterpriseinfoService {
 	void delete(Long enterpriseId);
 	
 	void deleteBatch(Long[] enterpriseIds);
+
+	List<EnterpriseinfoEntity> apiQueryList(Map<String, Object> map);
+	
+	EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId);
 }

@@ -18,6 +18,27 @@
         <result property="enterpriseAreaId" column="enterprise_area_id"/>
         <result property="enterpriseType" column="enterprise_type"/>
     </resultMap>
+    
+    
+     <resultMap type="io.renren.modules.api.entity.dto.EnterpriseInfoDTO" id="apiEnterpriseinfoMap">
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseName" column="enterprise_name"/>
+        <result property="enterpriseImageUrl" column="enterprise_image_url"/>
+        <result property="enterpriseAddress" column="enterprise_address"/>
+        <result property="enterprisePhone" column="enterprise_phone"/>       
+    </resultMap>
+    
+      <resultMap type="io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO" id="apiEnterpriseDeatailinfoMap">
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseName" column="enterprise_name"/>
+        <result property="enterpriseImageUrl" column="enterprise_image_url"/>
+        <result property="enterpriseAddress" column="enterprise_address"/>
+        <result property="enterprisePhone" column="enterprise_phone"/>
+        <result property="enterpriseContactPerson" column="enterprise_contact"/>
+        <result property="enterpriseIntroduction" column="enterprise_introduction"/>
+        <result property="enterpriseLongitude" column="enterprise_longitude"/>
+        <result property="enterpriseLatitude" column="enterprise_latitude"/>       
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.EnterpriseinfoEntity">
 		select * from sys_enterpriseinfo where enterprise_id = #{value}
@@ -103,5 +124,34 @@
 			#{enterpriseId}
 		</foreach>
 	</delete>
+	
+	
+	<select id="ApiQueryList" resultType="apiEnterpriseinfoMap">
+		select * from sys_enterpriseinfo
+		<where>
+		    <if test="townID != null">
+				and `enterprise_area_id` = #{townID} 
+			</if>
+			<if test="enterpriseType != null">
+				and `enterprise_type` = #{enterpriseType} 
+			</if>
+		    
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by enterprise_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="ApiEnterpriseByID" resultType="apiEnterpriseDeatailinfoMap">
+		select * from sys_enterpriseinfo where `enterprise_id` = #{enterpriseId} 
+	</select>
 
 </mapper>
