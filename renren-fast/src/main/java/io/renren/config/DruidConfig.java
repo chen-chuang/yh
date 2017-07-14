@@ -1,22 +1,26 @@
 package io.renren.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.MultipartConfigElement;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Druid配置
@@ -154,5 +158,23 @@ public class DruidConfig {
 
         return wallFilter;
     }
+    
+    
+    /**
+     * 上传文件大小设置
+     *@描述
+     *@return
+     *@作者 ccchen
+     *@时间 2017年7月14日下午4:37:46
+     */
+ /*   @Bean  
+    public MultipartConfigElement multipartConfigElement() {  
+        MultipartConfigFactory factory = new MultipartConfigFactory();  
+        //单个文件最大  
+        factory.setMaxFileSize("10240KB"); //KB,MB  
+        /// 设置总上传数据总大小  
+        factory.setMaxRequestSize("102400KB");  
+        return factory.createMultipartConfig();  
+    }  */
 
 }

@@ -83,10 +83,10 @@ public class EnterpriseinfoController extends AbstractController {
 	
 	@RequestMapping("/save")
 	@RequiresPermissions("enterpriseinfo:save")
-	public R save(@RequestBody EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
+	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
 		if(file!=null){
-			System.out.println(file.getName());
+			System.out.println(file.getOriginalFilename());
 		}		
 		
 		enterpriseinfoService.save(enterpriseinfo);

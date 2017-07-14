@@ -98,8 +98,29 @@ var vm = new Vue({
 		},*/
 		saveOrUpdate:function(event){
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
-			var picFile = $("#picFile").val();
-			if(picFile==null||picFile==""){
+			var formData = new FormData($("form")[0]);
+			vm.enterpriseinfo.
+			
+			 $.ajax({  
+		            url : baseURL + url,  
+		            type : 'POST',  
+		            data : formData,  
+		            async : false,  
+		            cache : false,  
+		            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
+		            processData : false,// 告诉jQuery不要去处理发送的数据  
+		            success : function(data) {  
+		                alert(data);  
+		                //...  
+		            },  
+		            error : function(data) {  
+		                alert(data);  
+		                //...  
+		            }  
+		        });  
+			
+			
+			/*	if(picFile==null||picFile==""){
 				$.ajax({
 					type: "POST",
 				    url: baseURL + url,
@@ -138,7 +159,7 @@ var vm = new Vue({
 				        return false;
 				    }	
 				
-				 /* $.AjaxUpload({
+				  $.AjaxUpload({
 				        action: baseURL + url+'?token=' + token,
 				        id:"picFile",
 				        data:JSON.stringify(vm.enterpriseinfo),
@@ -158,9 +179,9 @@ var vm = new Vue({
 				                alert(r.msg);
 				            }
 				        }
-				    });*/
+				    });
 			}
-		  
+		  */
 		},
 		del: function (event) {
 			var enterpriseIds = getSelectedRows();

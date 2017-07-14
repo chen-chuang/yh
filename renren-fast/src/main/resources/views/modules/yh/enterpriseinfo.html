@@ -34,11 +34,11 @@
     
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
-		<form class="form-horizontal">
+		<form class="form-horizontal" id="form">
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">企业名称</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseName" placeholder="企业名称"/>
+			      <input type="text" class="form-control" name="enterpriseName" v-model="enterpriseinfo.enterpriseName" placeholder="企业名称"/>
 			    </div>
 			</div>
 			<div class="form-group">
@@ -51,55 +51,55 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">企业地址</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseAddress" placeholder="企业地址"/>
+			      <input type="text" class="form-control" name="enterpriseAddress" v-model="enterpriseinfo.enterpriseAddress" placeholder="企业地址"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">手机</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterprisePhone" placeholder="手机"/>
+			      <input type="text" class="form-control" name = "enterprisePhone" v-model="enterpriseinfo.enterprisePhone" placeholder="手机"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">电话</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseTel" placeholder="电话"/>
+			      <input type="text" class="form-control" name="enterpriseTel" v-model="enterpriseinfo.enterpriseTel" placeholder="电话"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">联系人</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseContact" placeholder="联系人"/>
+			      <input type="text" class="form-control" name="enterpriseContact" v-model="enterpriseinfo.enterpriseContact" placeholder="联系人"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">简介</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/>
+			      <input type="text" class="form-control" name = "enterpriseIntroduction" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">经度</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseLongitude" placeholder="经度"/>
+			      <input type="text" class="form-control" name="enterpriseLongitude" v-model="enterpriseinfo.enterpriseLongitude" placeholder="经度"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">纬度</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseLatitude" placeholder="纬度"/>
+			      <input type="text" class="form-control" name = "enterpriseLatitude" v-model="enterpriseinfo.enterpriseLatitude" placeholder="纬度"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">行政区域</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseAreaId" placeholder="行政区域"/>
+			      <input type="text" class="form-control" name="enterpriseAreaId" v-model="enterpriseinfo.enterpriseAreaId" placeholder="行政区域"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">商家类型</div>
 			   	<div class="col-sm-10">
-			   	  <select  class="form-control" v-model="enterpriseinfo.enterpriseType" placeholder="类型（1：生产厂家，2：经销商）">
+			   	  <select  class="form-control" name="enterpriseType" v-model="enterpriseinfo.enterpriseType" placeholder="类型（1：生产厂家，2：经销商）">
 			   	  	  <option value="1">生产厂家</option>
 			   	  	  <option value="2">经销商</option>
 			   	  </select>
@@ -114,29 +114,7 @@
 		</form>
 	</div>
 </div>
-<!-- <input type="file" name="picFile" onchange="upload()" id="picFile"> -->
 <script src="../../js/modules/yh/enterpriseinfo.js"></script>
-<!-- <script type="text/javascript">
-	function upload(){
-		var picFile = $("#picFile").val();
-		 if(picFile.indexOf("jpg")!=-1 || picFile.indexOf("jpeg")!=-1 || picFile.indexOf("png")!=-1 || picFile.indexOf("gif")!=-1){
-		    	
-		    	$.ajaxFileUpload({  
-			        url : baseURL + 'enterpriseinfo/save',//用于文件上传的服务器端请求地址  
-			        secureuri : false,          //一般设置为false  
-			        fileElementId : 'picFile',     //文件上传空间的id属性  <input type="file" id="file" name="file" />  
-			        dataType : 'json',//返回值类型 一般设置为json
-			        success : function(data, status) { 
-			        	alert("上传成功！");					        	
-			        }  
-			    });
-		    }else{
-		       	alert("请上传图片格式的文件！");
-		        return false;
-		    }	
-		
-	}
-	
-</script> -->
+
 </body>
 </html>
