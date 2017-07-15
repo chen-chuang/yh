@@ -1,5 +1,9 @@
 package io.renren.modules.yh.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.service.ProductService;
+import io.renren.common.utils.CommonUtils;
+import io.renren.common.utils.ConfigConstant;
+import io.renren.common.utils.FileUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -67,7 +75,47 @@ public class ProductController {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("product:save")
-	public R save(@RequestBody ProductEntity product){
+	public R save(ProductEntity product,
+			@RequestParam(value="picFile",required=false) MultipartFile picFile,
+			@RequestParam(value="videoFile",required=false) MultipartFile videoFile){
+		
+		if(picFile!=null){
+			try {
+				String orginalFileName = picFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(picFile.getBytes());
+			    stream.close();
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}		
+		
+		
+		if(videoFile!=null){
+			try {
+				String orginalFileName = videoFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_VIDEO_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(videoFile.getBytes());
+			    stream.close();
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}	 
+		
 		productService.save(product);
 		
 		return R.ok();

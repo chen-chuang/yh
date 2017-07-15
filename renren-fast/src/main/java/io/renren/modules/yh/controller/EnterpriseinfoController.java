@@ -1,7 +1,14 @@
 package io.renren.modules.yh.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.renren.modules.sys.controller.AbstractController;
-import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.yh.entity.EnterpriseinfoEntity;
-import io.renren.modules.yh.service.EnterpriseinfoService;
+import io.renren.common.utils.CommonUtils;
+import io.renren.common.utils.ConfigConstant;
+import io.renren.common.utils.FileUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.yh.entity.EnterpriseinfoEntity;
+import io.renren.modules.yh.service.EnterpriseinfoService;
 
 
 
@@ -67,26 +76,27 @@ public class EnterpriseinfoController extends AbstractController {
 	
 	/**
 	 * 保存
-	 */
-	/*@RequestMapping("/save")
-	@RequiresPermissions("enterpriseinfo:save")
-	public R save(@RequestBody EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
-		
-		if(file!=null){
-			System.out.println(file.getName());
-		}		
-		
-		enterpriseinfoService.save(enterpriseinfo);
-		
-		return R.ok();
-	}*/
-	
+	 */	
 	@RequestMapping("/save")
 	@RequiresPermissions("enterpriseinfo:save")
 	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
 		if(file!=null){
-			System.out.println(file.getOriginalFilename());
+			try {
+				String orginalFileName = file.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				String directory = ConfigConstant.ENTERPRISE_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(file.getBytes());
+			    stream.close();
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
 		}		
 		
 		enterpriseinfoService.save(enterpriseinfo);
@@ -115,5 +125,7 @@ public class EnterpriseinfoController extends AbstractController {
 		
 		return R.ok();
 	}
+	
+
 	
 }

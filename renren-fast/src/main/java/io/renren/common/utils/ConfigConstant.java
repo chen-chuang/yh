@@ -11,4 +11,10 @@ public class ConfigConstant {
      * 云存储配置KEY
      */
     public final static String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
+    
+    public final static String ENTERPRISE_PIC_DIR = "D:\\enterprise";
+    
+    public final static String ENTERPRISE_PRODUCT_PIC_DIR = "D:\\enterprise";
+    
+    public final static String ENTERPRISE_PRODUCT_VIDEO_DIR = "D:\\enterprise";
 }

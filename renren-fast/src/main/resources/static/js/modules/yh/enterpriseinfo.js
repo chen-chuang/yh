@@ -3,7 +3,7 @@ $(function () {
         url: baseURL + 'enterpriseinfo/list',
         datatype: "json",
         colModel: [			
-			{ label: 'enterpriseId', name: 'enterpriseId', index: 'enterprise_id', width: 50, key: true },
+			{ label: '企业ID', hidden : true,name: 'enterpriseId', index: 'enterprise_id', width: 50, key: true },
 			{ label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 			
 			{ label: '企业图片', name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80 }, 			
 			{ label: '企业地址', name: 'enterpriseAddress', index: 'enterprise_address', width: 80 }, 			
@@ -14,11 +14,13 @@ $(function () {
 			{ label: '经度', name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
 			{ label: '纬度', name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
 			{ label: '行政区域', name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
-			{ label: '类型（1：生产厂家，2：经销商）', name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
+			{ label: '商家类型', name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
 				if(value===1){
 					return "生产厂家";
 				}else if(value===2){
 					return "区域经销商";
+				}else{
+					return "";
 				}
 			}}		
         ],
@@ -78,28 +80,9 @@ var vm = new Vue({
             
             vm.getInfo(enterpriseId)
 		},
-		/*saveOrUpdate: function (event) {
-			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.enterpriseinfo),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
-			});
-		},*/
 		saveOrUpdate:function(event){
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
 			var formData = new FormData($("form")[0]);
-			vm.enterpriseinfo.
 			
 			 $.ajax({  
 		            url : baseURL + url,  
@@ -109,79 +92,16 @@ var vm = new Vue({
 		            cache : false,  
 		            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
 		            processData : false,// 告诉jQuery不要去处理发送的数据  
-		            success : function(data) {  
-		                alert(data);  
-		                //...  
-		            },  
-		            error : function(data) {  
-		                alert(data);  
-		                //...  
-		            }  
-		        });  
-			
-			
-			/*	if(picFile==null||picFile==""){
-				$.ajax({
-					type: "POST",
-				    url: baseURL + url,
-	                contentType: "application/json",
-				    data: JSON.stringify(vm.enterpriseinfo),
-				    success: function(r){
-				    	if(r.code === 0){
+		            success : function(r) {  
+		            	if(r.code === 0){
 							alert('操作成功', function(index){
 								vm.reload();
 							});
 						}else{
 							alert(r.msg);
 						}
-					}
-				});
-			}else{
-				 if(picFile.indexOf("jpg")!=-1 || picFile.indexOf("jpeg")!=-1 || picFile.indexOf("png")!=-1 || picFile.indexOf("gif")!=-1){
-				    	
-				    	$.ajaxFileUpload({  
-					        url : baseURL + url,//用于文件上传的服务器端请求地址  
-					        secureuri : false,          //一般设置为false  
-					        fileElementId : 'picFile',     //文件上传空间的id属性  <input type="file" id="file" name="file" />  
-					        dataType : 'json',//返回值类型 一般设置为json
-					        data : JSON.stringify(vm.enterpriseinfo), 
-					        success : function(data, r) { 
-					        	console.log(r);
-					        	  if(r.code == 0){
-						                vm.reload();
-						            }else{
-						                alert(r.msg);
-						            }				        	
-					        }  
-					    });
-				    }else{
-				       	alert("请上传图片格式的文件！");
-				        return false;
-				    }	
-				
-				  $.AjaxUpload({
-				        action: baseURL + url+'?token=' + token,
-				        id:"picFile",
-				        data:JSON.stringify(vm.enterpriseinfo),
-				        autoSubmit:true,
-				        responseType:"json",
-				        onSubmit:function(file, extension){
-				            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
-				                alert('只支持jpg、png、gif格式的图片！');
-				                return false;
-				            }
-				        },
-				        onComplete : function(file, r){
-				            if(r.code == 0){
-				                alert(r.url);
-				                vm.reload();
-				            }else{
-				                alert(r.msg);
-				            }
-				        }
-				    });
-			}
-		  */
+		            }  
+		        }); 
 		},
 		del: function (event) {
 			var enterpriseIds = getSelectedRows();

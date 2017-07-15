@@ -71,21 +71,26 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.product.productId == null ? "product/save" : "product/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.product),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
-			});
+			var formData = new FormData($("form")[0]);
+			
+			 $.ajax({  
+		            url : baseURL + url,  
+		            type : 'POST',  
+		            data : formData,  
+		            async : false,  
+		            cache : false,  
+		            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
+		            processData : false,// 告诉jQuery不要去处理发送的数据  
+		            success : function(r) {  
+		            	if(r.code === 0){
+							alert('操作成功', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
+		            }  
+		        }); 
 		},
 		del: function (event) {
 			var productIds = getSelectedRows();
