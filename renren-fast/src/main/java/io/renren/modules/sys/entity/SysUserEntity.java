@@ -82,10 +82,28 @@ public class SysUserEntity implements Serializable {
 	
 	private String userArea;
 	
-	private Long belongToAgency;
+	private Long belongToAgencyId;
+	
+	private String belongToAgencyName;
 	
 	private Integer userPermission;
 	
+	public Long getBelongToAgencyId() {
+		return belongToAgencyId;
+	}
+
+	public void setBelongToAgencyId(Long belongToAgencyId) {
+		this.belongToAgencyId = belongToAgencyId;
+	}
+
+	public String getBelongToAgencyName() {
+		return belongToAgencyName;
+	}
+
+	public void setBelongToAgencyName(String belongToAgencyName) {
+		this.belongToAgencyName = belongToAgencyName;
+	}
+
 	private Long userIntegral;
 
 	/**
@@ -246,14 +264,6 @@ public class SysUserEntity implements Serializable {
 
 	public void setUserArea(String userArea) {
 		this.userArea = userArea;
-	}
-
-	public Long getBelongToAgency() {
-		return belongToAgency;
-	}
-
-	public void setBelongToAgency(Long belongToAgency) {
-		this.belongToAgency = belongToAgency;
 	}
 
 	public Integer getUserPermission() {

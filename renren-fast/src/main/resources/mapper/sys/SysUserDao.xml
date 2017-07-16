@@ -75,9 +75,10 @@
 			expiry_date,
 			area_id,
 			user_area,
-			belong_to_agency,
+			belong_to_agency_id,
 			user_permission,
-			user_integral
+			user_integral,
+			belong_to_agency_name
 		)
 		values
 		(
@@ -93,9 +94,10 @@
 			#{expiryDate},
 			#{areaId},
 			#{userArea},
-			#{belongToAgency},
+			#{belongToAgencyId},
 			#{userPermission},
-			#{userIntegral}
+			#{userIntegral},
+			#{belongToAgencyName},
 		)
 	</insert>
 	 
@@ -110,11 +112,10 @@
 			<if test="expiryDate != null">`expiry_date` = #{expiryDate}, </if>
 			<if test="areaId != null">`area_id` = #{areaId}, </if>
 			<if test="userArea != null">`user_area` = #{userArea}, </if>
-			<if test="belongToAgency != null">`belong_to_agency` = #{belongToAgency}, </if>
+			<if test="belongToAgencyId != null">`belong_to_agency_id` = #{belongToAgencyId}, </if>
+			<if test="belongToAgencyName != null">`belong_to_agency_name` = #{belongToAgencyName}, </if>
 			<if test="userPermission != null">`user_permission` = #{userPermission}, </if>
 			<if test="userIntegral != null">`user_integral` = #{userIntegral}, </if>
-			<if test="status != null">`status` = #{status}, </if>
-			<if test="status != null">`status` = #{status}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 		</set>
 		where user_id = #{userId} 

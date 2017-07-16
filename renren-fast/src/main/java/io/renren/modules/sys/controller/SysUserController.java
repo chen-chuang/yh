@@ -117,6 +117,12 @@ public class SysUserController extends AbstractController {
 		ValidatorUtils.validateEntity(user, AddGroup.class);
 		
 		user.setCreateUserId(getUserId());
+		
+		if(getUser().getUserPermission().equals(EnumPermission.AGENCY.getType())){
+			user.setBelongToAgencyId(getUser().getUserId());
+			user.setBelongToAgencyName(getUser().getUsername());
+		}
+		
 		sysUserService.save(user);
 		
 		return R.ok();

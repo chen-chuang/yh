@@ -65,7 +65,7 @@ alter table sys_configTable comment '配置表';
 /*==============================================================*/
 create table sys_enterpriseInfo
 (
-   enterprise_id        bigint not null,
+   enterprise_id        bigint  NOT NULL AUTO_INCREMENT,
    enterprise_name      varchar(100) comment '企业名称',
    enterprise_image_url varchar(1024) comment '企业图片',
    enterprise_address   varchar(200) comment '企业地址',
@@ -222,7 +222,8 @@ create table sys_user
    create_time          datetime comment '创建时间',
    area_id              varchar(50) comment '所属区域ID',
    user_area            varchar(100) comment '所属区域名',
-   belong_to_agency     bigint comment '所属经销商ID',
+   belong_to_agency_id bigint(20) DEFAULT NULL comment '所属经销商ID',
+   belong_to_agency_name varchar(50) DEFAULT NULL,
    user_permission      int comment '用户权限（1：管理员，2：生成厂家，3：经销商，4：配送员，5：发货员，6：销售员）',
    user_integral        bigint comment '积分' DEFAULT '0',
    primary key (user_id)
