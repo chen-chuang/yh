@@ -1,7 +1,7 @@
 package io.renren.modules.yh.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 
 
@@ -21,6 +21,8 @@ public class RegionEntity implements Serializable {
 	private String name;
 	//父ID
 	private Integer pid;
+	
+	List<?> list;
 
 	/**
 	 * 设置：
@@ -57,5 +59,11 @@ public class RegionEntity implements Serializable {
 	 */
 	public Integer getPid() {
 		return pid;
+	}
+	public List<?> getList() {
+		return list;
+	}
+	public void setList(List<?> list) {
+		this.list = list;
 	}
 }

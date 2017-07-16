@@ -33,4 +33,6 @@ public interface EnterpriseinfoService {
 	List<EnterpriseinfoEntity> apiQueryList(Map<String, Object> map);
 	
 	EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId);
+
+	List<Map<String, Object>> getEnterprise();
 }

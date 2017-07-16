@@ -1,6 +1,7 @@
 package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.ProductEntity;
+import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.sys.dao.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,5 +14,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProductDao extends BaseDao<ProductEntity> {
+
+	void deleteBatchByType(Integer[] ids);
+
+	void updateProductType(ProducttypeEntity producttype);
 	
 }

@@ -97,7 +97,7 @@
 			#{belongToAgencyId},
 			#{userPermission},
 			#{userIntegral},
-			#{belongToAgencyName},
+			#{belongToAgencyName}
 		)
 	</insert>
 	 
@@ -116,7 +116,7 @@
 			<if test="belongToAgencyName != null">`belong_to_agency_name` = #{belongToAgencyName}, </if>
 			<if test="userPermission != null">`user_permission` = #{userPermission}, </if>
 			<if test="userIntegral != null">`user_integral` = #{userIntegral}, </if>
-			<if test="status != null">`status` = #{status}, </if>
+			<if test="status != null">`status` = #{status}</if>
 		</set>
 		where user_id = #{userId} 
 		<if test="createUserId != null">

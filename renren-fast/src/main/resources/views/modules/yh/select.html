@@ -90,39 +90,6 @@
 		
 	});
 	
-	
-	function selectDataBindByHql(id,url){
-		$.ajax({
-			url : url,
-			success : function(data) {
-				var htmlArr1 = [];
-				if($('#'+id).val()==''){
-					htmlArr1.push('<option value="-1" selected="selected" >请选择</option>');
-					if(data.citys.length){				
-						
-						$.each(data.citys,function(n,value){
-	          	 			htmlArr1.push('<option value="'+value.id+'">'+value.name+'</option>');
-	           			}); 
-	       			}
-				}else{				
-					htmlArr1.push('<option value="-1">请选择</option>');
-					if(data.citys.length){
-						$.each(data.citys,function(n,value){
-							if(value.id!=$('#'+id).val()){
-	          	 				htmlArr1.push('<option value="'+value.id+'">'+value.name+'</option>');
-	          	 			} else {
-	          	 				htmlArr1.push('<option value="'+$('#'+id).val()+'" selected="selected">'+$('#'+id+' option:selected').html()+'</option>');
-	          	 			}
-	           			}); 
-	           		}
-				}
 
-				$('#'+id).html(htmlArr1.join(''));
-			},
-			error:function(data){
-				alert(data);
-			}
-		});
-	}
 </script>
 </html>

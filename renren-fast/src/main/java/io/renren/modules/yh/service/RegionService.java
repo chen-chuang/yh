@@ -31,6 +31,13 @@ public interface RegionService {
 	List<RegionEntity> queryListByPid(int pid);
 
 	String getRegionFullName(int regionId);
+
+	/**
+	 * 从下往上找
+	 * @param id
+	 * @return
+	 */
+	List<String> getFullRegion(int id);
 	
 	
 }

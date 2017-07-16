@@ -3,6 +3,9 @@ package io.renren.modules.yh.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +64,31 @@ public class RegionServiceImpl implements RegionService {
 	@Override
 	public String getRegionFullName(int regionId) {
 		return null;
+	}
+	
+	@Override
+	public List<String> getFullRegion(int id){
+		List<String> full = new ArrayList<String>();
+		full.add(String.valueOf(id));
+		getParentListById(id,full);
+		Collections.reverse(full);
+		return full;
+	}
+	
+	public List<String> getParentListById(int id,List<String> full){
+		Map<String,Object> parentInfo = regionDao.getParentById(id);
+		if(!parentInfo.get("pid").equals(0)){
+		  full.add(String.valueOf(parentInfo.get("pid")));
+		  getParentListById(Integer.parseInt(String.valueOf(parentInfo.get("pid"))),full);
+		}
+		return full;
+	}
+	
+	public Map<String,Object> getParentById(int id){
+		
+		Map<String,Object> parentInfo = regionDao.getParentById(id);
+		return parentInfo;
+		
 	}
 	
 }

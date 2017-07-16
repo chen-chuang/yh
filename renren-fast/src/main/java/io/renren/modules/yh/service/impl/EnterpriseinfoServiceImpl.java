@@ -1,10 +1,10 @@
 package io.renren.modules.yh.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.yh.dao.EnterpriseinfoDao;
@@ -61,5 +61,10 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 	@Override
 	public EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId){
 		return enterpriseinfoDao.apiEnterpriseByID(enterpriseId); 
+	}
+	
+	@Override
+	public List<Map<String, Object>> getEnterprise(){
+		return enterpriseinfoDao.getEnterprise();
 	}
 }

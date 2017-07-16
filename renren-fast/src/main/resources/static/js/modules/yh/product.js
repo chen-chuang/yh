@@ -3,18 +3,18 @@ $(function () {
         url: baseURL + 'product/list',
         datatype: "json",
         colModel: [			
-			{ label: 'productId', name: 'productId', index: 'product_id', width: 50, key: true },
+			{ label: 'productId', hidden:true,name: 'productId', index: 'product_id', width: 50, key: true },
 			{ label: '产品名称', name: 'productName', index: 'product_name', width: 80 }, 			
 			{ label: '图片地址', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }, 			
 			{ label: '简介', name: 'productDetail', index: 'product_detail', width: 80 }, 			
-			{ label: '产品类型：1.烟花 2.爆竹 3.套餐 4.小烟花', name: 'productType', index: 'product_type', width: 80 }, 			
+			{ label: '产品类型', name: 'productTypeName', index: 'product_type_name', width: 80 }, 	
 			{ label: '视频地址', name: 'productVideoUrl', index: 'product_video_url', width: 80 }, 			
 			{ label: '库存', name: 'productNum', index: 'product_num', width: 80 }, 			
 			{ label: '批发价', name: 'productTradePrice', index: 'product_trade_price', width: 80 }, 			
 			{ label: '零售价', name: 'productRetailPrice', index: 'product_retail_price', width: 80 }, 			
-			{ label: '企业ID', name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 			
-			{ label: '是否热销（1：热销，2：不热销）', name: 'isHot', index: 'is_hot', width: 80 }, 			
-			{ label: '录入类型（1：管理员，2：区域代理）', name: 'enterType', index: 'enter_type', width: 80 }			
+			{ label: '企业ID', hidden:true,name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 
+			{ label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80 },
+			{ label: '是否热销（1：热销，2：不热销）', name: 'isHot', index: 'is_hot', width: 80 }		
         ],
 		viewrecords: true,
         height: 385,
@@ -48,7 +48,9 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		product: {}
+		product: {},
+        enterPrises:{},
+        types:{};
 	},
 	methods: {
 		query: function () {
@@ -58,6 +60,24 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.product = {};
+			
+			this.getEnterprise();
+			
+			this.getProductType();
+		},
+		getEnterprise:function(){
+			
+			//selectDataBindByHql("enterpriseId",baseURL + "product/getEnterprise");
+			
+			$.get(baseURL + "product/getEnterprise", function(r){
+                vm.enterPrises = r.citys;
+            });
+			
+		},
+		getProductType:function(){
+			$.get(baseURL + "producttype/getProductType", function(r){
+                vm.types = r.types;
+            });
 		},
 		update: function (event) {
 			var productId = getSelectedRow();
@@ -67,11 +87,19 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             
-            vm.getInfo(productId)
+            vm.getInfo(productId);
+            
+            
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.product.productId == null ? "product/save" : "product/update";
-			var formData = new FormData($("form")[0]);
+			
+			console.log($("#enterpriseId").find("option:selected").text());
+			$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());
+			
+			var formData = new FormData($("form")[0]);			
+			
+			
 			
 			 $.ajax({  
 		            url : baseURL + url,  

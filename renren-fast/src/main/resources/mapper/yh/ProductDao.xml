@@ -10,11 +10,13 @@
         <result property="productPictureUrl" column="product_picture_url"/>
         <result property="productDetail" column="product_detail"/>
         <result property="productType" column="product_type"/>
+        <result property="productTypeName" column="product_type_name"/>
         <result property="productVideoUrl" column="product_video_url"/>
         <result property="productNum" column="product_num"/>
         <result property="productTradePrice" column="product_trade_price"/>
         <result property="productRetailPrice" column="product_retail_price"/>
         <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseName" column="enterprise_name"/>
         <result property="isHot" column="is_hot"/>
         <result property="enterType" column="enter_type"/>
     </resultMap>
@@ -49,13 +51,15 @@
 			`product_picture_url`, 
 			`product_detail`, 
 			`product_type`, 
+			`product_type_name`, 
 			`product_video_url`, 
 			`product_num`, 
 			`product_trade_price`, 
 			`product_retail_price`, 
 			`enterprise_id`, 
 			`is_hot`, 
-			`enter_type`
+			`enter_type`,
+			enterprise_name
 		)
 		values
 		(
@@ -63,13 +67,16 @@
 			#{productPictureUrl}, 
 			#{productDetail}, 
 			#{productType}, 
+			#{productTypeName}, 
 			#{productVideoUrl}, 
 			#{productNum}, 
 			#{productTradePrice}, 
 			#{productRetailPrice}, 
 			#{enterpriseId}, 
 			#{isHot}, 
-			#{enterType}
+			#{enterType},
+			#{enterpriseName}
+			
 		)
 	</insert>
 	 
@@ -80,13 +87,15 @@
 			<if test="productPictureUrl != null">`product_picture_url` = #{productPictureUrl}, </if>
 			<if test="productDetail != null">`product_detail` = #{productDetail}, </if>
 			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="productTypeName != null">`product_type_name` = #{productTypeName}, </if>
 			<if test="productVideoUrl != null">`product_video_url` = #{productVideoUrl}, </if>
 			<if test="productNum != null">`product_num` = #{productNum}, </if>
 			<if test="productTradePrice != null">`product_trade_price` = #{productTradePrice}, </if>
 			<if test="productRetailPrice != null">`product_retail_price` = #{productRetailPrice}, </if>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="isHot != null">`is_hot` = #{isHot}, </if>
-			<if test="enterType != null">`enter_type` = #{enterType}</if>
+			<if test="enterType != null">`enter_type` = #{enterType},</if>
+			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}</if>
 		</set>
 		where product_id = #{productId}
 	</update>
@@ -101,5 +110,14 @@
 			#{productId}
 		</foreach>
 	</delete>
+	
+    <delete id="deleteBatchByType">
+		delete from sys_product where product_type in 
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	
 
 </mapper>

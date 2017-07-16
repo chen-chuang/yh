@@ -21,6 +21,8 @@ public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
 
 	List<EnterpriseinfoEntity> apiQueryList(Map<String, Object> map);
 	
-	EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId); 
+	EnterpriseDeatailInfoDTO apiEnterpriseByID(String enterpriseId);
+
+	List<Map<String, Object>> getEnterprise(); 
 	
 }

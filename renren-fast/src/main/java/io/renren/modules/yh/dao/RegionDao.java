@@ -4,6 +4,7 @@ import io.renren.modules.yh.entity.RegionEntity;
 import io.renren.modules.sys.dao.BaseDao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,5 +19,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RegionDao extends BaseDao<RegionEntity> {
 
 	List<RegionEntity> queryListByPid(int pid);
+
+	Map<String, Object> getParentById(int id);
 	
 }

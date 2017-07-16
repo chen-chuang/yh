@@ -2,6 +2,10 @@ package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +17,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProducttypeDao extends BaseDao<ProducttypeEntity> {
+
+	List<Map<String, Object>> getProductType();
+
+	int getProductByType(Integer[] id);
 	
 }

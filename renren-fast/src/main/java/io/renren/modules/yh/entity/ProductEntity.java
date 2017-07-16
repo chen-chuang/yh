@@ -25,6 +25,9 @@ public class ProductEntity implements Serializable {
 	private String productDetail;
 	//产品类型：1.烟花 2.爆竹 3.套餐 4.小烟花
 	private Integer productType;
+	
+	private String productTypeName;
+	
 	//视频地址
 	private String productVideoUrl;
 	//库存
@@ -35,6 +38,9 @@ public class ProductEntity implements Serializable {
 	private BigDecimal productRetailPrice;
 	//企业ID
 	private Long enterpriseId;
+	
+	private String enterpriseName;
+
 	//是否热销（1：热销，2：不热销）
 	private Integer isHot;
 	//录入类型（1：管理员，2：区域代理）
@@ -183,5 +189,18 @@ public class ProductEntity implements Serializable {
 	 */
 	public Integer getEnterType() {
 		return enterType;
+	}
+	
+	public String getEnterpriseName() {
+		return enterpriseName;
+	}
+	public void setEnterpriseName(String enterpriseName) {
+		this.enterpriseName = enterpriseName;
+	}
+	public String getProductTypeName() {
+		return productTypeName;
+	}
+	public void setProductTypeName(String productTypeName) {
+		this.productTypeName = productTypeName;
 	}
 }

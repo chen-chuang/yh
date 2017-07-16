@@ -27,4 +27,8 @@ public interface ProducttypeService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+	List<Map<String, Object>> getProductType();
+
+	int getProductByType(Integer[] ids);
 }

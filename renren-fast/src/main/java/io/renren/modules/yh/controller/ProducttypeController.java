@@ -95,4 +95,22 @@ public class ProducttypeController {
 		return R.ok();
 	}
 	
+	@RequestMapping("/getProductType")
+	public R getProductType(){
+		List<Map<String,Object>> types = producttypeService.getProductType();
+		
+		return R.ok().put("types", types);
+	}
+	
+	
+	@RequestMapping("/getProductByType")
+	public R getProductByType(@RequestBody Integer[] ids){
+		int count = producttypeService.getProductByType(ids);
+		
+		return R.ok().put("count", count);
+	}
+	
+	
+	
+	
 }

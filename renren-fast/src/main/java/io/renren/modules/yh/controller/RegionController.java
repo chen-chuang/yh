@@ -102,4 +102,13 @@ public class RegionController {
 		return R.ok().put("citys", regionList);
 	}
 	
+	@RequestMapping("/getFullRegion/{id}")
+	public R getFullRegion(@PathVariable("id") int id){
+		
+		List<String> region = regionService.getFullRegion(id);
+		
+		return R.ok().put("region", region);
+		
+	}
+	
 }

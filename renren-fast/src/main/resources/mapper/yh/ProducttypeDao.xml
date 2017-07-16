@@ -61,5 +61,19 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<select id="getProductType" resultType="java.util.Map">
+		select * from sys_producttype order by type 
+	</select>
+	
+	<select id="getProductByType" resultType="int">
+		select count(*) from sys_product  where  product_type in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	
+
+	
 
 </mapper>

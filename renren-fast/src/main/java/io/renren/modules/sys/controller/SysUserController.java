@@ -193,4 +193,13 @@ public class SysUserController extends AbstractController {
 	}
 	
 	
+	@RequestMapping("/currentLoginUser")
+	public R currentLoginUser(){
+		
+		SysUserEntity currentLoginUser = this.getUser();
+		
+		return R.ok().put("currentLoginUser", currentLoginUser);
+	}
+	
+	
 }

@@ -19,7 +19,6 @@
 <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="../../js/common.js"></script>
 <script src="../../plugins/My97DatePicker/WdatePicker.js"></script>
-
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -90,24 +89,55 @@
 			       <input class="layui-input" id="expiryDate" placeholder="过期日期" v-model="user.expiryDate" onClick="WdatePicker()">
 			    </div>
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">所属区域ID</div>
+		<!-- 	<div class="form-group">
+			   	<div class="col-sm-2 control-label">所属区域</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="user.areaId" placeholder="所属区域ID"/>
 			    </div>
-			</div>
+			</div> -->
 			<div class="form-group">
+			   	<div class="col-sm-2 control-label">省</div>
+			   	<div class="col-sm-10">
+			   	  <select id="province" v-model="province" class="form-control"></select>
+			    </div>
+			    	
+			    <div class="col-sm-2 control-label">市</div>
+			   	<div class="col-sm-10">
+			   		<select id="city" class="form-control"></select>
+			    </div>
+			    
+			    <div class="col-sm-2 control-label">区/县</div>
+			   	<div class="col-sm-10">
+			   		<select id="county" class="form-control"></select>
+			    </div>
+			    
+			    <div v-if="user.currentPermission==3">
+				    <div class="col-sm-2 control-label">镇</div>
+				   	<div class="col-sm-10">
+				   		<select id="town" class="form-control"></select>
+				    </div>
+				 </div>
+			</div>
+			
+			<input type="hidden" id="regionId">
+			
+			<input type="hidden" id="regionName">
+			
+		<!-- 	<div class="form-group">
 			   	<div class="col-sm-2 control-label">所属区域</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="user.userArea" placeholder="所属区域"/>
 			    </div>
-			</div>
+			</div> -->
 			<!-- <div class="form-group">
 			   	<div class="col-sm-2 control-label">所属经销商</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="user.belongToAgency" placeholder="所属经销商"/>
 			    </div>
 			</div> -->
+			<input v-model="user.belongToAgencyId" type="hidden">
+			<input v-model="user.belongToAgencyName" type="hidden">
+			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">用户权限</div>
 			   	<div class="col-sm-10" >
@@ -129,7 +159,6 @@
 			    </div>
 			</div> -->
 			
-			<input type="file" name="file" class="layui-upload-file"> 
 			
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
@@ -143,7 +172,6 @@
 <script src="../../js/modules/sys/user.js"></script>
 <script>
 function tanchu(){
-
 	layer.open({
 		 type: 2 //此处以iframe举例
 	        ,title: '当你选择该窗体时，即会在最顶端'
@@ -154,7 +182,7 @@ function tanchu(){
 	          Math.random()*($(window).height()-300)
 	          ,Math.random()*($(window).width()-390)
 	        ] 
-	        ,content: 'http://127.0.0.1:8000/renren-fast/#modules/sys/user.html'
+	        ,content: 'http://layer.layui.com/test/settop.html'
 	        ,btn: ['继续弹出', '全部关闭'] //只是为了演示
 	        ,yes: function(){
 	          alert('继续');

@@ -153,5 +153,10 @@
 	<select id="apiEnterpriseByID" resultType="io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO">
 		select * from sys_enterpriseinfo where `enterprise_id` = #{enterpriseId} 
 	</select>
+	
+	<select id="getEnterprise" resultType="java.util.Map">
+		select enterprise_id,enterprise_name from sys_enterpriseinfo order by enterprise_name
+	</select>
+	
 
 </mapper>

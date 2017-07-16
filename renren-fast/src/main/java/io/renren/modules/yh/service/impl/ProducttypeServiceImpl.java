@@ -2,10 +2,12 @@ package io.renren.modules.yh.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.dao.ProducttypeDao;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.yh.service.ProducttypeService;
@@ -16,6 +18,9 @@ import io.renren.modules.yh.service.ProducttypeService;
 public class ProducttypeServiceImpl implements ProducttypeService {
 	@Autowired
 	private ProducttypeDao producttypeDao;
+	
+	@Autowired
+	private ProductDao productDao;
 	
 	@Override
 	public ProducttypeEntity queryObject(Integer id){
@@ -38,8 +43,10 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	}
 	
 	@Override
+	@Transactional
 	public void update(ProducttypeEntity producttype){
 		producttypeDao.update(producttype);
+		productDao.updateProductType(producttype);
 	}
 	
 	@Override
@@ -48,8 +55,20 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteBatch(Integer[] ids){
 		producttypeDao.deleteBatch(ids);
+		productDao.deleteBatchByType(ids);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getProductType(){
+		return producttypeDao.getProductType();
+	}
+	
+	@Override
+	public int getProductByType(Integer[] ids){
+		return producttypeDao.getProductByType(ids);
 	}
 	
 }

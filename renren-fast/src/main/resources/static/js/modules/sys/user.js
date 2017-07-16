@@ -78,7 +78,9 @@ $(function () {
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
-    });
+    });    
+
+	
 });
 
 function setRegion(userId){
@@ -247,8 +249,10 @@ var vm = new Vue({
 		roleList:{},
 		user:{
 			status:1,
-			roleIdList:[]
-		}
+			roleIdList:[],
+			currentPermission:1
+		},
+		province:null
 	},
 	methods: {
 		query: function () {
@@ -258,11 +262,20 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.roleList = {};
-			vm.user = {status:1,roleIdList:[]};
+			vm.user = {status:1,roleIdList:[],currentPermission:1};
 			
 			//获取角色信息
 			this.getRoleList();
+			
+			this.getUserPermission();
+			
+			this.getArea();
 		},
+		getUserPermission : function(){
+		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
+		    	vm.user.currentPermission = r.currentLoginUser.userPermission;
+			});
+		},	
 		update: function () {
 			var userId = getSelectedRow();
 			if(userId == null){
@@ -272,9 +285,23 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
 			
-			vm.getUser(userId);
+			vm.getUser(userId);	    
+			
 			//获取角色信息
 			this.getRoleList();
+			
+			this.getUserPermission();
+			
+		
+			
+		},
+		getFullRegion: function(id){
+			$.get(baseURL + "region/getFullRegion/"+id, function(r){
+				console.log(r.region);
+				console.log(r.region[0]);
+				selectDataBindByHql('province',baseURL+"region/getCitys/0");
+				vm.province=r.region[0];
+			});
 		},
 		del: function () {
 			var userIds = getSelectedRows();
@@ -304,6 +331,11 @@ var vm = new Vue({
 			var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";		
 		
 			vm.user.expiryDate=$('#expiryDate').val();
+			
+			vm.user.areaId = $('#regionId').val();
+			
+			vm.user.userArea = $('#regionName').val();
+			
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -324,6 +356,12 @@ var vm = new Vue({
 			$.get(baseURL + "sys/user/info/"+userId, function(r){
 				vm.user = r.user;
 				vm.user.password = null;
+				
+			    $('#regionId').val(vm.user.areaId);
+				
+				$('#regionName').val(vm.user.userArea);
+				
+				vm.getFullRegion(vm.user.areaId);
 			});
 		},
 		getRoleList: function(){
@@ -338,6 +376,51 @@ var vm = new Vue({
                 postData:{'username': vm.q.username},
                 page:page
             }).trigger("reloadGrid");
+		},
+		getArea:function(){
+			
+			selectDataBindByHql('province',baseURL+"region/getCitys/0");
+			
+			$('#province').change(function() {
+				var selectProvinceId = $("#province").val();
+				selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				if(selectProvinceId!=-1){
+					$('#regionId').val(selectProvinceId);
+					$('#regionName').val($("#province").find("option:selected").text());
+				}
+				
+			});
+			
+			$('#city').change(function() {
+				var selectCityId = $('#city').val();
+				selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				if(selectCityId==-1){
+					$('#regionId').val($("#province").val());
+					$('#regionName').val($("#province").find("option:selected").text());
+				}else{
+					$('#regionId').val(selectCityId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text());
+				}			
+			});
+			
+			$('#county').change(function(){
+				var countySelectId = $('#county').val();
+				if(countySelectId==-1){
+					$('#regionId').val($("#city").val());
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$('#regionName').val($("#city").find("option:selected").text()));
+				}else{
+					$('#regionId').val(countySelectId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text());
+				}
+				
+			});
+			
+			
+			
 		}
 	}
 });

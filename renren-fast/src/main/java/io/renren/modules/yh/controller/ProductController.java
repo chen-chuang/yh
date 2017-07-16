@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.ProductEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
+import io.renren.modules.yh.service.EnterpriseinfoService;
 import io.renren.modules.yh.service.ProductService;
 import io.renren.common.utils.CommonUtils;
 import io.renren.common.utils.ConfigConstant;
@@ -37,10 +43,12 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("product")
-public class ProductController {
+public class ProductController extends AbstractController {
 	@Autowired
 	private ProductService productService;
 	
+	@Autowired
+	private EnterpriseinfoService enterpriseinfoService;
 	/**
 	 * 列表
 	 */
@@ -79,6 +87,8 @@ public class ProductController {
 			@RequestParam(value="picFile",required=false) MultipartFile picFile,
 			@RequestParam(value="videoFile",required=false) MultipartFile videoFile){
 		
+		SysUserEntity currentUser = this.getUser();
+		
 		if(picFile!=null){
 			try {
 				String orginalFileName = picFile.getOriginalFilename();
@@ -91,6 +101,9 @@ public class ProductController {
 			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			    stream.write(picFile.getBytes());
 			    stream.close();
+			    
+			    product.setProductPictureUrl(filepath);
+			    
 			  }
 			  catch (Exception e) {
 				  e.printStackTrace();
@@ -110,11 +123,21 @@ public class ProductController {
 			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			    stream.write(videoFile.getBytes());
 			    stream.close();
+			    
+			    product.setProductVideoUrl(filepath);
 			  }
 			  catch (Exception e) {
 				  e.printStackTrace();
 			  }
 		}	 
+		
+		if(currentUser.getUserPermission().equals(EnumPermission.ADMIN)){
+			product.setEnterType(1);
+		}
+		
+		if(currentUser.getUserPermission().equals(EnumPermission.AGENCY)){
+			product.setEnterType(2);
+		}
 		
 		productService.save(product);
 		
@@ -141,6 +164,24 @@ public class ProductController {
 		productService.deleteBatch(productIds);
 		
 		return R.ok();
+	}
+	
+	
+	@RequestMapping("/getEnterprise")
+	public R getEnterprise(){
+		
+		List<Map<String,Object>> enterprises = enterpriseinfoService.getEnterprise();
+		
+		List<Map<String,Object>> citys = new ArrayList<>();
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		for(Map<String, Object> hashMap : enterprises){
+			map.put("id", hashMap.get("enterprise_id"));
+			map.put("name", hashMap.get("enterprise_name"));
+			citys.add(map);
+		}
+		
+		return R.ok().put("citys", citys);
 	}
 	
 }

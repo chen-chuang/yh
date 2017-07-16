@@ -3,8 +3,8 @@ $(function () {
         url: baseURL + 'producttype/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '', name: 'type', index: 'type', width: 80 }			
+			{ label: 'id',hidden:true, name: 'id', index: 'id', width: 50, key: true },
+			{ label: '分类名称', name: 'type', index: 'type', width: 80 }			
         ],
 		viewrecords: true,
         height: 385,
@@ -81,25 +81,40 @@ var vm = new Vue({
 			var ids = getSelectedRows();
 			if(ids == null){
 				return ;
-			}
+			}		
 			
-			confirm('确定要删除选中的记录？', function(){
-				$.ajax({
-					type: "POST",
-				    url: baseURL + "producttype/delete",
-                    contentType: "application/json",
-				    data: JSON.stringify(ids),
-				    success: function(r){
-						if(r.code == 0){
-							alert('操作成功', function(index){
-								$("#jqGrid").trigger("reloadGrid");
+			
+			$.ajax({
+				type: "POST",
+			    url: baseURL + "producttype/getProductByType",
+                contentType: "application/json",
+			    data: JSON.stringify(ids),
+			    success: function(r){
+					if(r.count > 0){
+						
+						confirm('所选分类下有产品，删除分类产品将一并删除，确定吗？', function(){
+							$.ajax({
+								type: "POST",
+							    url: baseURL + "producttype/delete",
+			                    contentType: "application/json",
+							    data: JSON.stringify(ids),
+							    success: function(r){
+									if(r.code == 0){
+										alert('操作成功', function(index){
+											$("#jqGrid").trigger("reloadGrid");
+										});
+									}else{
+										alert(r.msg);
+									}
+								}
 							});
-						}else{
-							alert(r.msg);
-						}
+						});
+						
 					}
-				});
+				}
 			});
+			
+			
 		},
 		getInfo: function(id){
 			$.get(baseURL + "producttype/info/"+id, function(r){
