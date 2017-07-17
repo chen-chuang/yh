@@ -45,6 +45,10 @@ public class ProductEntity implements Serializable {
 	private Integer isHot;
 	//录入类型（1：管理员，2：区域代理）
 	private Integer enterType;
+	//录入人
+	private String enterName;
+	
+	private Long enterPersonId;
 
 	/**
 	 * 设置：产品ID
@@ -202,5 +206,17 @@ public class ProductEntity implements Serializable {
 	}
 	public void setProductTypeName(String productTypeName) {
 		this.productTypeName = productTypeName;
+	}
+	public String getEnterName() {
+		return enterName;
+	}
+	public void setEnterName(String enterName) {
+		this.enterName = enterName;
+	}
+	public Long getEnterPersonId() {
+		return enterPersonId;
+	}
+	public void setEnterPersonId(Long enterPersonId) {
+		this.enterPersonId = enterPersonId;
 	}
 }

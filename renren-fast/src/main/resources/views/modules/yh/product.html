@@ -42,7 +42,7 @@
 			 <div class="col-sm-2 control-label">企业名称</div>
 			   	<div class="col-sm-10">
 			         <select id="enterpriseId" name="enterpriseId" class="form-control"  v-model="product.enterpriseId" >
-				    	<option :value="enterprise.id" v-for="enterprise in enterPrises">{{enterprise.name}}</option>
+				    	<option v-bind:value="enterprise.id" v-for="enterprise in enterPrises">{{enterprise.name}}</option>
 				    </select>
 				</div>
 				<input type="hidden"  id="enterpriseName" name="enterpriseName" v-model="product.enterpriseName" >
@@ -69,6 +69,7 @@
 				    </select>
 			    </div>
 			</div>
+			<input type=hidden name = productTypeName id = productTypeName v-model = "product.productTypeName">
 			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">图片地址</div>

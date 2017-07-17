@@ -87,15 +87,21 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             
+            this.getEnterprise();
+            
+            this.getProductType();
+            
             vm.getInfo(productId);
+            
+           
             
             
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.product.productId == null ? "product/save" : "product/update";
 			
-			console.log($("#enterpriseId").find("option:selected").text());
 			$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());
+			$("#productTypeName").val($("#productType").find("option:selected").text());
 			
 			var formData = new FormData($("form")[0]);			
 			

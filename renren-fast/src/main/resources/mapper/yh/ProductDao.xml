@@ -19,6 +19,9 @@
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="isHot" column="is_hot"/>
         <result property="enterType" column="enter_type"/>
+        <result property="enterName" column="enter_name"/>
+        <result property="enterPersonId" column="enter_person_id"/>
+         
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProductEntity">
@@ -59,7 +62,9 @@
 			`enterprise_id`, 
 			`is_hot`, 
 			`enter_type`,
-			enterprise_name
+			enterprise_name,
+			enter_name,
+			enter_person_id
 		)
 		values
 		(
@@ -75,7 +80,9 @@
 			#{enterpriseId}, 
 			#{isHot}, 
 			#{enterType},
-			#{enterpriseName}
+			#{enterpriseName},
+			#{enterName},
+			#{enterPersonId}
 			
 		)
 	</insert>
@@ -95,7 +102,9 @@
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="isHot != null">`is_hot` = #{isHot}, </if>
 			<if test="enterType != null">`enter_type` = #{enterType},</if>
-			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}</if>
+			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName},</if>
+			<if test="enterName != null">`enter_name` = #{enterName},</if>
+			<if test="enterPersonId != null">`enter_person_id` = #{enterPersonId}</if>
 		</set>
 		where product_id = #{productId}
 	</update>

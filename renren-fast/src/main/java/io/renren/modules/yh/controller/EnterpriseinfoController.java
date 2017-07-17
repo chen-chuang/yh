@@ -26,6 +26,7 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 

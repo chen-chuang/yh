@@ -139,6 +139,9 @@ public class ProductController extends AbstractController {
 			product.setEnterType(2);
 		}
 		
+		product.setEnterPersonId(currentUser.getUserId());
+		product.setEnterName(currentUser.getUsername());
+		
 		productService.save(product);
 		
 		return R.ok();
@@ -173,9 +176,10 @@ public class ProductController extends AbstractController {
 		List<Map<String,Object>> enterprises = enterpriseinfoService.getEnterprise();
 		
 		List<Map<String,Object>> citys = new ArrayList<>();
-		Map<String,Object> map = new HashMap<String, Object>();
+		
 		
 		for(Map<String, Object> hashMap : enterprises){
+			Map<String,Object> map = new HashMap<String, Object>();
 			map.put("id", hashMap.get("enterprise_id"));
 			map.put("name", hashMap.get("enterprise_name"));
 			citys.add(map);

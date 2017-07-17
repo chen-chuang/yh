@@ -177,6 +177,8 @@ create table sys_product
    enterprise_id        bigint comment '企业ID',
    is_hot               int comment '是否热销（1：热销，2：不热销）',
    enter_type           int comment '录入类型（1：管理员，2：区域代理）',
+  `enter_name`          varchar(50) DEFAULT NULL,
+  `enter_person_id`     bigint DEFAULT NULL,
    primary key (product_id)
 );
 
