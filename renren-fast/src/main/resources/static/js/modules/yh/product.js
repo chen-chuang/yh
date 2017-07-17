@@ -50,7 +50,7 @@ var vm = new Vue({
 		title: null,
 		product: {},
         enterPrises:{},
-        types:{};
+        types:{}
 	},
 	methods: {
 		query: function () {

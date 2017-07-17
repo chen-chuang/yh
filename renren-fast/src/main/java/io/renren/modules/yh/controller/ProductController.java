@@ -149,7 +149,7 @@ public class ProductController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("product:update")
-	public R update(@RequestBody ProductEntity product){
+	public R update(ProductEntity product){
 		productService.update(product);
 		
 		return R.ok();
