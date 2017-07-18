@@ -23,8 +23,8 @@ $(function () {
 			{ label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80 },
 			{ label: '是否热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function(value, options, row){
 				return value === 0 ? 
-						'<span class="label fa-free-code-camp">热销</span>' : 
-						'<span class="label">不热销</span>';
+						'热销' : 
+						'不热销';
 			}}	
         ],
 		viewrecords: true,
@@ -79,7 +79,7 @@ $(function () {
                 return false;  
               },  
           select: function( event, ui ) {  
-              $(".enterpriseName").val( ui.item.label );  
+              $("#enterpriseName").val( ui.item.label );  
               $("#enterpriseId").val( ui.item.value );  
               return false;  
           }  
@@ -91,7 +91,7 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		product: {},
+		product: {isHot:1},
         enterPrises:{},
         types:{}
 	},
@@ -102,7 +102,7 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.product = {};
+			vm.product = {isHot:1};
 			
 			this.getEnterprise();
 			
@@ -134,16 +134,14 @@ var vm = new Vue({
             
             this.getProductType();
             
-            vm.getInfo(productId);
-            
-           
+            vm.getInfo(productId); 
             
             
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.product.productId == null ? "product/save" : "product/update";
 			
-			$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());
+			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
 			$("#productTypeName").val($("#productType").find("option:selected").text());
 			
 			var formData = new FormData($("form")[0]);			
@@ -196,6 +194,7 @@ var vm = new Vue({
 		getInfo: function(productId){
 			$.get(baseURL + "product/info/"+productId, function(r){
                 vm.product = r.product;
+                console.log(vm.product.isHot);
             });
 		},
 		reload: function (event) {
