@@ -69,6 +69,7 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.enterpriseinfo = {};
+			this.getArea();
 		},
 		update: function (event) {
 			var enterpriseId = getSelectedRow();
@@ -79,6 +80,64 @@ var vm = new Vue({
             vm.title = "修改";
             
             vm.getInfo(enterpriseId)
+		},
+	    getArea:function(){
+			
+			selectDataBindByHql('province',baseURL+"region/getCitys/0");
+			
+			$('#province').change(function() {
+				var selectProvinceId = $("#province").val();
+				selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				if(selectProvinceId!=-1){
+					$('#regionId').val(selectProvinceId);
+					$('#regionName').val($("#province").find("option:selected").text());
+					
+					$("#enterpriseAddress").val($('#regionName').val());
+				}
+				
+			});
+			
+			$('#city').change(function() {
+				var selectCityId = $('#city').val();
+				selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				if(selectCityId==-1){
+					$('#regionId').val($("#province").val());
+					$('#regionName').val($("#province").find("option:selected").text());
+					
+					$("#enterpriseAddress").val($('#regionName').val());
+					
+				}else{
+					$('#regionId').val(selectCityId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text());
+					
+					$("#enterpriseAddress").val($('#regionName').val());
+					
+				}			
+			});
+			
+			$('#county').change(function(){
+				var countySelectId = $('#county').val();
+				if(countySelectId==-1){
+					$('#regionId').val($("#city").val());
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$('#regionName').val($("#city").find("option:selected").text()));
+					
+					$("#enterpriseAddress").val($('#regionName').val());
+					
+				}else{
+					$('#regionId').val(countySelectId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text());
+					
+					$("#enterpriseAddress").val($('#regionName').val());
+				}
+				
+			});
+			
+			
+			
 		},
 		saveOrUpdate:function(event){
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";

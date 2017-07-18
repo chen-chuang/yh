@@ -40,6 +40,18 @@
 			      <input type="text" class="form-control" name="enterpriseName" v-model="enterpriseinfo.enterpriseName" placeholder="企业名称"/>
 			    </div>
 			</div>
+			
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">商家类型</div>
+			   	<div class="col-sm-10">
+			   	  <select  class="form-control" name="enterpriseType"  v-model="enterpriseinfo.enterpriseType" >
+			   	  	  <option value="1" selected="selected">生产厂家</option>
+			   	  	  <option value="2">经销商</option>
+			   	  </select>
+			      <!-- <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseType" placeholder="类型（1：生产厂家，2：经销商）"/> -->
+			    </div>
+			</div>
+			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">企业图片</div>
 			   	<div class="col-sm-10">
@@ -48,9 +60,9 @@
 			    </div>
 			</div>
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">企业地址</div>
+			   	<div class="col-sm-2 control-label">联系人</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="enterpriseAddress" v-model="enterpriseinfo.enterpriseAddress" placeholder="企业地址"/>
+			      <input type="text" class="form-control" name="enterpriseContact" v-model="enterpriseinfo.enterpriseContact" placeholder="联系人"/>
 			    </div>
 			</div>
 			<div class="form-group">
@@ -65,19 +77,46 @@
 			      <input type="text" class="form-control" name="enterpriseTel" v-model="enterpriseinfo.enterpriseTel" placeholder="电话"/>
 			    </div>
 			</div>
+			
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">联系人</div>
+			   	<div class="col-sm-2 control-label">行政区域</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="enterpriseContact" v-model="enterpriseinfo.enterpriseContact" placeholder="联系人"/>
+					 	<div class="col-sm-2 control-label">省</div>
+					   	<div class="col-sm-10">
+					   	  <select id="province" v-model="province" class="form-control"></select>
+					    </div>
+					    	
+					    <div class="col-sm-2 control-label">市</div>
+					   	<div class="col-sm-10">
+					   		<select id="city" class="form-control"></select>
+					    </div>
+					    
+					    <div class="col-sm-2 control-label">区/县</div>
+					   	<div class="col-sm-10">
+					   		<select id="county" class="form-control"></select>
+					    </div>
+					    
+					    <div v-if="user.currentPermission==3">
+						    <div class="col-sm-2 control-label">镇</div>
+						   	<div class="col-sm-10">
+						   		<select id="town" class="form-control"></select>
+						    </div>
+						 </div>
 			    </div>
 			</div>
+			
+			<input type="hidden" id="regionId">
+			
+			<input type="hidden" id="regionName">
+			
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">简介</div>
+			   	<div class="col-sm-2 control-label">详细地址</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name = "enterpriseIntroduction" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/>
+			      <input type="text" class="form-control" id="enterpriseAddress" name="enterpriseAddress" v-model="enterpriseinfo.enterpriseAddress" placeholder="企业地址"/>
 			    </div>
 			</div>
-			<div class="form-group">
+			
+			<!-- <div class="form-group">
 			   	<div class="col-sm-2 control-label">经度</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" name="enterpriseLongitude" v-model="enterpriseinfo.enterpriseLongitude" placeholder="经度"/>
@@ -88,23 +127,16 @@
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" name = "enterpriseLatitude" v-model="enterpriseinfo.enterpriseLatitude" placeholder="纬度"/>
 			    </div>
-			</div>
+			</div> -->
+			
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">行政区域</div>
+			   	<div class="col-sm-2 control-label">简介</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="enterpriseAreaId" v-model="enterpriseinfo.enterpriseAreaId" placeholder="行政区域"/>
+			      <input type="text" class="form-control" name = "enterpriseIntroduction" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/>
 			    </div>
-			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">商家类型</div>
-			   	<div class="col-sm-10">
-			   	  <select  class="form-control" name="enterpriseType"  v-model="enterpriseinfo.enterpriseType" >
-			   	  	  <option value="1" selected="selected">生产厂家</option>
-			   	  	  <option value="2">经销商</option>
-			   	  </select>
-			      <!-- <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseType" placeholder="类型（1：生产厂家，2：经销商）"/> -->
-			    </div>
-			</div>
+			</div>		
+		
+			
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>

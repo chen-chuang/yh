@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.renren.common.utils.BaiduMap;
 import io.renren.common.utils.CommonUtils;
 import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.FileUtils;
@@ -98,7 +100,14 @@ public class EnterpriseinfoController extends AbstractController {
 			  catch (Exception e) {
 				  e.printStackTrace();
 			  }
-		}		
+		}	
+		
+		String ll = BaiduMap.getGeocoderLatitude(enterpriseinfo.getEnterpriseAddress());
+		if(StringUtils.isNotBlank(ll)){
+			String[] arrStr = ll.split(",");
+			enterpriseinfo.setEnterpriseLongitude(arrStr[0]);
+			enterpriseinfo.setEnterpriseLatitude(arrStr[1]);
+		}
 		
 		enterpriseinfoService.save(enterpriseinfo);
 		
