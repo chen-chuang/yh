@@ -56,6 +56,9 @@ public class ProductController extends AbstractController {
 	@RequiresPermissions("product:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
+		Long currentUserId  = this.getUserId();
+		
+		params.put("currentUserId", currentUserId);
         Query query = new Query(params);
 
 		List<ProductEntity> productList = productService.queryList(query);

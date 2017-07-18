@@ -14,7 +14,11 @@ $(function () {
 			{ label: '零售价', name: 'productRetailPrice', index: 'product_retail_price', width: 80 }, 			
 			{ label: '企业ID', hidden:true,name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 
 			{ label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80 },
-			{ label: '是否热销（1：热销，2：不热销）', name: 'isHot', index: 'is_hot', width: 80 }		
+			{ label: '是否热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function(value, options, row){
+				return value === 0 ? 
+						'<span class="label fa-free-code-camp">热销</span>' : 
+						'<span class="label">不热销</span>';
+			}}	
         ],
 		viewrecords: true,
         height: 385,

@@ -114,7 +114,13 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">是否热销（1：热销，2：不热销）</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="isHot" v-model="product.isHot" placeholder="是否热销（1：热销，2：不热销）"/>
+			     <!--  <input type="text" class="form-control" name="isHot" v-model="product.isHot" placeholder="是否热销（1：热销，2：不热销）"/> -->
+			   		<label class="radio-inline">
+					  <input type="radio" name="status" value="1" v-model="product.isHot"/> 不热销
+					</label>
+					<label class="radio-inline">
+					  <input type="radio" name="status" value="0" v-model="product.isHot"/> 热销
+					</label>
 			    </div>
 			</div>
 			
