@@ -8,7 +8,14 @@ $(function () {
 			{ label: '图片地址', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }, 			
 			{ label: '简介', name: 'productDetail', index: 'product_detail', width: 80 }, 			
 			{ label: '产品类型', name: 'productTypeName', index: 'product_type_name', width: 80 }, 	
-			{ label: '视频地址', name: 'productVideoUrl', index: 'product_video_url', width: 80 }, 			
+			{ label: '视频地址', name: 'productVideoUrl', index: 'product_video_url', formatter: function(value, options, row){
+				
+				if(value!=""||value!=null){
+					return '<a class="fa-caret-square-o-right"></a>';
+				}else{
+					return value;
+				}
+			}}, 			
 			{ label: '库存', name: 'productNum', index: 'product_num', width: 80 }, 			
 			{ label: '批发价', name: 'productTradePrice', index: 'product_trade_price', width: 80 }, 			
 			{ label: '零售价', name: 'productRetailPrice', index: 'product_retail_price', width: 80 }, 			

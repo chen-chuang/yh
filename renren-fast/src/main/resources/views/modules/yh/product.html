@@ -22,6 +22,10 @@
 
 <link rel="stylesheet" href="../../plugins/searchableSelect/jquery.searchableSelect.css">
 <script src="../../plugins/searchableSelect/jquery.searchableSelect.js"></script>
+
+<link rel="stylesheet" href="../../plugins/autocomplete/jquery-ui.css">
+<script src="../../plugins/autocomplete/jquery-ui.js"></script>
+
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -41,11 +45,14 @@
 			<div class="form-group">
 			 <div class="col-sm-2 control-label">企业名称</div>
 			   	<div class="col-sm-10">
-			         <select id="enterpriseId" name="enterpriseId" class="form-control"  v-model="product.enterpriseId" >
+			       <!--   <select id="enterpriseId" name="enterpriseId" class="form-control"  v-model="product.enterpriseId" >
 				    	<option v-bind:value="enterprise.id" v-for="enterprise in enterPrises">{{enterprise.name}}</option>
-				    </select>
+				    </select> -->
+				    <input id="enterpriseName" name="enterpriseName" class="form-control"  v-model="product.enterpriseName" >
+				  <!--   <input type="text" name="phName" value="" id="phName" class="rph" >
+                    <input type="hidden" name="rpId" id="rpId" /> -->
 				</div>
-				<input type="hidden"  id="enterpriseName" name="enterpriseName" v-model="product.enterpriseName" >
+				<input type="hidden"  id="enterpriseId" name="enterpriseId" v-model="product.enterpriseId" >
 				  <!--   <div class="col-sm-10">
 				      <select id="enterpriseId">
 				      </select>
@@ -141,10 +148,41 @@
 
 <script src="../../js/modules/yh/product.js"></script>
 
-<!--  <script>
+ <script>
 	$(function(){
-		$('select').searchableSelect();
+		/* $('select').searchableSelect(); */		
+		
+		  $(".enterpriseId").autocomplete({  
+              minLength: 0,  
+              source: function( request, response ) {  
+                  $.ajax({  
+                       url : baseURL + 'enterpriseinfo/getByName',  
+                       type : "post",  
+                       dataType : "json",  
+                       data : {"enterpriseName":$("#enterpriseName").val()},                           
+                       success: function( data ) {  
+                            console.log(data);  
+                            response( $.map( data, function( item ) {  
+                                  return {  
+                                    label: item.enterprise_id,  
+                                    value: item.enterprise_name  
+                                  }  
+                            }));  
+                      }  
+                 });  
+              },  
+              focus: function( event, ui ) {  
+                  $("#enterpriseName").val( ui.item.label );  
+                  $("#enterpriseId").val( ui.item.value );  
+                    return false;  
+                  },  
+              select: function( event, ui ) {  
+                  $(".enterpriseName").val( ui.item.label );  
+                  $("#enterpriseId").val( ui.item.value );  
+                  return false;  
+              }  
+           });  
 	});
-</script> -->
+</script>
 </body>
 </html>

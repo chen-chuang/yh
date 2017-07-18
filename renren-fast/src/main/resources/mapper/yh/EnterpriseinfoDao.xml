@@ -158,5 +158,9 @@
 		select enterprise_id,enterprise_name from sys_enterpriseinfo order by enterprise_name
 	</select>
 	
+	
+	<select id="getByName" resultType="java.util.Map">
+		select enterprise_id,enterprise_name from sys_enterpriseinfo where enterprise_name like CONCAT('%',#{enterpriseName},'%') order by enterprise_name
+	</select>
 
 </mapper>

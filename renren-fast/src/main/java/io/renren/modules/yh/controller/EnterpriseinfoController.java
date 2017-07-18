@@ -127,6 +127,13 @@ public class EnterpriseinfoController extends AbstractController {
 		return R.ok();
 	}
 	
+	@RequestMapping("/getByName")
+	public R getByName(@RequestParam("enterpriseName") String enterpriseName){
+		List<Map<String, Object>> enterpriseinfo = enterpriseinfoService.getByName(enterpriseName);
+		
+		return R.ok().put("enterpriseinfo", enterpriseinfo);
+	}
+	
 
 	
 }

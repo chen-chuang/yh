@@ -67,4 +67,9 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 	public List<Map<String, Object>> getEnterprise(){
 		return enterpriseinfoDao.getEnterprise();
 	}
+	
+	@Override
+	public List<Map<String, Object>> getByName(String enterpriseName){
+		return enterpriseinfoDao.getByName(enterpriseName);
+	}
 }
