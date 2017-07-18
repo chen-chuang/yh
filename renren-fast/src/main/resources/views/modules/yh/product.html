@@ -152,36 +152,7 @@
 	$(function(){
 		/* $('select').searchableSelect(); */		
 		
-		  $(".enterpriseId").autocomplete({  
-              minLength: 0,  
-              source: function( request, response ) {  
-                  $.ajax({  
-                       url : baseURL + 'enterpriseinfo/getByName',  
-                       type : "post",  
-                       dataType : "json",  
-                       data : {"enterpriseName":$("#enterpriseName").val()},                           
-                       success: function( data ) {  
-                            console.log(data);  
-                            response( $.map( data, function( item ) {  
-                                  return {  
-                                    label: item.enterprise_id,  
-                                    value: item.enterprise_name  
-                                  }  
-                            }));  
-                      }  
-                 });  
-              },  
-              focus: function( event, ui ) {  
-                  $("#enterpriseName").val( ui.item.label );  
-                  $("#enterpriseId").val( ui.item.value );  
-                    return false;  
-                  },  
-              select: function( event, ui ) {  
-                  $(".enterpriseName").val( ui.item.label );  
-                  $("#enterpriseId").val( ui.item.value );  
-                  return false;  
-              }  
-           });  
+	
 	});
 </script>
 </body>

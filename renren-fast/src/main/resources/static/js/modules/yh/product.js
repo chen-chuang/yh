@@ -52,6 +52,38 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+    
+	  $("#enterpriseName").autocomplete({  
+          minLength: 0,  
+          source: function( request, response ) {  
+              $.ajax({  
+                   url : baseURL + 'enterpriseinfo/getByName',  
+                   type : "post",  
+                   dataType : "json",  
+                   data : {"enterpriseName":$("#enterpriseName").val()},                           
+                   success: function( data ) {  
+                        console.log(data.enterpriseinfo);  
+                        response( $.map( data.enterpriseinfo, function( item ) {  
+                              return {  
+                                label: item.enterprise_name,  
+                                value: item.enterprise_id  
+                              }  
+                        }));  
+                  }  
+             });  
+          },  
+          focus: function( event, ui ) {  
+              $("#enterpriseName").val( ui.item.label );  
+              $("#enterpriseId").val( ui.item.value );  
+                return false;  
+              },  
+          select: function( event, ui ) {  
+              $(".enterpriseName").val( ui.item.label );  
+              $("#enterpriseId").val( ui.item.value );  
+              return false;  
+          }  
+       });  
 });
 
 var vm = new Vue({
