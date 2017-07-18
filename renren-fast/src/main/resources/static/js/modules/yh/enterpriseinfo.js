@@ -11,8 +11,8 @@ $(function () {
 			{ label: '电话', name: 'enterpriseTel', index: 'enterprise_tel', width: 80 }, 			
 			{ label: '联系人', name: 'enterpriseContact', index: 'enterprise_contact', width: 80 }, 			
 			{ label: '简介', name: 'enterpriseIntroduction', index: 'enterprise_introduction', width: 80 }, 			
-			{ label: '经度', name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
-			{ label: '纬度', name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
+			{ label: '经度',hidden:true, name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
+			{ label: '纬度',hidden:true, name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
 			{ label: '行政区域', name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
 			{ label: '商家类型', name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
 				if(value===1){

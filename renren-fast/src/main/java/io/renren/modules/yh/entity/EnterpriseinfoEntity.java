@@ -37,6 +37,8 @@ public class EnterpriseinfoEntity implements Serializable {
 	private String enterpriseLatitude;
 	//行政区域
 	private String enterpriseAreaId;
+	
+	private String enterpriseAreaName;
 	//类型（1：生产厂家，2：经销商）
 	private Integer enterpriseType;
 
@@ -183,5 +185,11 @@ public class EnterpriseinfoEntity implements Serializable {
 	 */
 	public Integer getEnterpriseType() {
 		return enterpriseType;
+	}
+	public String getEnterpriseAreaName() {
+		return enterpriseAreaName;
+	}
+	public void setEnterpriseAreaName(String enterpriseAreaName) {
+		this.enterpriseAreaName = enterpriseAreaName;
 	}
 }
