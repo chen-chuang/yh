@@ -16,6 +16,7 @@
         <result property="enterpriseLongitude" column="enterprise_longitude"/>
         <result property="enterpriseLatitude" column="enterprise_latitude"/>
         <result property="enterpriseAreaId" column="enterprise_area_id"/>
+         <result property="enterpriseAreaName" column="enterprise_area_name"/>
         <result property="enterpriseType" column="enterprise_type"/>
     </resultMap>
     
@@ -77,6 +78,7 @@
 			`enterprise_longitude`, 
 			`enterprise_latitude`, 
 			`enterprise_area_id`, 
+			`enterprise_area_name`, 
 			`enterprise_type`
 		)
 		values
@@ -92,6 +94,7 @@
 			#{enterpriseLongitude}, 
 			#{enterpriseLatitude}, 
 			#{enterpriseAreaId}, 
+			#{enterpriseAreaName}, 
 			#{enterpriseType}
 		)
 	</insert>
@@ -109,6 +112,7 @@
 			<if test="enterpriseLongitude != null">`enterprise_longitude` = #{enterpriseLongitude}, </if>
 			<if test="enterpriseLatitude != null">`enterprise_latitude` = #{enterpriseLatitude}, </if>
 			<if test="enterpriseAreaId != null">`enterprise_area_id` = #{enterpriseAreaId}, </if>
+			<if test="enterpriseAreaName != null">`enterprise_area_name` = #{enterpriseAreaName}, </if>
 			<if test="enterpriseType != null">`enterprise_type` = #{enterpriseType}</if>
 		</set>
 		where enterprise_id = #{enterpriseId}
