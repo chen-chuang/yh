@@ -60,7 +60,10 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		enterpriseinfo: {}
+		enterpriseinfo: {},
+		province:null,
+		city:null,
+		county:null
 	},
 	methods: {
 		query: function () {
@@ -70,6 +73,11 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.enterpriseinfo = {};
+			
+			vm.province=null;
+			vm.city=null;
+			vm.county=null;
+			
 			this.getArea();
 		},
 		update: function (event) {
@@ -80,7 +88,22 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             
-            vm.getInfo(enterpriseId)
+            vm.getInfo(enterpriseId);
+            
+		},
+		getFullRegion: function(id){
+			$.get(baseURL + "region/getFullRegion/"+id, function(r){
+				selectDataBindByHql('province',baseURL+"region/getCitys/0");
+				
+				selectDataBindByHql('city',baseURL+"region/getCitys/"+r.region[0]);
+				
+				selectDataBindByHql('county',baseURL+"region/getCitys/"+r.region[1]);
+				
+				vm.province=r.region[0];
+				vm.city=r.region[1];
+				vm.county=r.region[2];
+				
+			});
 		},
 	    getArea:function(){
 			
@@ -122,7 +145,7 @@ var vm = new Vue({
 				if(countySelectId==-1){
 					$('#regionId').val($("#city").val());
 					$('#regionName').val($("#province").find("option:selected").text()
-							+$('#regionName').val($("#city").find("option:selected").text()));
+							+$("#city").find("option:selected").text());
 					
 					$("#enterpriseAddress").val($('#regionName').val());
 					
@@ -190,6 +213,8 @@ var vm = new Vue({
 		getInfo: function(enterpriseId){
 			$.get(baseURL + "enterpriseinfo/info/"+enterpriseId, function(r){
                 vm.enterpriseinfo = r.enterpriseinfo;
+                
+                vm.getFullRegion(r.enterpriseinfo.enterpriseAreaId);
             });
 		},
 		reload: function (event) {
