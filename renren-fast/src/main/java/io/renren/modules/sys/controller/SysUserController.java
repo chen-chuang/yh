@@ -121,6 +121,20 @@ public class SysUserController extends AbstractController {
 		if(getUser().getUserPermission().equals(EnumPermission.AGENCY.getType())){
 			user.setBelongToAgencyId(getUser().getUserId());
 			user.setBelongToAgencyName(getUser().getUsername());
+			
+			//配送员和销售员行政区域  和  区域经销商一个级别
+			if(user.getUserPermission().equals(EnumPermission.DELIVERY_F.getType())
+					||user.getUserPermission().equals(EnumPermission.SALE.getType())){
+				user.setAreaId(getUser().getAreaId());
+				user.setUserArea(getUser().getUserArea());
+			}
+			
+			//配送员 按 填的 写入
+			if(user.getUserPermission().equals(EnumPermission.DELIVERY_P.getType())){
+				user.setAreaId(user.getAreaId());
+				user.setUserArea(user.getUserArea());
+			}
+			
 		}
 		
 		sysUserService.save(user);
@@ -166,7 +180,13 @@ public class SysUserController extends AbstractController {
 	
 	@RequestMapping("/setPermission")
 	public R setPermission(@RequestParam("userId") Long userId,
-			@RequestParam("permissionId") int permissionId){		
+			@RequestParam("permissionId") int permissionId){
+		
+	   /* SysUserEntity currentUser = this.getUser();
+	    
+	    if(currentUser.getUserPermission().equals(EnumPermission.AGENCY)){
+	    	
+	    }*/
 		
 		sysUserService.setPermission(userId,permissionId);
 		return R.ok();

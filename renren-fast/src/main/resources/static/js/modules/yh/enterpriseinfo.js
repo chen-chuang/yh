@@ -4,17 +4,17 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: '企业ID', hidden : true,name: 'enterpriseId', index: 'enterprise_id', width: 50, key: true },
-			{ label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 			
-			{ label: '企业图片', name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80 }, 			
-			{ label: '企业地址', name: 'enterpriseAddress', index: 'enterprise_address', width: 80 }, 			
-			{ label: '手机', name: 'enterprisePhone', index: 'enterprise_phone', width: 80 }, 			
-			{ label: '电话', name: 'enterpriseTel', index: 'enterprise_tel', width: 80 }, 			
-			{ label: '联系人', name: 'enterpriseContact', index: 'enterprise_contact', width: 80 }, 			
-			{ label: '简介', name: 'enterpriseIntroduction', index: 'enterprise_introduction', width: 80 }, 			
-			{ label: '经度',hidden:true, name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
-			{ label: '纬度',hidden:true, name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
-			{ label: '行政区域', name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
-			{ label: '商家类型', name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
+			{ label: '企业名称', align: 'center',name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 			
+			{ label: '企业图片', align: 'center',name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80 }, 			
+			{ label: '企业地址', align: 'center',name: 'enterpriseAddress', index: 'enterprise_address', width: 80 }, 			
+			{ label: '手机', align: 'center',name: 'enterprisePhone', index: 'enterprise_phone', width: 80 }, 			
+			{ label: '电话', align: 'center',name: 'enterpriseTel', index: 'enterprise_tel', width: 80 }, 			
+			{ label: '联系人', align: 'center',name: 'enterpriseContact', index: 'enterprise_contact', width: 80 }, 			
+			{ label: '简介', align: 'center',name: 'enterpriseIntroduction', index: 'enterprise_introduction', width: 80 }, 			
+			{ label: '经度',align: 'center',hidden:true, name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
+			{ label: '纬度',align: 'center',hidden:true, name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
+			{ label: '行政区域', align: 'center',name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
+			{ label: '商家类型', align: 'center',name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
 				if(value===1){
 					return "生产厂家";
 				}else if(value===2){
@@ -47,6 +47,7 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        	$("th[role='columnheader']").css('text-align','center');
         }
     });
     

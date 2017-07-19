@@ -114,6 +114,7 @@ function getSelectedRows() {
 function selectDataBindByHql(id,url){
 	$.ajax({
 		url : url,
+		async: false,
 		success : function(data) {
 			var htmlArr1 = [];
 			if($('#'+id).val()==''){

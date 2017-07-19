@@ -4,31 +4,31 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: '用户ID', hidden:true,name: 'userId', index: "user_id", width: 45, key: true },
-			{ label: '用户名', name: 'username', width: 75 },
-			{ label: '邮箱', name: 'email', width: 90 },
-			{ label: '手机号', name: 'mobile', width: 100 },
-			{ label: '状态', name: 'status', width: 80, formatter: function(value, options, row){
+			{ label: '用户名',align: 'center', name: 'username', width: 100 },
+			{ label: '邮箱', align: 'center',name: 'email', width: 150 },
+			{ label: '手机号',align: 'center', name: 'mobile', width: 100 },
+			{ label: '状态', align: 'center',name: 'status', width: 80, formatter: function(value, options, row){
 				return value === 0 ? 
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
 			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 80},
-			{ label: '过期日期', name: 'expiryDate', index:"expiry_date",align: 'center', formatter: function(value, options, row){
+			{ label: '创建时间',align: 'center', name: 'createTime', index: "create_time", width: 150},
+			{ label: '过期日期',align: 'center', name: 'expiryDate', index:"expiry_date",align: 'center', formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
 					return '<a class="btn-app" onclick=setExpiryDate("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}else{
 					return value;
 				}
 			}},
-			{ label: '所属区域', name: 'userArea', index:"user_area", width: 75, formatter: function(value, options, row){
+			{ label: '所属区域', align: 'center',name: 'userArea', index:"user_area", width: 75, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
 					return '<a class="btn-app" onclick=setRegion("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}else{
 					return value;
 				}
 			}},
-			{ label: '所属经销商', name: 'belongToAgency',  index:"belong_to_agency",width: 75 },
-			{ label: '用户权限', name: 'userPermission',  index:"user_permission",width: 75, formatter: function(value, options, row){
+			{ label: '所属经销商',align: 'center', name: 'belongToAgencyName',  index:"belong_to_agency_name",width: 75 },
+			{ label: '用户权限',align: 'center', name: 'userPermission',  index:"user_permission",width: 75, formatter: function(value, options, row){
 				if(value===1){
 					return "管理员";
 				}else if(value===2){
@@ -45,7 +45,7 @@ $(function () {
 					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
 				}
 			}},
-			{ label: '积分', name: 'userIntegral',  index:"user_integral", formatter: function(value, options, row){
+			{ label: '积分', align: 'center',name: 'userIntegral',  index:"user_integral",width: 50, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
 					return "0";
 				}else{
@@ -77,6 +77,7 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        	$("th[role='columnheader']").css('text-align','center');
         }
     });    
 
@@ -84,7 +85,8 @@ $(function () {
 });
 
 function setRegion(userId){
-	var content = 	'<div class="form-group">'
+	var content = 	    '<div class="form-horizontal">'
+		                +'<div class="form-group">'
 					   	+'<div class="col-sm-2 control-label">省</div>'
 					   	+'<div class="col-sm-10" >'
 					   	+'<select   class="form-control" id="province">'
@@ -104,7 +106,8 @@ function setRegion(userId){
 					   	+'  <select   class="form-control" id="county">'
 					   	+'	  </select>'
 					   	+' </div>'
-					   	+'</div>';
+					   	+'</div>'	
+		                +'</div>';
 	
  layer.open({
         type: 2
@@ -114,7 +117,7 @@ function setRegion(userId){
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: 'http://127.0.0.1:8000/renren-fast/modules/yh/select.html'
+        ,content: ['http://127.0.0.1:8000/renren-fast/modules/yh/select.html',"no"]
     	 ,yes: function(){    		 
     		
     		 var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
@@ -128,6 +131,7 @@ function setRegion(userId){
     					if(r.code == 0){
     						alert('操作成功', function(){
     		                    vm.reload();
+    		                    layer.closeAll();
     						});
     					}else{
     						alert(r.msg);
@@ -144,7 +148,7 @@ function setRegion(userId){
 
 function setPermission(userId){
 	
-	var content = '<div class="form-group">'
+	var content = '<div style="position: relative;top: 60px;">'
 			   	+'<div class="col-sm-2 control-label">用户权限</div>'
 			   	+'<div class="col-sm-10" >'
 			   	 + '<select id="permissionSelect"  class="form-control">'
@@ -177,6 +181,7 @@ function setPermission(userId){
     					if(r.code == 0){
     						alert('操作成功', function(){
     		                    vm.reload();
+    		                    layer.closeAll();
     						});
     					}else{
     						alert(r.msg);
@@ -194,7 +199,7 @@ function setPermission(userId){
 
 function setExpiryDate(userId){
 	
-   var content='<div class="form-group">'
+   var content='<div style="position: relative;top: 60px;">'
 				    +'<div class="col-sm-2 control-label">过期日期</div>'
 				   	+'<div class="col-sm-10">'
 				    +'   <input class="layui-input" id="expiryDate1" placeholder="过期日期" v-model="user.expiryDate" onClick="WdatePicker()">'
@@ -221,6 +226,7 @@ function setExpiryDate(userId){
     					if(r.code == 0){
     						alert('操作成功', function(){
     		                    vm.reload();
+    		                    layer.closeAll();
     						});
     					}else{
     						alert(r.msg);
@@ -252,7 +258,9 @@ var vm = new Vue({
 			roleIdList:[],
 			currentPermission:1
 		},
-		province:null
+		province:null,
+		city:null,
+		county:null
 	},
 	methods: {
 		query: function () {
@@ -269,10 +277,15 @@ var vm = new Vue({
 			
 			this.getUserPermission();
 			
+			vm.province=null;
+			vm.city=null;
+			vm.county=null;
+			
 			this.getArea();
 		},
 		getUserPermission : function(){
 		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
+		    	console.log(r.currentLoginUser.userPermission);
 		    	vm.user.currentPermission = r.currentLoginUser.userPermission;
 			});
 		},	
@@ -297,10 +310,16 @@ var vm = new Vue({
 		},
 		getFullRegion: function(id){
 			$.get(baseURL + "region/getFullRegion/"+id, function(r){
-				console.log(r.region);
-				console.log(r.region[0]);
 				selectDataBindByHql('province',baseURL+"region/getCitys/0");
+				
+				selectDataBindByHql('city',baseURL+"region/getCitys/"+r.region[0]);
+				
+				selectDataBindByHql('county',baseURL+"region/getCitys/"+r.region[1]);
+				
 				vm.province=r.region[0];
+				vm.city=r.region[1];
+				vm.county=r.region[2];
+				
 			});
 		},
 		del: function () {
@@ -406,15 +425,33 @@ var vm = new Vue({
 			
 			$('#county').change(function(){
 				var countySelectId = $('#county').val();
+				selectDataBindByHql('town',  baseURL+"region/getCitys/"+countySelectId);
 				if(countySelectId==-1){
 					$('#regionId').val($("#city").val());
 					$('#regionName').val($("#province").find("option:selected").text()
-							+$('#regionName').val($("#city").find("option:selected").text()));
+							+$("#city").find("option:selected").text());
 				}else{
 					$('#regionId').val(countySelectId);
 					$('#regionName').val($("#province").find("option:selected").text()
 							+$("#city").find("option:selected").text()
 							+$("#county").find("option:selected").text());
+				}
+				
+			});
+			
+			$('#town').change(function(){
+				var townSelectId = $('#town').val();
+				if(townSelectId==-1){
+					$('#regionId').val($("#county").val());
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text());
+				}else{
+					$('#regionId').val(townSelectId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text()
+							+$("#town").find("option:selected").text());
 				}
 				
 			});
