@@ -27,4 +27,8 @@ public interface WithdrawService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+	void apply(WithdrawEntity withdrawEntity);
+
+	void operate(Map<String, Object> params);
 }

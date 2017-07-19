@@ -2,6 +2,9 @@ package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.WithdrawEntity;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WithdrawDao extends BaseDao<WithdrawEntity> {
+
+	void operate(Map<String, Object> params);
 	
 }

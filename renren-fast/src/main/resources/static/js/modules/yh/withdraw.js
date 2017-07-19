@@ -1,15 +1,30 @@
 $(function () {
+	
+	getCurrentLoginUser();
+	
     $("#jqGrid").jqGrid({
         url: baseURL + 'withdraw/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '申请用户id', name: 'applyUserId', index: 'apply_user_id', width: 80 }, 			
+			{ label: 'id',hidden:true, name: 'id', index: 'id', width: 50, key: true },
+			{ label: '申请用户编码', name: 'applyUserId', index: 'apply_user_id', width: 80 }, 			
 			{ label: '提现金额', name: 'withdrawalamount', index: 'withdrawalAmount', width: 80 }, 			
 			{ label: '提现申请时间', name: 'applyTime', index: 'apply_time', width: 80 }, 			
-			{ label: '提现状态', name: 'withdrawStatus', index: 'withdraw_status', width: 80 }, 			
-			{ label: '操作时间（针对状态）', name: 'operateTime', index: 'operate_time', width: 80 }, 			
-			{ label: '管理员id', name: 'userId', index: 'user_id', width: 80 }			
+			{ label: '提现状态', name: 'withdrawStatus', index: 'withdraw_status', width: 80, formatter: function(value, options, row){
+				if(value===1){
+					return "申请中";
+				}else if(value===2){
+					return "已受理";
+				}else if(value===3){
+					return "已完成";
+				}
+			}}, 			
+			{ label: '操作时间（针对状态）',hidden:true, name: 'operateTime', index: 'operate_time', width: 80 }, 			
+			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
+			{ label: '操作', hidden:true, width: 80,formatter: function(value, options, row){
+				
+				return '<a onclick=accept('+row.id+')>受理</a>|<a onclick=complete('+row.id+')>完成</a>';
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -34,16 +49,113 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        	if(vm.user.currentPermission==1){
+        		
+        	}
         }
     });
 });
+
+function getCurrentLoginUser(){
+    $.get(baseURL + "sys/user/currentLoginUser", function(r){
+    	vm.user.currentPermission = r.currentLoginUser.userPermission;
+	});
+}
+
+function accept(id){
+	$.ajax({
+		type : "POST",
+		url : baseURL + "withdraw/operate",
+		data : {
+			id : id,
+			type:"accpet"
+		},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('申请成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}
+
+function complete(id){
+	$.ajax({
+		type : "POST",
+		url : baseURL + "withdraw/operate",
+		data : {
+			id : id,
+			type:"complete"
+		},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('申请成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}
+
+function openAccount() {
+	var content = '<div style="position: relative;top: 60px;">'
+			+ '<div class="col-sm-2 control-label">提现金额</div>'
+			+ '<div class="col-sm-10" >'
+			+ '<input id="accountNum"  class="form-control"></input>' 
+			+ '</div>'
+			+ '</div>';
+
+	layer.open({
+		type : 1,
+		title : '设置权限',
+		area : [ '390px', '260px' ],
+		shade : 0,
+		id : 'LAY_layuipro' // 设定一个id，防止重复弹出
+		,
+		btn : [ '确定', '关闭' ],
+		moveType : 1 // 拖拽模式，0或者1
+		,
+		content : content,
+		yes : function() {
+			var accountNum = $('#accountNum').val();
+			$.ajax({
+				type : "POST",
+				url : baseURL + "withdraw/apply",
+				data : {
+					accountNum : accountNum
+				},
+				success : function(r) {
+					if (r.code == 0) {
+						alert('申请成功！', function() {
+							vm.reload();
+							layer.closeAll();
+						});
+					} else {
+						alert(r.msg);
+					}
+				}
+			});
+		},
+		btn2 : function() {
+			layer.closeAll();
+		}
+	});
+}
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		showList: true,
 		title: null,
-		withdraw: {}
+		withdraw: {},
+		currentPermission:3
 	},
 	methods: {
 		query: function () {

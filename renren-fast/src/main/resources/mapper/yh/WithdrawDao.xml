@@ -20,6 +20,11 @@
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.WithdrawEntity">
 		select * from sys_withdraw
+		<where>
+		    <if test = "applyUserId !=null">
+		        apply_user_id = #{applyUserId}
+		    </if>
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -81,5 +86,10 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<update id="operate" parameterType="java.util.Map">
+		update sys_withdraw set `operate_time` = #{operateTime},`withdraw_status` = #{withdrawStatus}, `user_id` = #{userId} where id = #{id}
+	</update>
+	
 
 </mapper>

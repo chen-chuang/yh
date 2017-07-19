@@ -65,5 +65,15 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<update id="updatePrice" >
+		update sys_account set `price` = #{surplusPrice} where enterprise_id = #{applyUserId}
+	</update>
+	
+	<select id="queryByUserId" resultType="io.renren.modules.yh.entity.AccountEntity">
+		select * from sys_account where enterprise_id = #{applyUserId}
+	</select>
+	
+	
 
 </mapper>
