@@ -152,5 +152,14 @@
 	<update id="setRegion">
 	    update sys_user set area_id = #{regionId},user_area = #{regionName} where user_id = #{userId}
 	</update>
+	
+	<update id="updateRegion" parameterType ="io.renren.modules.yh.entity.RegionEntity">
+	    update sys_user set user_area = #{name} where area_id = #{id}
+	</update>
+	
+	<select id="isExistByRegion" resultType="int">
+	    select count(*) from sys_user where area_id = #{id}
+	</select>
+	
 
 </mapper>

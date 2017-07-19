@@ -90,19 +90,36 @@ public class RegionController {
 	@RequestMapping("/delete")
 	@RequiresPermissions("region:delete")
 	public R delete(@RequestBody Integer[] ids){
-		regionService.deleteBatch(ids);
 		
-		return R.ok();
+		String msg = regionService.deleteBatch(ids);
+		
+		return R.ok(msg);
 	}
 	
 	@RequestMapping("/getCitys/{pid}")
+	/**
+	 * 得到下一级行政区域
+	 *@描述
+	 *@param pid
+	 *@return
+	 *@作者 ccchen
+	 *@时间 2017年7月19日上午10:11:47
+	 */
 	public R getCitys(@PathVariable("pid") int pid){
 		List<RegionEntity> regionList = regionService.queryListByPid(pid);
 		
 		return R.ok().put("citys", regionList);
 	}
-	
+		
 	@RequestMapping("/getFullRegion/{id}")
+	/**
+	 * 获得<省,市, , ,>这种形式，由下往上
+	 *@描述
+	 *@param id
+	 *@return
+	 *@作者 ccchen
+	 *@时间 2017年7月19日上午10:10:28
+	 */
 	public R getFullRegion(@PathVariable("id") int id){
 		
 		List<String> region = regionService.getFullRegion(id);

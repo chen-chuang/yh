@@ -1,6 +1,8 @@
 package io.renren.modules.sys.dao;
 
 import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.yh.entity.RegionEntity;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,4 +46,8 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	void setExpiryDate(@Param("userId") Long userId,@Param("expiryDate")  Date expiryDate);
 
 	void setRegion(@Param("userId") Long userId, @Param("regionId")int regionId, @Param("regionName")String regionName);
+
+	int updateRegion(RegionEntity region);
+
+	int isExistByRegion(Integer id);
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.sys.dao.BaseDao;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
+import io.renren.modules.yh.entity.RegionEntity;
 
 /**
  * 企业信息表
@@ -25,6 +26,10 @@ public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
 
 	List<Map<String, Object>> getEnterprise();
 
-	List<Map<String, Object>> getByName(String enterpriseName); 
+	List<Map<String, Object>> getByName(String enterpriseName);
+
+	int updateRegion(RegionEntity region);
+
+	int isExistByRegion(Integer id); 
 	
 }

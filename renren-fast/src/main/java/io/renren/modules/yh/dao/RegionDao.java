@@ -21,5 +21,7 @@ public interface RegionDao extends BaseDao<RegionEntity> {
 	List<RegionEntity> queryListByPid(int pid);
 
 	Map<String, Object> getParentById(int id);
+
+	List<RegionEntity> getChildrenByPid(int pid);
 	
 }

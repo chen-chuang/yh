@@ -166,5 +166,14 @@
 	<select id="getByName" resultType="java.util.Map">
 		select enterprise_id,enterprise_name from sys_enterpriseinfo where enterprise_name like CONCAT('%',#{enterpriseName},'%') order by enterprise_name
 	</select>
+	
+	<update id="updateRegion" parameterType ="io.renren.modules.yh.entity.RegionEntity">
+	    update sys_enterpriseinfo set enterprise_area_name = #{name} where enterprise_area_id = #{id}
+	</update>
+	
+	<select id="isExistByRegion" resultType="int">
+		select count(*) from sys_enterpriseinfo where enterprise_area_id = #{id}
+	</select>
+	
 
 </mapper>

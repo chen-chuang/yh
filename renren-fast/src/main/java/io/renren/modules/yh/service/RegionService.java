@@ -26,11 +26,9 @@ public interface RegionService {
 	
 	void delete(Integer id);
 	
-	void deleteBatch(Integer[] ids);
+	String deleteBatch(Integer[] ids);
 	
 	List<RegionEntity> queryListByPid(int pid);
-
-	String getRegionFullName(int regionId);
 
 	/**
 	 * 从下往上找
