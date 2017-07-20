@@ -21,8 +21,8 @@ $(function () {
 			}}, 			
 			{ label: '操作时间（针对状态）',hidden:true, name: 'operateTime', index: 'operate_time', width: 80 }, 			
 			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
-			{ label: '操作', hidden:true, width: 80,formatter: function(value, options, row){
-				
+			{ label: '操作', hidden:false, width: 80,formatter: function(value, options, row){
+				console.log(row.id);
 				return '<a onclick=accept('+row.id+')>受理</a>|<a onclick=complete('+row.id+')>完成</a>';
 			}}
         ],
@@ -73,11 +73,11 @@ function accept(id){
 		url : baseURL + "withdraw/operate",
 		data : {
 			id : id,
-			type:"accpet"
+			type:"accept"
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('申请成功！', function() {
+				alert('受理成功！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
@@ -98,7 +98,7 @@ function complete(id){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('申请成功！', function() {
+				alert('已完成！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
