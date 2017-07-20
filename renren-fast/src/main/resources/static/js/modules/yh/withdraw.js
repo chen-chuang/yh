@@ -49,7 +49,12 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
-        	if(vm.user.currentPermission==1){
+        	
+        /*	$("#jqGrid").setGridParam().showCol("operateTime").trigger("reloadGrid");
+
+        	$("#jqGrid").setGridParam().hideCol("userId").trigger("reloadGrid");*/
+        	
+        	if(vm.currentPermission==1){
         		
         	}
         }
@@ -58,7 +63,7 @@ $(function () {
 
 function getCurrentLoginUser(){
     $.get(baseURL + "sys/user/currentLoginUser", function(r){
-    	vm.user.currentPermission = r.currentLoginUser.userPermission;
+    	vm.currentPermission = r.currentLoginUser.userPermission;
 	});
 }
 
