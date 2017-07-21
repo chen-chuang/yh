@@ -51,10 +51,21 @@ var vm = new Vue({
 		query: function () {
 			vm.reload();
 		},
-		add: function(){
+		add: function(type){
 			vm.showList = false;
-			vm.title = "新增";
+			
 			vm.configtable = {};
+			
+			if(type==1){
+				vm.title = "设置销售员兑换比例";
+				vm.configtable.configKey="sale";
+			}else if(type==2){
+				vm.title = "设置配送员兑换比例";
+				vm.configtable.configKey="delivery"
+			}else if(type==3){
+				vm.title = "设置起送金额";
+				vm.configtable.configKey="delivery_amount";
+			}
 		},
 		update: function (event) {
 			var id = getSelectedRow();

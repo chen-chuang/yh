@@ -1,5 +1,6 @@
 package io.renren.modules.yh.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.service.ConfigtableService;
 import io.renren.common.utils.PageUtils;
@@ -29,7 +32,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("configtable")
-public class ConfigtableController {
+public class ConfigtableController extends AbstractController {
 	@Autowired
 	private ConfigtableService configtableService;
 	
@@ -68,7 +71,18 @@ public class ConfigtableController {
 	@RequestMapping("/save")
 	@RequiresPermissions("configtable:save")
 	public R save(@RequestBody ConfigtableEntity configtable){
+		
+		
+		SysUserEntity userEntity = this.getUser();
+		
+		configtable.setConfigCreateTime(new Date());
+		configtable.setConfigReginName(userEntity.getUserArea());
+		configtable.setConfigRegionId(Integer.valueOf(userEntity.getAreaId()));
+		configtable.setConfigUserId(userEntity.getUserId());
+		configtable.setConfigUserName(userEntity.getUsername());
+		
 		configtableService.save(configtable);
+		
 		
 		return R.ok();
 	}
