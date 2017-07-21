@@ -9,7 +9,7 @@ $(function () {
 			{ label: '使用积分数', name: 'userIntegralCount', index: 'user_integral_count', width: 80 }, 			
 			{ label: '订单总价格', name: 'orderAllPrice', index: 'order_all_price', width: 80 }, 			
 			{ label: '订单状态(0待支付 1已支付 2代配送 3已完成)', name: 'orderType', index: 'order_type', width: 80 }, 			
-			{ label: '下单地址ID', name: 'downId', index: 'down_id', width: 80 }, 			
+			{ label: '下单地址ID', name: 'townId', index: 'town_id', width: 80 }, 			
 			{ label: '下单地址', name: 'orderAddress', index: 'order_address', width: 80 }, 			
 			{ label: '要求配送时间', name: 'orderSendTime', index: 'order_send_time', width: 80 }, 			
 			{ label: '详细地址', name: 'orderDetailAddress', index: 'order_detail_address', width: 80 }, 			

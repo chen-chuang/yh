@@ -11,7 +11,7 @@
         <result property="userIntegralCount" column="user_integral_count"/>
         <result property="orderAllPrice" column="order_all_price"/>
         <result property="orderType" column="order_type"/>
-        <result property="downId" column="down_id"/>
+        <result property="townId" column="town_id"/>
         <result property="orderAddress" column="order_address"/>
         <result property="orderSendTime" column="order_send_time"/>
         <result property="orderDetailAddress" column="order_detail_address"/>
@@ -54,7 +54,7 @@
 			`user_integral_count`, 
 			`order_all_price`, 
 			`order_type`, 
-			`down_id`, 
+			`town_id`, 
 			`order_address`, 
 			`order_send_time`, 
 			`order_detail_address`, 
@@ -73,7 +73,7 @@
 			#{userIntegralCount}, 
 			#{orderAllPrice}, 
 			#{orderType}, 
-			#{downId}, 
+			#{townId}, 
 			#{orderAddress}, 
 			#{orderSendTime}, 
 			#{orderDetailAddress}, 
@@ -93,7 +93,7 @@
 			<if test="userIntegralCount != null">`user_integral_count` = #{userIntegralCount}, </if>
 			<if test="orderAllPrice != null">`order_all_price` = #{orderAllPrice}, </if>
 			<if test="orderType != null">`order_type` = #{orderType}, </if>
-			<if test="downId != null">`down_id` = #{downId}, </if>
+			<if test="townId != null">`town_id` = #{townId}, </if>
 			<if test="orderAddress != null">`order_address` = #{orderAddress}, </if>
 			<if test="orderSendTime != null">`order_send_time` = #{orderSendTime}, </if>
 			<if test="orderDetailAddress != null">`order_detail_address` = #{orderDetailAddress}, </if>

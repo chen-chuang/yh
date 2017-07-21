@@ -29,7 +29,7 @@ public class OrderEntity implements Serializable {
 	//订单状态(0待支付 1已支付 2代配送 3已完成)
 	private Integer orderType;
 	//下单地址ID
-	private Integer downId;
+	private Integer townId;
 	//下单地址
 	private String orderAddress;
 	//要求配送时间
@@ -128,14 +128,14 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 设置：下单地址ID
 	 */
-	public void setDownId(Integer downId) {
-		this.downId = downId;
+	public void setTownId(Integer townId) {
+		this.townId = townId;
 	}
 	/**
 	 * 获取：下单地址ID
 	 */
-	public Integer getDownId() {
-		return downId;
+	public Integer getTownId() {
+		return townId;
 	}
 	/**
 	 * 设置：下单地址

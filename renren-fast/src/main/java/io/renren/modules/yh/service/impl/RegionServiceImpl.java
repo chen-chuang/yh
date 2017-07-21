@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.yh.dao.EnterpriseinfoDao;
@@ -180,6 +181,11 @@ public class RegionServiceImpl implements RegionService {
 		
 		return map;		
 		
+	}
+	
+	@Override
+	public List<TownDTO> apiTown(String areaID){
+		return regionDao.apiTown(areaID);
 	}
 	
 	

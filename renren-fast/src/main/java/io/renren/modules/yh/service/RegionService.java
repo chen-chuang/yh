@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.yh.entity.RegionEntity;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public interface RegionService {
 	 * @return
 	 */
 	List<String> getFullRegion(int id);
+
+	List<TownDTO> apiTown(String areaID);
 	
 	
 }

@@ -112,7 +112,7 @@ create table sys_order
    user_integral_count  bigint comment '使用积分数',
    order_all_price      decimal(18,3) comment '订单总价格',
    order_type           int comment '订单状态(0待支付 1已支付 2代配送 3已完成)',
-   down_id              int comment '下单地址ID',
+   town_id              int comment '下单地址ID',
    order_address        varchar(100) comment '下单地址',
    order_send_time      datetime comment '要求配送时间',
    order_detail_address varchar(200) comment '详细地址',

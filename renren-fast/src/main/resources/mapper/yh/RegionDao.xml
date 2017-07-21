@@ -9,6 +9,11 @@
         <result property="name" column="name"/>
         <result property="pid" column="pid"/>
     </resultMap>
+    
+    <resultMap type="io.renren.modules.api.entity.dto.TownDTO" id="apiRegionMap">
+        <result property="townID" column="id"/>
+        <result property="townName" column="name"/>
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.RegionEntity">
 		select * from sys_region where id = #{value}
@@ -76,6 +81,9 @@
 		select * from sys_region where id = #{id}   
 	</select>
 	
+	<select id="apiTown" resultType="io.renren.modules.api.entity.dto.TownDTO">
+		select id,name from sys_region where pid = #{areaID}   
+	</select>
 	
 	
 
