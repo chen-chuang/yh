@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.IntegrationcashDao;
@@ -111,5 +112,33 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 		
 		return map;
 		
+	}
+	
+	@Override
+	public void apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user){
+		
+        ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
+		
+		if(configtableEntities!=null){
+			
+			String proportion = configtableEntities.getConfigValue();
+			BigDecimal proportionNum = new BigDecimal(proportion);
+			
+			BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
+			
+			//通过比例计算提及的积分
+			Long useIntegration = amount.multiply(amount).longValue();
+			integrationcashEntity.setIntegration(useIntegration);
+			
+			integrationcashDao.save(integrationcashEntity);
+		}
+	}
+	
+	@Override
+	public List<WithDrawDTO> apiWithdrawRecordList(Map<String, Object> map){
+		
+		List<WithDrawDTO> withDraw = integrationcashDao.apiWithdrawRecordList(map);
+		
+		return withDraw;
 	}
 }

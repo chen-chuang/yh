@@ -15,6 +15,12 @@
         <result property="operateTime" column="operate_time"/>
         <result property="userId" column="user_id"/>
     </resultMap>
+    
+    <resultMap type="io.renren.modules.api.entity.dto.WithDrawDTO" id="apiIntegrationcashMap">
+        <result property="withdrawalAmount" column="withdrawalAmount"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="withdrawStatus" column="withdraw_status"/>
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
 		select * from sys_integrationcash where id = #{value}
@@ -94,5 +100,13 @@
 		select sum(integration) from sys_integrationcash where applyUserId = #{userId} and withdrawStatus!='3'
 	</select>
 	
+	<select id="apiWithdrawRecordList" resultMap = "apiIntegrationcashMap">
+		select withdrawalAmount,apply_time,
+		(case withdraw_status when 1 then '待转账' when 2 then '待转账' when 3 then '已完成' else null end) as withdraw_status 
+		 from sys_integrationcash where user_Id = #{userID} 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 
 </mapper>

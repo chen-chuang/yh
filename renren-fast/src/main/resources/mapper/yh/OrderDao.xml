@@ -172,5 +172,22 @@
 	    where a.user_id = #{userID} and a.order_type = #{orderType}
 	    
 	</select>
+	
+	<select id="apiQueryOrder" resultMap="apiOrderMap">
+	  
+	    select a.* from sys_order a
+	    <where>
+	        <if test ="startTime!=null">
+	            and order_create_time>=#{startTime}
+	        </if>
+	         <if test ="endTime!=null">
+	             and order_create_time<=#{endTime}
+	        </if>
+	         <if test ="townID!=null">
+	            and townId =#{townID}
+	        </if>
+	    </where>
+	    
+	</select>
 
 </mapper>

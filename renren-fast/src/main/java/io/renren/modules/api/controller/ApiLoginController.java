@@ -36,7 +36,7 @@ public class ApiLoginController {
     /**
      * 登录
      */
-    @AuthIgnore
+  /*  @AuthIgnore
     @PostMapping("login")
     @ApiOperation(value = "登录",notes = "登录说明")
     @ApiImplicitParams({
@@ -54,6 +54,6 @@ public class ApiLoginController {
         Map<String, Object> map = tokenService.createToken(userId);
 
         return R.ok(map);
-    }
+    }*/
 
 }

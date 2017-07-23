@@ -1,7 +1,12 @@
 package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.IntegrationcashEntity;
+import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,5 +20,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface IntegrationcashDao extends BaseDao<IntegrationcashEntity> {
 
 	Long getSumIntegration(Long userId);
+
+	List<WithDrawDTO> apiWithdrawRecordList(Map<String, Object> map);
 	
 }
