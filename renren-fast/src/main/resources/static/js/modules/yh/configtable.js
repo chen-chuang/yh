@@ -3,14 +3,14 @@ $(function () {
         url: baseURL + 'configtable/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '配置key', name: 'configKey', index: 'config_key', width: 80 }, 			
+			{ label: 'id', hidden:true,name: 'id', index: 'id', width: 50, key: true },
+			{ label: '配置key',hidden:true, name: 'configKey', index: 'config_key', width: 80 }, 			
 			{ label: '配置名称', name: 'configName', index: 'config_name', width: 80 }, 			
 			{ label: '配置值', name: 'configValue', index: 'config_value', width: 80 }, 			
-			{ label: '配置人id', name: 'configUserId', index: 'config_user_id', width: 80 }, 			
+			{ label: '配置人id', hidden:true,name: 'configUserId', index: 'config_user_id', width: 80 }, 			
 			{ label: '配置人名称', name: 'configUserName', index: 'config_user_name', width: 80 }, 			
-			{ label: '配置人区域id', name: 'configRegionId', index: 'config_region_id', width: 80 }, 			
-			{ label: '配置人区域名', name: 'configReginName', index: 'config_regin_name', width: 80 }, 			
+			{ label: '配置人区域id', hidden:true,name: 'configRegionId', index: 'config_region_id', width: 80 }, 			
+			{ label: '区域名称', name: 'configReginName', index: 'config_regin_name', width: 80 }, 			
 			{ label: '配置时间', name: 'configCreateTime', index: 'config_create_time', width: 80 }			
         ],
 		viewrecords: true,
@@ -59,12 +59,15 @@ var vm = new Vue({
 			if(type==1){
 				vm.title = "设置销售员兑换比例";
 				vm.configtable.configKey="sale";
+				configtable.configName="销售员兑换比例";
 			}else if(type==2){
 				vm.title = "设置配送员兑换比例";
 				vm.configtable.configKey="delivery"
+				configtable.configName="配送员兑换比例";
 			}else if(type==3){
 				vm.title = "设置起送金额";
 				vm.configtable.configKey="delivery_amount";
+				configtable.configName="起送金额";
 			}
 		},
 		update: function (event) {

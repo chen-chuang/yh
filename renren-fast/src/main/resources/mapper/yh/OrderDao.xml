@@ -22,6 +22,54 @@
         <result property="isRebate" column="is_rebate"/>
     </resultMap>
 
+<!--     <resultMap type="io.renren.modules.api.entity.dto.OrderInfo" id="apiOrderMap">
+        <result property="orderID" column="order_id"/>
+        <result property="orderSendTime" column="order_send_time"/>
+        <result property="useIntegralCount" column="user_integral_count"/>
+        <result property="orderAllPrice" column="order_all_price"/>
+        <result property="orderType" column="order_type"/>
+        
+        <association property="orderProductions" javaType="io.renren.modules.api.entity.dto.OrderProductions">
+            <result property="productName" column="product_name"/>
+            <result property="productPrice" column="product_price"/>
+            <result property="productPictureUrl" column="product_picture_url"/>
+            <result property="orderProductionsCount" column="product_num"/>
+        </association>
+        
+        <association property="userInfo" javaType="io.renren.modules.api.entity.dto.UserInfo">            
+            <result property="orderAddress" column="order_address"/>            
+            <result property="orderDetailAddress" column="order_detail_address"/>
+            <result property="orderSendTime" column="order_send_time"/>
+	        <result property="receiverPhone" column="receiver_phone"/>
+	        <result property="receiverName" column="receiver_name"/>
+	        <result property="mark" column="mark"/>        
+        </association>
+    </resultMap> -->
+    
+    
+    <resultMap type="io.renren.modules.api.entity.dto.OrderDetailInfo" id="apiOrderMap">
+        
+        <association property="orderInfo" javaType="io.renren.modules.api.entity.dto.OrderInfo">
+            <result property="orderID" column="order_id"/>
+	        <result property="orderSendTime" column="order_send_time"/>
+	        <result property="useIntegralCount" column="user_integral_count"/>
+	        <result property="orderAllPrice" column="order_all_price"/>
+	        <result property="orderType" column="order_type"/>
+        </association>
+        
+        <association property="userInfo" javaType="io.renren.modules.api.entity.dto.UserInfo">            
+            <result property="orderAddress" column="order_address"/>            
+            <result property="orderDetailAddress" column="order_detail_address"/>
+            <result property="orderSendTime" column="order_send_time"/>
+	        <result property="receiverPhone" column="receiver_phone"/>
+	        <result property="receiverName" column="receiver_name"/>
+	        <result property="mark" column="mark"/>        
+        </association>
+    </resultMap>
+    
+    
+    
+    
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderEntity">
 		select * from sys_order where order_id = #{value}
 	</select>
@@ -116,5 +164,13 @@
 			#{orderId}
 		</foreach>
 	</delete>
+	
+	<select id="apiOrderList" resultMap="apiOrderMap">
+	    <!-- select a.*,b.product_name,b.product_price,b.product_picture_url,b.product_num from sys_order a,sys_orderdetail b 
+	    where a.order_id=b.order_id and a.user_id = #{userID} and a.order_type = #{orderType} -->
+	    select a.* from sys_order a
+	    where a.user_id = #{userID} and a.order_type = #{orderType}
+	    
+	</select>
 
 </mapper>

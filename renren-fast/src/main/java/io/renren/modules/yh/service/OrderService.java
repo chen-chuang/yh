@@ -1,9 +1,10 @@
 package io.renren.modules.yh.service;
 
-import io.renren.modules.yh.entity.OrderEntity;
-
 import java.util.List;
 import java.util.Map;
+
+import io.renren.modules.api.entity.dto.OrderDetailInfo;
+import io.renren.modules.yh.entity.OrderEntity;
 
 /**
  * 订单表
@@ -27,4 +28,6 @@ public interface OrderService {
 	void delete(String orderId);
 	
 	void deleteBatch(String[] orderIds);
+
+	List<OrderDetailInfo> apiOrderList(String userID, String orderType);
 }

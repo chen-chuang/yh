@@ -89,5 +89,24 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<select id="getConfig" resultType="io.renren.modules.yh.entity.ConfigtableEntity" parameterType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_configtable 
+		<where>
+		    
+		    <!-- 配送员 -->
+		    <if test = "userPermission==4"> 
+		        <!-- config_region_id = #{areaId}, 这里不使用区域，使用所属经销商查询，因为配送员可能到镇，而经销商再上级  查询出来是不对的 -->
+		        config_user_id = #{belongToAgencyId},
+		        and config_key = 'delivery'
+		    </if>
+		    
+		     <!-- 销售员 -->
+		     <if test = "userPermission==6"> 
+		        config_user_id = #{belongToAgencyId},
+		        and config_key = 'sale'
+		    </if>
+		</where>
+	</select>	
 
 </mapper>

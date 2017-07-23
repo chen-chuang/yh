@@ -1,12 +1,16 @@
 package io.renren.modules.yh.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import io.renren.modules.api.entity.dto.OrderDetailInfo;
+import io.renren.modules.api.entity.dto.OrderInfo;
+import io.renren.modules.api.entity.dto.OrderProductions;
 import io.renren.modules.yh.dao.OrderDao;
+import io.renren.modules.yh.dao.OrderdetailDao;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.service.OrderService;
 
@@ -16,6 +20,9 @@ import io.renren.modules.yh.service.OrderService;
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	private OrderdetailDao orderdetailDao;
 	
 	@Override
 	public OrderEntity queryObject(String orderId){
@@ -50,6 +57,20 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void deleteBatch(String[] orderIds){
 		orderDao.deleteBatch(orderIds);
+	}
+	
+	@Override
+	public List<OrderDetailInfo> apiOrderList(String userID, String orderType){
+		
+		List<OrderDetailInfo> orderDetailInfo = orderDao.apiOrderList(userID, orderType);
+		
+		for(OrderDetailInfo order : orderDetailInfo){
+			List<OrderProductions> orderProductions = orderdetailDao.apiOrderDetailList(order.getOrderInfo().getOrderID());
+			
+			order.getOrderInfo().setOrderProductions(orderProductions);
+		}	
+		
+		return orderDetailInfo;
 	}
 	
 }

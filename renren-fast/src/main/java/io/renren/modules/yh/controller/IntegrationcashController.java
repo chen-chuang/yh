@@ -1,5 +1,7 @@
 package io.renren.modules.yh.controller;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.yh.entity.IntegrationcashEntity;
-import io.renren.modules.yh.service.IntegrationcashService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.yh.entity.IntegrationcashEntity;
+import io.renren.modules.yh.entity.enums.EnumIntegrationCash;
+import io.renren.modules.yh.service.IntegrationcashService;
 
 
 
@@ -29,7 +34,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("integrationcash")
-public class IntegrationcashController {
+public class IntegrationcashController extends AbstractController {
 	@Autowired
 	private IntegrationcashService integrationcashService;
 	
@@ -93,6 +98,37 @@ public class IntegrationcashController {
 		integrationcashService.deleteBatch(ids);
 		
 		return R.ok();
+	}
+	
+	@RequestMapping("/apply")
+	public R apply(@RequestParam("accountNum") String accountNum){
+		
+		BigDecimal account = new BigDecimal(accountNum);
+		
+		SysUserEntity user = this.getUser();
+		
+		IntegrationcashEntity integrationcashEntity = new IntegrationcashEntity();
+		integrationcashEntity.setApplyTime(new Date());
+		integrationcashEntity.setApplyUserId(user.getUserId());
+		integrationcashEntity.setApplyUserName(user.getUsername());
+		integrationcashEntity.setWithdrawalamount(account);
+		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.APPLY.getStatus());
+		
+		integrationcashService.apply(integrationcashEntity,user);
+		
+		
+		return R.ok();
+	}
+	
+	
+	@RequestMapping("/getIntegrationInfo")
+	public R getIntegrationInfo(){
+		
+		SysUserEntity user = this.getUser();
+		
+		Map<String,Object> info = integrationcashService.getIntegrationInfo(user);
+		
+		return R.ok().put("info", info);
 	}
 	
 }

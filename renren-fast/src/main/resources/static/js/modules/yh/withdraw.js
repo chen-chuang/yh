@@ -19,7 +19,7 @@ $(function () {
 					return "已完成";
 				}
 			}}, 			
-			{ label: '操作时间（针对状态）',hidden:true, name: 'operateTime', index: 'operate_time', width: 80 }, 			
+			{ label: '操作时间',hidden:true, name: 'operateTime', index: 'operate_time', width: 80 }, 			
 			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
 			{ label: '操作', hidden:false, width: 80,formatter: function(value, options, row){
 				console.log(row.id);

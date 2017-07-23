@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface IntegrationcashService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+	void apply(IntegrationcashEntity integrationcashEntity, SysUserEntity user);
+
+	Map<String, Object> getIntegrationInfo(SysUserEntity user);
 }

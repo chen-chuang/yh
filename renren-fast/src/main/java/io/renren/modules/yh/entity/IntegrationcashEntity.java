@@ -20,6 +20,9 @@ public class IntegrationcashEntity implements Serializable {
 	private Integer id;
 	//申请用户id
 	private Long applyUserId;
+	
+	private String applyUserName;
+	
 	//兑现积分
 	private Long integration;
 	//提现金额
@@ -128,5 +131,11 @@ public class IntegrationcashEntity implements Serializable {
 	 */
 	public Long getUserId() {
 		return userId;
+	}
+	public String getApplyUserName() {
+		return applyUserName;
+	}
+	public void setApplyUserName(String applyUserName) {
+		this.applyUserName = applyUserName;
 	}
 }

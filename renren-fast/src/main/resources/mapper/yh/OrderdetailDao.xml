@@ -15,6 +15,14 @@
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="productPictureUrl" column="product_picture_url"/>
     </resultMap>
+    
+    
+    <resultMap type="io.renren.modules.api.entity.dto.OrderProductions" id="apiOrderdetailMap">
+        <result property="orderProductionsCount" column="product_num"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="productPictureUrl" column="product_picture_url"/>
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderdetailEntity">
 		select * from sys_orderdetail where order_id = #{value}
@@ -91,5 +99,10 @@
 			#{orderId}
 		</foreach>
 	</delete>
+	
+	<select id="apiOrderDetailList" resultMap="apiOrderdetailMap">
+		select product_num,product_name,product_price,product_picture_url from sys_orderdetail where order_id=#{orderID}
+	</select>
+	
 
 </mapper>

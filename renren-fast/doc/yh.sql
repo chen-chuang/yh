@@ -90,6 +90,7 @@ create table sys_integrationCash
 (
    id                   int not null auto_increment,
    apply_user_id        bigint comment '申请用户id',
+   apply_user_name      varchar(50) comment '申请用户',
    integration          bigint comment '兑现积分',
    withdrawalAmount     decimal(18,3) comment '提现金额',
    apply_time           datetime comment '提现申请时间',

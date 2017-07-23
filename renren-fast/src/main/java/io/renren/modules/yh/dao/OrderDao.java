@@ -1,8 +1,14 @@
 package io.renren.modules.yh.dao;
 
-import io.renren.modules.yh.entity.OrderEntity;
-import io.renren.modules.sys.dao.BaseDao;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import io.renren.modules.api.entity.dto.OrderDetailInfo;
+import io.renren.modules.api.entity.dto.OrderInfo;
+import io.renren.modules.sys.dao.BaseDao;
+import io.renren.modules.yh.entity.OrderEntity;
 
 /**
  * 订单表
@@ -13,5 +19,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface OrderDao extends BaseDao<OrderEntity> {
+
+	List<OrderDetailInfo> apiOrderList(@Param("userID") String userID, @Param("orderType") String orderType);
 	
 }

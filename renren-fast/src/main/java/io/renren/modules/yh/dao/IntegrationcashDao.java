@@ -13,5 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IntegrationcashDao extends BaseDao<IntegrationcashEntity> {
+
+	Long getSumIntegration(Long userId);
 	
 }
