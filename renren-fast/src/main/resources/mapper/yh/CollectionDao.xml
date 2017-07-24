@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.yh.dao.CollectionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.yh.entity.CollectionEntity" id="collectionMap">
+        <result property="userId" column="user_id"/>
+        <result property="productId" column="product_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.modules.yh.entity.CollectionEntity">
+		select * from sys_collection where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.modules.yh.entity.CollectionEntity">
+		select * from sys_collection
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_collection 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.modules.yh.entity.CollectionEntity">
+		insert into sys_collection
+		(
+			`user_id`, 
+			`product_id`
+		)
+		values
+		(
+			#{userId}, 
+			#{productId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.modules.yh.entity.CollectionEntity">
+		update sys_collection 
+		<set>
+			<if test="productId != null">`product_id` = #{productId}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_collection where user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_collection where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

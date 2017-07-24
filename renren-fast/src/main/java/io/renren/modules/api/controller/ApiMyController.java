@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
-import io.renren.common.validator.Assert;
 import io.renren.modules.api.annotation.AuthIgnore;
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -134,9 +134,26 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("/login")
-	public R login(String phoneNumber,String password){
+	public R login(String phoneNumber,String password){		
+		
+		Map<String, Object> info = sysUserService.apiLogin(phoneNumber,password);
+		
+		return R.ok().put("info", info);
+	}
+	
+	@AuthIgnore
+	@RequestMapping("/myCollectionList")
+	public R login(String userID,String pageIndex,String pageSize){		
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userID", userID);
+		params.put("limit", pageSize);
+		params.put("page", pageIndex);
+		
+		//List<CollectionDTO> collectionList = collectionService.apiQueryCollectionList(query);
 		
 		return R.ok();
+		
 	}
 	
 

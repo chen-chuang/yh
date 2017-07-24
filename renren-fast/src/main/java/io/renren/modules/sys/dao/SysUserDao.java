@@ -1,5 +1,6 @@
 package io.renren.modules.sys.dao;
 
+import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.RegionEntity;
 
@@ -50,4 +51,8 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	int updateRegion(RegionEntity region);
 
 	int isExistByRegion(Integer id);
+
+	SysUserEntity apiGetUserByPhone(String phoneNumber);
+
+	LoginDTO apiValidateLogin(@Param("phoneNumber")String phoneNumber, @Param("password")String password);
 }

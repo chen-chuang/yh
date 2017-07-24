@@ -1,5 +1,6 @@
 package io.renren.modules.sys.service;
 
+import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 
 import java.util.Date;
@@ -77,4 +78,6 @@ public interface SysUserService {
 	void setExpiryDate(Long userId, Date expiryDate);
 
 	void setRegion(Long userId, int regionId, String regionName);
+
+	Map<String,Object> apiLogin(String phoneNumber, String password);
 }

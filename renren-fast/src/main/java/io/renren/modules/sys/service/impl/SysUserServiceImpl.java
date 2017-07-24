@@ -1,26 +1,26 @@
 package io.renren.modules.sys.service.impl;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import io.renren.common.exception.RRException;
 import io.renren.common.utils.Constant;
+import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.service.RegionService;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-
-import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 
@@ -153,5 +153,32 @@ public class SysUserServiceImpl implements SysUserService {
 	public void setRegion(Long userId, int regionId,String regionName) {
 		 
 		sysUserDao.setRegion(userId,regionId,regionName);
+	}
+	
+	@Override
+	public Map<String,Object> apiLogin(String phoneNumber, String password){		
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		SysUserEntity user = sysUserDao.apiGetUserByPhone(phoneNumber);
+		
+		if(user == null){
+			map.put("info", "您输入的手机号不存在！");
+			return map;
+		}
+		
+		password = new Sha256Hash(password,user.getSalt()).toHex();
+		
+		LoginDTO info = sysUserDao.apiValidateLogin(phoneNumber,password);
+		
+		if(info == null){
+			map.put("info", "您输入的密码有误！");
+			return map;
+		}
+		
+		map.put("info", info);
+		
+		return map;		
+		
 	}
 }
