@@ -1,7 +1,12 @@
 package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.CollectionEntity;
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CollectionDao extends BaseDao<CollectionEntity> {
+
+	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
 	
 }

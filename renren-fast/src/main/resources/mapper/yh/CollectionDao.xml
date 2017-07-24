@@ -8,6 +8,14 @@
         <result property="userId" column="user_id"/>
         <result property="productId" column="product_id"/>
     </resultMap>
+    
+    <resultMap type="io.renren.modules.api.entity.dto.CollectionDTO" id="apiCollectionMap">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetail" column="product_detail"/>
+        <result property="productPictureUrl" column="product_picture_url"/>
+        <result property="productType" column="product_type"/>
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.CollectionEntity">
 		select * from sys_collection where user_id = #{value}
@@ -63,5 +71,22 @@
 			#{userId}
 		</foreach>
 	</delete>
+	
+	<select id="apiQueryCollectionList" resultMap="apiCollectionMap">
+		select b.product_id,b.product_name,b.product_detail,b.product_picture_url,b.product_type from sys_collection a,sys_product b
+		 where a.product_id = b.product_id and a.user_id = #{userID} 
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
 
 </mapper>

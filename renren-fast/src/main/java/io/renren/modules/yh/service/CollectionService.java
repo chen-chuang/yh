@@ -1,5 +1,7 @@
 package io.renren.modules.yh.service;
 
+import io.renren.common.utils.Query;
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.yh.entity.CollectionEntity;
 
 import java.util.List;
@@ -27,4 +29,6 @@ public interface CollectionService {
 	void delete(Long userId);
 	
 	void deleteBatch(Long[] userIds);
+
+	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
 }

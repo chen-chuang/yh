@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.yh.dao.CollectionDao;
 import io.renren.modules.yh.entity.CollectionEntity;
 import io.renren.modules.yh.service.CollectionService;
@@ -50,6 +51,12 @@ public class CollectionServiceImpl implements CollectionService {
 	@Override
 	public void deleteBatch(Long[] userIds){
 		collectionDao.deleteBatch(userIds);
+	}
+	
+	@Override
+	public List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map){
+		List<CollectionDTO> collectionDTOs = collectionDao.apiQueryCollectionList(map);
+		return collectionDTOs;
 	}
 	
 }

@@ -38,6 +38,11 @@ public class ApiRecommendController {
 		return R.ok();
 	}
 	
+	@AuthIgnore
+	@RequestMapping("hotSaleProduction")
+	public R hotSaleProduction(OrderEntity orderEntity){
+		return R.ok();
+	}
 	
 
 }

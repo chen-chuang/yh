@@ -24,6 +24,7 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
 import io.renren.modules.yh.entity.enums.EnumIntegrationCash;
+import io.renren.modules.yh.service.CollectionService;
 import io.renren.modules.yh.service.IntegrationcashService;
 import io.renren.modules.yh.service.OrderService;
 
@@ -39,6 +40,9 @@ public class ApiMyController {
 	
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@Autowired
+	private CollectionService collectionService;
 	
 	@AuthIgnore
 	@RequestMapping("withdraw")
@@ -150,9 +154,26 @@ public class ApiMyController {
 		params.put("limit", pageSize);
 		params.put("page", pageIndex);
 		
-		//List<CollectionDTO> collectionList = collectionService.apiQueryCollectionList(query);
+		Query query = new Query(params);
 		
-		return R.ok();
+		List<CollectionDTO> collectionList = collectionService.apiQueryCollectionList(query);
+		
+		return R.ok().put("info", collectionList);
+		
+	}
+	
+	@AuthIgnore
+	@RequestMapping("/userIntegral")
+	public R userIntegral(String userID){		
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		Long userId = Long.parseLong(userID);
+		SysUserEntity user = sysUserService.queryObject(userId);
+		
+		map.put("userIntegral", user.getUserIntegral());
+		
+		return R.ok().put("info", map);
 		
 	}
 	
