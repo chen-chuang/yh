@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.yh.entity.ProductEntity;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface ProductService {
 	void delete(Long productId);
 	
 	void deleteBatch(Long[] productIds);
+
+	List<CollectionDTO> apiHotSaleProduction(String areaID);
+
+	List<CollectionDTO> apiSearchProduction(String keyword, String areaID);
 }

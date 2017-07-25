@@ -23,6 +23,14 @@
         <result property="enterPersonId" column="enter_person_id"/>
          
     </resultMap>
+    
+    <resultMap type="io.renren.modules.api.entity.dto.CollectionDTO" id="apiProductMap">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetail" column="product_detail"/>
+        <result property="productPictureUrl" column="product_picture_url"/>
+        <result property="productType" column="product_type"/>
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProductEntity">
 		select * from sys_product where product_id = #{value}
@@ -137,6 +145,21 @@
 		</foreach>
 	</delete>
 	
+	<select id="apiHotSaleProduction" resultMap="apiProductMap">
+		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
+		from sys_product a,sys_enterpriseinfo b
+		 where a.product_id = b.product_id 
+		  and b.enterprise_area_id = #{areaID} 
+		  and a.is_hot = 0  <!-- 0热销，1不热销 -->
+	</select>
+	
+	<select id="apiSearchProduction" resultMap="apiProductMap">
+		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
+		from sys_product a,sys_enterpriseinfo b
+		 where a.product_id = b.product_id 
+		  and b.enterprise_area_id = #{areaID} 
+		  and a.product_name like CONCAT('%',#{keyword},'%')    <!-- 0热销，1不热销 -->
+	</select>
 	
 
 </mapper>

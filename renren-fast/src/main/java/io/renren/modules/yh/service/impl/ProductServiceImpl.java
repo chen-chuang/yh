@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.service.ProductService;
@@ -52,4 +53,13 @@ public class ProductServiceImpl implements ProductService {
 		productDao.deleteBatch(productIds);
 	}
 	
+	@Override
+	public List<CollectionDTO> apiHotSaleProduction(String areaID){
+		return productDao.apiHotSaleProduction(areaID);
+	}
+	
+	@Override
+	public List<CollectionDTO> apiSearchProduction(String keyword, String areaID){
+		return productDao.apiSearchProduction(keyword, areaID);
+	}
 }

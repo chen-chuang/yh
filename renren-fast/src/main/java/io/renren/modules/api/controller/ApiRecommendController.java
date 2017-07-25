@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.service.ProductService;
 import io.renren.modules.yh.service.RegionService;
 
 @RequestMapping("/api")
@@ -20,6 +22,9 @@ public class ApiRecommendController {
 	
 	@Autowired
 	private RegionService regionService;
+	
+	@Autowired
+	private ProductService productService;
 	
 	@AuthIgnore
 	@RequestMapping("town")
@@ -40,7 +45,23 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("hotSaleProduction")
-	public R hotSaleProduction(OrderEntity orderEntity){
+	public R hotSaleProduction(String areaID){
+		List<CollectionDTO> info = productService.apiHotSaleProduction(areaID);
+		return R.ok().put("info", info);
+	}
+	
+	@AuthIgnore
+	@RequestMapping("searchProduction")
+	public R searchProduction(String keyword,String areaID){
+		
+		List<CollectionDTO> info = productService.apiSearchProduction(keyword,areaID);
+		
+		return R.ok().put("info", info);
+	}
+	
+	@AuthIgnore
+	@RequestMapping("shoppingCartList")
+	public R shoppingCartList(OrderEntity orderEntity){
 		return R.ok();
 	}
 	

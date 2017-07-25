@@ -2,8 +2,13 @@ package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.entity.ProducttypeEntity;
+import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 产品表
@@ -18,5 +23,9 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 	void deleteBatchByType(Integer[] ids);
 
 	void updateProductType(ProducttypeEntity producttype);
+
+	List<CollectionDTO> apiHotSaleProduction(String areaID);
+
+	List<CollectionDTO> apiSearchProduction(@Param("keyword")String keyword, @Param("areaID")String areaID);
 	
 }
