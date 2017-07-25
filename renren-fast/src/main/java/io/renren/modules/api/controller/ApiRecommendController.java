@@ -61,7 +61,9 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("shoppingCartList")
-	public R shoppingCartList(OrderEntity orderEntity){
+	public R shoppingCartList(String userID,String areaID){
+		
+		//productService.apiShoppingCartList(userID,areaID);
 		return R.ok();
 	}
 	

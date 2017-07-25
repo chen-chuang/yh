@@ -148,7 +148,7 @@
 	<select id="apiHotSaleProduction" resultMap="apiProductMap">
 		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
 		from sys_product a,sys_enterpriseinfo b
-		 where a.product_id = b.product_id 
+		 where a.enterprise_id = b.enterprise_id 
 		  and b.enterprise_area_id = #{areaID} 
 		  and a.is_hot = 0  <!-- 0热销，1不热销 -->
 	</select>
@@ -156,7 +156,7 @@
 	<select id="apiSearchProduction" resultMap="apiProductMap">
 		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
 		from sys_product a,sys_enterpriseinfo b
-		 where a.product_id = b.product_id 
+		 where a.enterprise_id = b.enterprise_id 
 		  and b.enterprise_area_id = #{areaID} 
 		  and a.product_name like CONCAT('%',#{keyword},'%')    <!-- 0热销，1不热销 -->
 	</select>
