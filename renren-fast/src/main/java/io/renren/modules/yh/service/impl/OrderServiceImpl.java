@@ -1,19 +1,28 @@
 package io.renren.modules.yh.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.renren.common.utils.DateUtils;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.OrderProductions;
+import io.renren.modules.sys.dao.SysUserDao;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.OrderDao;
 import io.renren.modules.yh.dao.OrderdetailDao;
+import io.renren.modules.yh.dao.ProductDao;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
 
 
@@ -25,6 +34,17 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderdetailDao orderdetailDao;
+	
+	@Autowired
+	private ProductDao productDao;
+	
+	@Autowired
+	private ConfigtableDao configtableDao;
+	
+	@Autowired
+	private SysUserDao SysUserDao;
+	
+	
 	
 	@Override
 	public OrderEntity queryObject(String orderId){
@@ -100,6 +120,50 @@ public class OrderServiceImpl implements OrderService {
 		}	
 		
 		return orderDetailInfo;
+	}
+
+	@Override
+	@Transactional	
+	public Map<String, Object> apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID,
+			String orderProductionsCount) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String[] orderProductionsIDs = orderProductionsID.split(",");
+		String[] orderProductionsCounts = orderProductionsCount.split(",");
+		
+		//减库存
+		for(int i =0;i<orderProductionsIDs.length;i++){
+			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
+			if(store!=null){
+				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
+				int k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
+			}else{
+				map.put("msg", "商品库存不足！");
+				return map;
+			}
+			
+		}
+		//支付还未
+		orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+		
+		//记得写销售员积分
+		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
+		ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);
+		if(configtableEntity!=null){
+			
+			//得到比例，算的积分
+			String proportion = configtableEntity.getConfigValue();
+			BigDecimal allPrice = orderEntity.getOrderAllPrice();
+			Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
+			
+			//相加后积分
+			Long addIntegral = thisIntegral + userEntity.getUserIntegral();
+			
+			SysUserDao.addIntegral(addIntegral,userEntity.getUserId());
+		}
+		
+		return map;
 	}
 	
 }

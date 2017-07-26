@@ -55,4 +55,8 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	SysUserEntity apiGetUserByPhone(String phoneNumber);
 
 	LoginDTO apiValidateLogin(@Param("phoneNumber")String phoneNumber, @Param("password")String password);
+	
+	void addIntegral(@Param("integral") Long integral,@Param("userId") Long userId);
+
+	List<Map<String, Object>> getDeliveryPerson(Long userId);
 }

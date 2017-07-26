@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.common.utils.PageUtils;
@@ -29,9 +32,12 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("order")
-public class OrderController {
+public class OrderController extends AbstractController{
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private SysUserService sysUserService;
 	
 	/**
 	 * 列表
@@ -93,6 +99,26 @@ public class OrderController {
 		orderService.deleteBatch(orderIds);
 		
 		return R.ok();
+	}
+	
+	@RequestMapping("/dispatch")
+	public R dispatch(String orderId){
+	    //orderService
+		return R.ok();
+	}
+	
+	@RequestMapping("/complete")
+	public R complete(String orderId){
+		
+		return R.ok();
+	}
+	
+	
+	@RequestMapping("/getDeliveryPerson")
+	public R getDeliveryPerson(){
+		
+		List<Map<String, Object>> deliveryPerson = sysUserService.getDeliveryPerson(this.getUserId());
+		return R.ok().put("deliveryPerson", deliveryPerson);
 	}
 	
 }

@@ -27,5 +27,9 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 	List<CollectionDTO> apiHotSaleProduction(String areaID);
 
 	List<CollectionDTO> apiSearchProduction(@Param("keyword")String keyword, @Param("areaID")String areaID);
+
+    Long apiQueryStore(@Param("orderProductionsID")String orderProductionsID, @Param("orderProductionsCount")String orderProductionsCount);
+
+	int apiMinusStore(String orderProductionsID, Long remainderStore);
 	
 }

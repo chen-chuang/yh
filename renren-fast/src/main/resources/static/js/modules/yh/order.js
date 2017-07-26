@@ -3,20 +3,40 @@ $(function () {
         url: baseURL + 'order/list',
         datatype: "json",
         colModel: [			
-			{ label: 'orderId', name: 'orderId', index: 'order_id', width: 50, key: true },
-			{ label: '销售员id', name: 'userId', index: 'user_id', width: 80 }, 			
+			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 50, key: true },
+			{ label: '销售员id',hidden:true, name: 'userId', index: 'user_id', width: 80 }, 			
 			{ label: '订单生成时间', name: 'orderCreateTime', index: 'order_create_time', width: 80 }, 			
 			{ label: '使用积分数', name: 'userIntegralCount', index: 'user_integral_count', width: 80 }, 			
 			{ label: '订单总价格', name: 'orderAllPrice', index: 'order_all_price', width: 80 }, 			
-			{ label: '订单状态(0待支付 1已支付 2代配送 3已完成)', name: 'orderType', index: 'order_type', width: 80 }, 			
-			{ label: '下单地址ID', name: 'townId', index: 'town_id', width: 80 }, 			
+			{ label: '订单状态', name: 'orderType', index: 'order_type', width: 80, formatter: function(value, options, row){
+				if(value===0){
+					return '<span>待支付</span>';
+				}else if(value===1){
+					return '<span>已支付</span>';
+				}else if(value===2){
+					return '<span>待配送</span>';
+				}else if(value===3){
+					return '<span>已支付</span>';
+				}
+		    }},				
+			{ label: '下单地址ID', hidden:true,name: 'townId', index: 'town_id', width: 80 }, 			
 			{ label: '下单地址', name: 'orderAddress', index: 'order_address', width: 80 }, 			
 			{ label: '要求配送时间', name: 'orderSendTime', index: 'order_send_time', width: 80 }, 			
 			{ label: '详细地址', name: 'orderDetailAddress', index: 'order_detail_address', width: 80 }, 			
 			{ label: '买者电话', name: 'receiverPhone', index: 'receiver_phone', width: 80 }, 			
 			{ label: '买者姓名', name: 'receiverName', index: 'receiver_name', width: 80 }, 			
 			{ label: '备注', name: 'mark', index: 'mark', width: 80 }, 			
-			{ label: '订单支付方式（1：支付宝，2：微信）', name: 'orderPayType', index: 'order_pay_type', width: 80 }			
+			{ label: '订单支付方式（1：支付宝，2：微信）', hidden:true,name: 'orderPayType', index: 'order_pay_type', width: 80, formatter: function(value, options, row){
+				if(value===1){
+					return '<span>支付宝</span>';
+				}else if(value===2){
+					return '<span>微信</span>';
+				}
+		    }},	
+			{ label: '操作', width: 80,formatter: function(value, options, row){
+				console.log(row.id);
+				return '<a onclick=dispatch('+row.orderId+')>配送</a>|<a onclick=complete('+row.orderId+')>完成</a>';
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -44,6 +64,108 @@ $(function () {
         }
     });
 });
+
+function setUserId(userId) {
+	$("#userId").val(userId);
+}
+
+//配送
+function dispatch(orderId){
+	
+	var content ='<div class="user_select_view">'
+	
+		/*	 +'  <div class="view_left" id="view_left">'
+			 +'   <ul>'
+			 +'    <li >1</li>'
+			 +'    <li >1</li>'
+			 +'   <li >1</li>'
+			 +'  </ul>'
+			 +' </div>'*/
+			 +' <div class="view_right" id="view_right">'
+			 +'   <ul>';
+			 
+	
+	//展示配送员
+	$.ajax({
+		type : "POST",
+		url : baseURL + "order/getDeliveryPerson",
+		success : function(r) {
+			if (r.code == 0) {
+				if(r.deliveryPerson){
+					$.each(r.deliveryPerson,function(k,v){
+						content+='<li onclick = setUserId('+v["user_id"]+') userid = '+v["user_id"]+'>'+v["user_name"]+'</li>' ;
+					})
+					
+				}
+			} 
+			content +='  </ul>'
+						 +' </div>'
+						 +'</div>';
+		}
+	});
+	
+	
+	
+	 layer.open({
+	        type: 1
+	        ,title: '选择配送员' 
+	        ,area: ['450px', '300px']
+	        ,shade: 0
+	        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+	        ,btn: ['确定', '关闭']
+	        ,moveType: 1 //拖拽模式，0或者1
+	        ,content: content
+	    	 ,yes: function(){    		 
+	    		
+	    		/* var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
+	    		 var regionName = $(window.frames["layui-layer-iframe1"].document).find("#regionName").val();*/
+	    		
+    			$.ajax({
+    				type : "POST",
+    				url : baseURL + "order/dispatch",
+    				data : {
+    					orderId : orderId,
+    					userId : $("#userId").val()
+    				},
+    				success : function(r) {
+    					if (r.code == 0) {
+    						alert('指派成功！', function() {
+    							vm.reload();
+    							layer.closeAll();
+    						});
+    					} else {
+    						alert(r.msg);
+    					}
+    				}
+    			});
+	        }
+	        ,btn2: function(){
+	          layer.closeAll();
+	        }
+	      });
+	 
+
+}
+function complete(orderId){
+	$.ajax({
+		type : "POST",
+		url : baseURL + "order/complete",
+		data : {
+			id : id,
+			type:"accept"
+		},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('受理成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}
 
 var vm = new Vue({
 	el:'#rrapp',

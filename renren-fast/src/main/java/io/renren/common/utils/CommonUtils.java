@@ -14,5 +14,12 @@ public class CommonUtils {
 		String extension = fileName.substring(position);
 		return formatDate + random + extension;
 	}
+	
+	public static String generateOrder() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String formatDate = format.format(new Date());
+		int random = new Random().nextInt(10000);
+		return formatDate + random;
+	}
 
 }

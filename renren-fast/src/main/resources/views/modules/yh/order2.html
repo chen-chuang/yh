@@ -18,17 +18,15 @@
 <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
 <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="../../js/common.js"></script>
-
-<link rel="stylesheet" href="../../css/delivery.css">
 </head>
 <body>
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
-		<!-- <div class="grid-btn">
+		<div class="grid-btn">
 			<a v-if="hasPermission('order:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
 			<a v-if="hasPermission('order:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
 			<a v-if="hasPermission('order:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
-		</div> -->
+		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
     </div>
@@ -36,85 +34,85 @@
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-			<div class="form-group">
+											<div class="form-group">
 			   	<div class="col-sm-2 control-label">销售员id</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.userId" placeholder="销售员id"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">订单生成时间</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderCreateTime" placeholder="订单生成时间"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">使用积分数</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.userIntegralCount" placeholder="使用积分数"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">订单总价格</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderAllPrice" placeholder="订单总价格"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">订单状态(0待支付 1已支付 2代配送 3已完成)</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderType" placeholder="订单状态(0待支付 1已支付 2代配送 3已完成)"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">下单地址ID</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.townId" placeholder="下单地址ID"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">下单地址</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderAddress" placeholder="下单地址"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">要求配送时间</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderSendTime" placeholder="要求配送时间"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">详细地址</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderDetailAddress" placeholder="详细地址"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">买者电话</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.receiverPhone" placeholder="买者电话"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">买者姓名</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.receiverName" placeholder="买者姓名"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">备注</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.mark" placeholder="备注"/>
 			    </div>
 			</div>
-			<div class="form-group">
+									<div class="form-group">
 			   	<div class="col-sm-2 control-label">订单支付方式（1：支付宝，2：微信）</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderPayType" placeholder="订单支付方式（1：支付宝，2：微信）"/>
 			    </div>
 			</div>
-			<div class="form-group">
+							<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
 				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
@@ -122,7 +120,6 @@
 		</form>
 	</div>
 </div>
-	<input type="hidden" id= "userId">
 
 <script src="../../js/modules/yh/order.js"></script>
 </body>

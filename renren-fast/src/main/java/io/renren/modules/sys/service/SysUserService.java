@@ -80,4 +80,14 @@ public interface SysUserService {
 	void setRegion(Long userId, int regionId, String regionName);
 
 	Map<String,Object> apiLogin(String phoneNumber, String password);
+
+	/**
+	 * 根据发货员ID得到所有配送员(通过所属经销商)
+	 *@描述
+	 *@param userId
+	 *@return
+	 *@作者 ccchen
+	 *@时间 2017年7月26日下午4:29:42
+	 */
+	List<Map<String, Object>> getDeliveryPerson(Long userId);
 }

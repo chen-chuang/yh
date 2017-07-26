@@ -32,4 +32,6 @@ public interface OrderService {
 	List<OrderDetailInfo> apiOrderList(String userID, String orderType);
 
 	List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID);
+
+	Map<String, Object> apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID, String orderProductionsCount);
 }

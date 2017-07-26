@@ -20,6 +20,7 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.entity.RegionEntity;
 import io.renren.modules.yh.service.RegionService;
 
 
@@ -179,6 +180,14 @@ public class SysUserServiceImpl implements SysUserService {
 		map.put("info", info);
 		
 		return map;		
+		
+	}
+	
+	@Override
+	public List<Map<String, Object>> getDeliveryPerson(Long userId){
+		
+		List<Map<String, Object>> maps = sysUserDao.getDeliveryPerson(userId);
+		return maps;	
 		
 	}
 }
