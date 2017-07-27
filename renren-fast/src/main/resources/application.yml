@@ -5,8 +5,8 @@ server:
         max-threads: 1000
         min-spare-threads: 30
     port: 8000
-    context-path: /renren-fast  #与common.js baseURL对应方能在tomcat下正确运行
-    #context-path: /
+    #context-path: /renren-fast  #与common.js baseURL对应方能在tomcat下正确运行
+    context-path: /
     
 # mysql
 spring:
