@@ -117,7 +117,7 @@ function setRegion(userId){
         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
         ,btn: ['确定', '关闭']
         ,moveType: 1 //拖拽模式，0或者1
-        ,content: ['http://127.0.0.1:8000/renren-fast/modules/yh/select.html',"no"]
+        ,content: ['/modules/yh/select.html',"no"]
     	 ,yes: function(){    		 
     		
     		 var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
