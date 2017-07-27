@@ -2,6 +2,7 @@ package io.renren.modules.yh.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 
@@ -29,6 +30,8 @@ public class OrderintegrationEntity implements Serializable {
 	private Integer priceIntegrationType;
 	//是否配送返点（已返点，未返点）
 	private Integer isRebate;
+	
+	private Date time;
 
 	public Integer getIsRebate() {
 		return isRebate;
@@ -107,5 +110,11 @@ public class OrderintegrationEntity implements Serializable {
 	 */
 	public Integer getPriceIntegrationType() {
 		return priceIntegrationType;
+	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
 	}
 }

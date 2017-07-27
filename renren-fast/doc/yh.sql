@@ -108,6 +108,9 @@ create table sys_order
    receiver_name        varchar(50) comment '买者姓名',
    mark                 text comment '备注',
    order_pay_type       int comment '订单支付方式（1：支付宝，2：微信）',
+   `user_name`          varchar(50) DEFAULT NULL,
+  `delivery_user_id`    bigint(20) DEFAULT NULL,
+  `delivery_user_name`  varchar(50) DEFAULT NULL,
    primary key (order_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -139,6 +142,8 @@ create table sys_orderintegration
    order_sum_price      decimal(18,3) comment '订单金额',
    integration          bigint comment '生成积分',
    price_integration_type int comment '价格积分类型（1：配送积分?，2：销售积分）',
+  `is_rebate` int(11) DEFAULT NULL,
+  `time` datetime DEFAULT NULL,
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

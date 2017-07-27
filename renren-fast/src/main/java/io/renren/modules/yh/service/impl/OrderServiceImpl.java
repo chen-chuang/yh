@@ -19,9 +19,11 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.OrderDao;
 import io.renren.modules.yh.dao.OrderdetailDao;
+import io.renren.modules.yh.dao.OrderintegrationDao;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
 
@@ -43,6 +45,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private SysUserDao SysUserDao;
+	
+	@Autowired
+	private OrderintegrationDao orderintegrationDao;
 	
 	
 	
@@ -157,6 +162,17 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal allPrice = orderEntity.getOrderAllPrice();
 			Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
 			
+			//写入积分明显表
+			OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+			orderintegration.setUserId(userEntity.getUserId());
+			orderintegration.setOrderId(orderEntity.getOrderId());
+			orderintegration.setOrderSumPrice(allPrice);
+			orderintegration.setIntegration(thisIntegral);
+			orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分			
+			//注意：这里设计的是给配送人员用的，是否兑换过
+			//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
+			orderintegrationDao.save(orderintegration);
+			
 			//相加后积分
 			Long addIntegral = thisIntegral + userEntity.getUserIntegral();
 			
@@ -166,4 +182,47 @@ public class OrderServiceImpl implements OrderService {
 		return map;
 	}
 	
+	
+	@Override
+	public void dispatch(String orderId,String userId){
+		
+		OrderEntity order = orderDao.queryObject(orderId);
+		SysUserEntity userEntity = SysUserDao.queryObject(Long.valueOf(userId));
+		order.setDeliveryUserId(Long.valueOf(userId));
+		order.setDeliveryUserName(userEntity.getUsername());
+		order.setIsRebate(0);	
+		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
+		orderDao.update(order);
+		
+	}
+	
+	@Override
+	public void complete(String orderId){
+		
+		OrderEntity order = orderDao.queryObject(orderId);
+		
+		//写入积分明显表
+		OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+		orderintegration.setUserId(order.getUserId());
+		orderintegration.setOrderId(orderId);
+		orderintegration.setOrderSumPrice(order.getOrderAllPrice());
+		
+		//计算得到相应积分
+		SysUserEntity userEntity = SysUserDao.queryObject(order.getDeliveryUserId());
+		ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);			
+		//得到比例，算的积分
+		String proportion = configtableEntity.getConfigValue();
+		Long thisIntegral = order.getOrderAllPrice().longValue()*Long.valueOf(proportion); 	
+		
+		orderintegration.setIntegration(thisIntegral);
+		orderintegration.setPriceIntegrationType(1);//2销售积分 1配送积分			
+		//注意：这里设计的是给配送人员用的，是否兑换过
+		orderintegration.setIsRebate(0); //0未兑换过，1兑换过
+		orderintegration.setTime(new Date());
+		orderintegrationDao.save(orderintegration);
+		
+		//订单完成
+		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
+		orderDao.update(order);
+	}
 }

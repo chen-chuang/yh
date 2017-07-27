@@ -5,7 +5,8 @@ public enum EnumOrderType {
 	TOBEPAID(0,"待支付"),
 	PAID(1,"已支付"),
 	UNDISPATCH(2,"待配送"),
-	COMPLETE(3,"已完成");
+	COMPLETE(3,"已完成"),
+	DISPATCHING(4,"正在配送");
 	
 	
 	int status;

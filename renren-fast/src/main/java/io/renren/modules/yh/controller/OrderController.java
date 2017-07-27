@@ -102,8 +102,8 @@ public class OrderController extends AbstractController{
 	}
 	
 	@RequestMapping("/dispatch")
-	public R dispatch(String orderId){
-	   // orderService.dispatch(orderId);
+	public R dispatch(String orderId,String userId){
+	    orderService.dispatch(orderId,userId);
 		return R.ok();
 	}
 	

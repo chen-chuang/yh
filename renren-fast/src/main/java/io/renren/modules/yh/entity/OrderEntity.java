@@ -26,7 +26,7 @@ public class OrderEntity implements Serializable {
 	private Long userIntegralCount;
 	//订单总价格
 	private BigDecimal orderAllPrice;
-	//订单状态(0待支付 1已支付 2代配送 3已完成)
+	//订单状态(0待支付 1已支付 2代配送 3已完成4正在配送)
 	private Integer orderType;
 	//下单地址ID
 	private Integer townId;
@@ -46,6 +46,12 @@ public class OrderEntity implements Serializable {
 	private Integer orderPayType;
 	//是否配送返点（已返点，未返点）
 	private Integer isRebate;
+	
+	private String userName;
+	
+	private Long deliveryUserId;
+	
+	private String deliveryUserName;
 
 	public Integer getIsRebate() {
 		return isRebate;
@@ -220,5 +226,23 @@ public class OrderEntity implements Serializable {
 	 */
 	public Integer getOrderPayType() {
 		return orderPayType;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Long getDeliveryUserId() {
+		return deliveryUserId;
+	}
+	public void setDeliveryUserId(Long deliveryUserId) {
+		this.deliveryUserId = deliveryUserId;
+	}
+	public String getDeliveryUserName() {
+		return deliveryUserName;
+	}
+	public void setDeliveryUserName(String deliveryUserName) {
+		this.deliveryUserName = deliveryUserName;
 	}
 }

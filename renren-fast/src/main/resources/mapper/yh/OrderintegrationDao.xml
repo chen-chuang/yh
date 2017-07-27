@@ -12,6 +12,7 @@
         <result property="integration" column="integration"/>
         <result property="priceIntegrationType" column="price_integration_type"/>
         <result property="isRebate" column="is_rebate"/>
+        <result property="time" column="time"/>
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderintegrationEntity">
@@ -45,7 +46,8 @@
 			`order_sum_price`, 
 			`integration`, 
 			`price_integration_type`,
-			'is_rebate'
+			'is_rebate',
+			'time'
 		)
 		values
 		(
@@ -54,7 +56,8 @@
 			#{orderSumPrice}, 
 			#{integration}, 
 			#{priceIntegrationType},
-			#{isRebate}
+			#{isRebate},
+			#{time}
 		)
 	</insert>
 	 
@@ -66,7 +69,8 @@
 			<if test="orderSumPrice != null">`order_sum_price` = #{orderSumPrice}, </if>
 			<if test="integration != null">`integration` = #{integration}, </if>
 			<if test="priceIntegrationType != null">`price_integration_type` = #{priceIntegrationType},</if>
-			<if test="isRebate != null">'is_rebate'=${#isRebate}</if>
+			<if test="isRebate != null">'is_rebate'=${#isRebate},</if>
+			<if test="time != null">'time'=${#time}</if>
 		</set>
 		where id = #{id}
 	</update>
