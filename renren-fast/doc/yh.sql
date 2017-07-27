@@ -1,8 +1,4 @@
-﻿/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2017-7-10 14:09:07                           */
-/*==============================================================*/
-
+--use renren_fast;
 
 drop table if exists sys_ccount;
 
@@ -28,22 +24,19 @@ drop table if exists sys_user;
 
 drop table if exists sys_withdraw;
 
-/*==============================================================*/
-/* Table: sys_ccount                                            */
-/*==============================================================*/
+drop table if exists sys_collection
+
+
 create table sys_account
 (
    id                   int not null auto_increment,
    enterprise_id        bigint comment '区域经销商id',
    price                decimal(18,3) comment '总金额',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_acount comment '资金账户表';
 
-/*==============================================================*/
-/* Table: sys_configTable                                       */
-/*==============================================================*/
 create table sys_configTable
 (
    id                   int not null auto_increment,
@@ -56,13 +49,11 @@ create table sys_configTable
    config_regin_name    varchar(100) comment '配置人区域名',
    config_create_time   datetime comment '配置时间',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_configTable comment '配置表';
 
-/*==============================================================*/
-/* Table: sys_enterpriseInfo                                    */
-/*==============================================================*/
+
 create table sys_enterpriseInfo
 (
    enterprise_id        bigint  NOT NULL AUTO_INCREMENT,
@@ -79,13 +70,11 @@ create table sys_enterpriseInfo
    enterprise_type      int comment '类型（1：生产厂家，2：经销商）',   
   `enterprise_area_name` varchar(180) DEFAULT NULL,
    primary key (enterprise_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_enterpriseInfo comment '企业信息表';
 
-/*==============================================================*/
-/* Table: sys_integrationCash                                   */
-/*==============================================================*/
+
 create table sys_integrationCash
 (
    id                   int not null auto_increment,
@@ -98,13 +87,11 @@ create table sys_integrationCash
    operate_time         datetime comment '操作时间（针对状态）',
    user_id              bigint comment '管理员id',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_integrationCash comment '积分兑现表（销售人员）';
 
-/*==============================================================*/
-/* Table: sys_order                                             */
-/*==============================================================*/
+
 create table sys_order
 (
    order_id             varchar(100) not null,
@@ -122,13 +109,11 @@ create table sys_order
    mark                 text comment '备注',
    order_pay_type       int comment '订单支付方式（1：支付宝，2：微信）',
    primary key (order_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_order comment '订单表';
 
-/*==============================================================*/
-/* Table: sys_orderDetail                                       */
-/*==============================================================*/
+
 create table sys_orderDetail
 (
    order_id             varchar(100) not null,
@@ -141,13 +126,11 @@ create table sys_orderDetail
    enterprise_name      varchar(100),
    product_picture_url  varchar(1024),
    primary key (order_id, product_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_orderDetail comment '订单明细表';
 
-/*==============================================================*/
-/* Table: sys_orderIntegration                                  */
-/*==============================================================*/
+
 create table sys_orderIntegration
 (
    id                   int not null auto_increment,
@@ -157,13 +140,11 @@ create table sys_orderIntegration
    integration          bigint comment '生成积分',
    price_integration_type int comment '价格积分类型（1：配送积分?，2：销售积分）',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_orderIntegration comment '订单积分表（销售人员、配送员）';
 
-/*==============================================================*/
-/* Table: sys_product                                           */
-/*==============================================================*/
+
 create table sys_product
 (
    product_id           bigint not null auto_increment comment '产品ID',
@@ -182,38 +163,32 @@ create table sys_product
   `enter_name`          varchar(50) DEFAULT NULL,
   `enter_person_id`     bigint DEFAULT NULL,
    primary key (product_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_product comment '产品表';
 
-/*==============================================================*/
-/* Table: sys_productType                                       */
-/*==============================================================*/
+
 create table sys_productType
 (
    id                   int not null auto_increment,
    type                 varchar(50),
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_productType comment '产品分类表';
 
-/*==============================================================*/
-/* Table: sys_region                                            */
-/*==============================================================*/
+
 create table sys_region
 (
    id                   int not null,
    name                 varchar(100) comment '行政区划名称',
    pid                  int comment '父ID',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_region comment '行政区划表';
 
-/*==============================================================*/
-/* Table: sys_user                                              */
-/*==============================================================*/
+
 create table sys_user
 (
    user_id              bigint not null comment '用户id',
@@ -222,6 +197,7 @@ create table sys_user
    salt                 varchar(20) comment '盐',
    email                varchar(100) comment '邮箱',
    mobile               varchar(100) comment '手机号',
+  `status` tinyint(4) DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
    expiry_date          datetime comment '过期日期',
    create_user_id       bigint comment '创建者ID',
    create_time          datetime comment '创建时间',
@@ -232,13 +208,11 @@ create table sys_user
    user_permission      int comment '用户权限（1：管理员，2：生成厂家，3：经销商，4：配送员，5：发货员，6：销售员）',
    user_integral        bigint comment '积分' DEFAULT '0',
    primary key (user_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_user comment '系统用户';
 
-/*==============================================================*/
-/* Table: sys_withdraw                                          */
-/*==============================================================*/
+
 create table sys_withdraw
 (
    id                   int not null auto_increment,
@@ -249,7 +223,14 @@ create table sys_withdraw
    operate_time         datetime comment '操作时间（针对状态）',
    user_id              bigint comment '管理员id',
    primary key (id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table sys_withdraw comment '提现记录表（区域经销商）';
+
+
+CREATE TABLE `sys_collection` (
+  `user_id` bigint(20) DEFAULT NULL,
+  `product_id` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
