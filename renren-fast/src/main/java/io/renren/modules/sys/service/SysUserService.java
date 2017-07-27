@@ -79,7 +79,7 @@ public interface SysUserService {
 
 	void setRegion(Long userId, int regionId, String regionName);
 
-	Map<String,Object> apiLogin(String phoneNumber, String password);
+	Object apiLogin(String phoneNumber, String password);
 
 	/**
 	 * 根据发货员ID得到所有配送员(通过所属经销商)

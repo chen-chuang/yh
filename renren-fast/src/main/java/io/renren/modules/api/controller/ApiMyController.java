@@ -140,7 +140,7 @@ public class ApiMyController {
 	@RequestMapping("/login")
 	public R login(String phoneNumber,String password){		
 		
-		Map<String, Object> info = sysUserService.apiLogin(phoneNumber,password);
+		Object info = sysUserService.apiLogin(phoneNumber,password);
 		
 		return R.ok().put("info", info);
 	}

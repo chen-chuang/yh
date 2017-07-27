@@ -157,15 +157,15 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 	
 	@Override
-	public Map<String,Object> apiLogin(String phoneNumber, String password){		
+	public Object apiLogin(String phoneNumber, String password){		
 		
-		Map<String, Object> map = new HashMap<String,Object>();
+		String msg = "";
 		
 		SysUserEntity user = sysUserDao.apiGetUserByPhone(phoneNumber);
 		
 		if(user == null){
-			map.put("info", "您输入的手机号不存在！");
-			return map;
+			msg = "您输入的手机号不存在！";
+			return msg;
 		}
 		
 		password = new Sha256Hash(password,user.getSalt()).toHex();
@@ -173,13 +173,11 @@ public class SysUserServiceImpl implements SysUserService {
 		LoginDTO info = sysUserDao.apiValidateLogin(phoneNumber,password);
 		
 		if(info == null){
-			map.put("info", "您输入的密码有误！");
-			return map;
-		}
+			msg = "您输入的密码有误！";
+			return msg;
+		}		
 		
-		map.put("info", info);
-		
-		return map;		
+		return info;		
 		
 	}
 	
