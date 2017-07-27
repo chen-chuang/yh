@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,7 +93,7 @@ public class ProductController extends AbstractController {
 		
 		SysUserEntity currentUser = this.getUser();
 		
-		if(picFile!=null){
+		if(picFile!=null&&StringUtils.isNotBlank(picFile.getOriginalFilename())){
 			try {
 				String orginalFileName = picFile.getOriginalFilename();
 				String filename = CommonUtils.generateFileName(orginalFileName);
@@ -114,7 +115,7 @@ public class ProductController extends AbstractController {
 		}		
 		
 		
-		if(videoFile!=null){
+		if(videoFile!=null&&StringUtils.isNotBlank(videoFile.getOriginalFilename())){
 			try {
 				String orginalFileName = videoFile.getOriginalFilename();
 				String filename = CommonUtils.generateFileName(orginalFileName);

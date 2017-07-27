@@ -84,7 +84,7 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequiresPermissions("enterpriseinfo:save")
 	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
-		if(file!=null){
+		if(file!=null&&StringUtils.isNotBlank(file.getOriginalFilename())){
 			try {
 				String orginalFileName = file.getOriginalFilename();
 				String filename = CommonUtils.generateFileName(orginalFileName);

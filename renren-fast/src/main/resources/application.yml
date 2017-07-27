@@ -6,7 +6,8 @@ server:
         min-spare-threads: 30
     port: 8000
     context-path: /renren-fast  #与common.js baseURL对应方能在tomcat下正确运行
-
+    #context-path: /
+    
 # mysql
 spring:
     # 环境 dev|test|pro

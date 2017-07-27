@@ -170,7 +170,7 @@
 	    select count(*) from sys_user where area_id = #{id}
 	</select>
 	
-    <select id="apiGetUserByPhone" >
+    <select id="apiGetUserByPhone" resultType="io.renren.modules.sys.entity.SysUserEntity">
 	    select * from sys_user where mobile = #{phoneNumber}
 	</select>
 	
