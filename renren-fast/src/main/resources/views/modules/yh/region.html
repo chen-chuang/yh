@@ -35,17 +35,24 @@
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
 			<div class="form-group">
+			   	<div class="col-sm-2 control-label">行政区域编码</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="region.id" placeholder="行政区域编码"/>
+			    </div>
+			</div>
+		
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">行政区划名称</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="region.name" placeholder="行政区划名称"/>
 			    </div>
 			</div>
-		<!-- 	<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">父ID</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="region.pid" placeholder="父ID"/>
 			    </div>
-			</div> -->
+			</div>
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>

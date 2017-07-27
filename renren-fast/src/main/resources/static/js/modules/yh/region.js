@@ -3,9 +3,9 @@ $(function () {
         url: baseURL + 'region/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
+			{ label: '行政区划编码', name: 'id', index: 'id', width: 50, key: true },
 			{ label: '行政区划名称', name: 'name', index: 'name', width: 80 }, 			
-			{ label: '父ID', name: 'pid', index: 'pid', width: 80 }			
+			{ label: '父编码', name: 'pid', index: 'pid', width: 80 }			
         ],
 		viewrecords: true,
         height: 385,
@@ -61,7 +61,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.region.id == null ? "region/save" : "region/update";
+			
+			var url ="region/save";
+			if(vm.title=="修改"){
+				url="region/update";
+			}
+			//var url = vm.region.id == null ? "region/save" : "region/update";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
