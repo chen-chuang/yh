@@ -1,7 +1,7 @@
 spring:
     datasource:
         url: jdbc:mysql://59.110.163.137:3306/renren_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        username: renren
+        username: root
         password: Aa778899!@#
         #连接池的配置信息
         initialSize: 10
