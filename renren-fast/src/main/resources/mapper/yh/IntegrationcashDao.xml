@@ -97,7 +97,7 @@
 	</delete>
 	
 	<select id="getSumIntegration" resultType="int">
-		select sum(integration) from sys_integrationcash where applyUserId = #{userId} and withdrawStatus!='3'
+		select sum(integration) from sys_integrationcash where apply_user_id = #{userId} and withdraw_status!='3'
 	</select>
 	
 	<select id="apiWithdrawRecordList" resultMap = "apiIntegrationcashMap">
