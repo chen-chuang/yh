@@ -2,21 +2,21 @@
 
 drop table if exists sys_ccount;
 
-drop table if exists sys_configTable;
+drop table if exists sys_configtable;
 
-drop table if exists sys_enterpriseInfo;
+drop table if exists sys_enterpriseinfo;
 
-drop table if exists sys_integrationCash;
+drop table if exists sys_integrationcash;
 
 drop table if exists sys_order;
 
-drop table if exists sys_orderDetail;
+drop table if exists sys_orderdetail;
 
-drop table if exists sys_orderIntegration;
+drop table if exists sys_orderintegration;
 
 drop table if exists sys_product;
 
-drop table if exists sys_productType;
+drop table if exists sys_producttype;
 
 drop table if exists sys_region;
 
@@ -37,7 +37,7 @@ create table sys_account
 
 alter table sys_acount comment '资金账户表';
 
-create table sys_configTable
+create table sys_configtable
 (
    id                   int not null auto_increment,
    config_key           varchar(100) comment '配置key',
@@ -51,10 +51,10 @@ create table sys_configTable
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table sys_configTable comment '配置表';
+alter table sys_configtable comment '配置表';
 
 
-create table sys_enterpriseInfo
+create table sys_enterpriseinfo
 (
    enterprise_id        bigint  NOT NULL AUTO_INCREMENT,
    enterprise_name      varchar(100) comment '企业名称',
@@ -72,10 +72,10 @@ create table sys_enterpriseInfo
    primary key (enterprise_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table sys_enterpriseInfo comment '企业信息表';
+alter table sys_enterpriseinfo comment '企业信息表';
 
 
-create table sys_integrationCash
+create table sys_integrationcash
 (
    id                   int not null auto_increment,
    apply_user_id        bigint comment '申请用户id',
@@ -89,7 +89,7 @@ create table sys_integrationCash
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table sys_integrationCash comment '积分兑现表（销售人员）';
+alter table sys_integrationcash comment '积分兑现表（销售人员）';
 
 
 create table sys_order
@@ -114,7 +114,7 @@ create table sys_order
 alter table sys_order comment '订单表';
 
 
-create table sys_orderDetail
+create table sys_orderdetail
 (
    order_id             varchar(100) not null,
    product_id           bigint not null,
@@ -131,7 +131,7 @@ create table sys_orderDetail
 alter table sys_orderDetail comment '订单明细表';
 
 
-create table sys_orderIntegration
+create table sys_orderintegration
 (
    id                   int not null auto_increment,
    user_id              bigint comment '用户id',
@@ -142,7 +142,7 @@ create table sys_orderIntegration
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table sys_orderIntegration comment '订单积分表（销售人员、配送员）';
+alter table sys_orderintegration comment '订单积分表（销售人员、配送员）';
 
 
 create table sys_product
@@ -168,14 +168,14 @@ create table sys_product
 alter table sys_product comment '产品表';
 
 
-create table sys_productType
+create table sys_producttype
 (
    id                   int not null auto_increment,
    type                 varchar(50),
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table sys_productType comment '产品分类表';
+alter table sys_producttype comment '产品分类表';
 
 
 create table sys_region
