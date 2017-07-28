@@ -26,7 +26,7 @@
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id desc
+                order by id asc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -85,6 +85,13 @@
 		select id,name from sys_region where pid = #{areaID}   
 	</select>
 	
+	<select id="getParentKeyValue" resultType="java.util.Map">
+		select r.pid,(select r.name from sys_region p where p.id = r.pid) as pname 
+			from sys_region r  where r.id=#{id}
+	</select>
 	
+	<select id="onlyId" resultType="int">
+		select count(*) from sys_region where id=#{id}
+	</select>
 
 </mapper>
