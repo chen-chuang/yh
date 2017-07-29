@@ -38,4 +38,6 @@ public interface IntegrationcashService {
 	void apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user);
 
 	List<WithDrawDTO> apiWithdrawRecordList(Map<String, Object> map);
+
+	void complete(String id);
 }

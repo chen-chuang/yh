@@ -153,13 +153,7 @@ public class IntegrationcashController extends AbstractController {
 	@RequestMapping("/complete")
 	public R complete(@RequestParam("id") String id){
 		
-        IntegrationcashEntity integrationcashEntity = integrationcashService.queryObject(Integer.valueOf(id));
-		
-		integrationcashEntity.setOperateTime(new Date());
-		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.COMPLETE.getStatus());
-		integrationcashEntity.setUserId(getUserId());	
-		
-		integrationcashService.update(integrationcashEntity);		
+        integrationcashService.complete(id);	
 		
 		return R.ok();
 	}

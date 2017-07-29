@@ -1,6 +1,7 @@
 package io.renren.modules.yh.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import io.renren.modules.api.entity.dto.WithDrawDTO;
+import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.IntegrationcashDao;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
+import io.renren.modules.yh.entity.enums.EnumIntegrationCash;
 import io.renren.modules.yh.service.IntegrationcashService;
 
 
@@ -26,6 +31,9 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 	
 	@Autowired
 	private ConfigtableDao configtableDao;
+	
+	@Autowired
+	private SysUserDao sysUserDao;
 	
 	@Override
 	public IntegrationcashEntity queryObject(Integer id){
@@ -66,20 +74,33 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 	@Transactional
 	public void apply(IntegrationcashEntity integrationcashEntity,SysUserEntity user){
 		
-		ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
+		//申请前先检查申请中的积分，以防超
+		//得到申请中的总积分
+		Long applySum = integrationcashDao.getSumIntegration(user.getUserId());
+		
+		//换算比例 展示能兑换多少钱
+        ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
 		
 		if(configtableEntities!=null){
 			
 			String proportion = configtableEntities.getConfigValue();
 			BigDecimal proportionNum = new BigDecimal(proportion);
 			
-			BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
+			//还可兑现积分
+			Long userIntegral =  user.getUserIntegral()-applySum;
 			
-			//通过比例计算提及的积分
-			Long useIntegration = amount.multiply(amount).longValue();
-			integrationcashEntity.setIntegration(useIntegration);
+			//用户剩余积分 大于 可提现积分
+			if(userIntegral>integrationcashEntity.getIntegration()){
+				
+				BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
+				
+				//通过比例计算提及的积分
+				Long useIntegration = amount.multiply(proportionNum).longValue();
+				integrationcashEntity.setIntegration(useIntegration);
+				
+				integrationcashDao.save(integrationcashEntity);
+			}
 			
-			integrationcashDao.save(integrationcashEntity);
 		}
 		
 		
@@ -128,7 +149,7 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 			BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
 			
 			//通过比例计算提及的积分
-			Long useIntegration = amount.multiply(amount).longValue();
+			Long useIntegration = amount.multiply(proportionNum).longValue();
 			integrationcashEntity.setIntegration(useIntegration);
 			
 			integrationcashDao.save(integrationcashEntity);
@@ -142,4 +163,24 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 		
 		return withDraw;
 	}
+
+	@Override
+	@Transactional
+	public void complete(String id) {
+		
+        IntegrationcashEntity integrationcashEntity = integrationcashDao.queryObject(Integer.valueOf(id));
+		
+		integrationcashEntity.setOperateTime(new Date());
+		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.COMPLETE.getStatus());
+		
+		integrationcashDao.update(integrationcashEntity);			
+		
+		SysUserEntity userEntity = sysUserDao.queryObject(integrationcashEntity.getApplyUserId());
+		Long remainderIntegration = userEntity.getUserIntegral() - integrationcashEntity.getIntegration();
+		
+		//公用一个方法 懒得改了   更新积分
+		sysUserDao.addIntegral(remainderIntegration, userEntity.getUserId());
+		
+	}
+	
 }
