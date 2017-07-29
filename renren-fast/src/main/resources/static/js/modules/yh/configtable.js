@@ -59,15 +59,15 @@ var vm = new Vue({
 			if(type==1){
 				vm.title = "设置销售员兑换比例";
 				vm.configtable.configKey="sale";
-				configtable.configName="销售员兑换比例";
+				vm.configtable.configName="销售员兑换比例";
 			}else if(type==2){
 				vm.title = "设置配送员兑换比例";
 				vm.configtable.configKey="delivery"
-				configtable.configName="配送员兑换比例";
+				vm.configtable.configName="配送员兑换比例";
 			}else if(type==3){
 				vm.title = "设置起送金额";
 				vm.configtable.configKey="delivery_amount";
-				configtable.configName="起送金额";
+				vm.configtable.configName="起送金额";
 			}
 		},
 		update: function (event) {

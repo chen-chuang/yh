@@ -27,7 +27,15 @@
 	</select>
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
-		select * from sys_integrationcash
+		select * from sys_integrationcash 
+		<where>
+			<if test="userPermission==3"><!-- 区域管理员 -->
+				user_id=#{userId}
+			</if>
+			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
+				apply_user_id=#{userId}
+			</if>
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -96,7 +104,7 @@
 		</foreach>
 	</delete>
 	
-	<select id="getSumIntegration" resultType="int">
+	<select id="getSumIntegration" resultType="java.lang.Long">
 		select sum(integration) from sys_integrationcash where apply_user_id = #{userId} and withdraw_status!='3'
 	</select>
 	

@@ -57,7 +57,7 @@ function openAccount(){
 	var content = '<div style="position: relative;top: 60px;">'
 		+ '<div class="col-sm-2 control-label">提现金额</div>'
 		+ '<div class="col-sm-10" >'
-		+ '<input id="accountNum"  class="form-control"></input>' 
+		+ '<input id="accountNum"  class="form-control" placeholder=可兑现'+$('#ableCash').html()+'></input>' 
 		+ '</div>'
 		+ '</div>';
 
@@ -74,23 +74,37 @@ function openAccount(){
 		content : content,
 		yes : function() {
 			var accountNum = $('#accountNum').val();
-			$.ajax({
-				type : "POST",
-				url : baseURL + "integrationcash/apply",
-				data : {
-					accountNum : accountNum
-				},
-				success : function(r) {
-					if (r.code == 0) {
-						alert('申请成功！', function() {
-							vm.reload();
-							layer.closeAll();
-						});
-					} else {
-						alert(r.msg);
+			
+			if(accountNum==null || accountNum==0 ){
+				return;
+			}
+			
+			if(parseFloat(accountNum)>parseFloat($("#ableCashValue").val())){
+				alert('您输入的金额超过能兑换的限额！');
+			    return;
+				
+			}else{
+				$.ajax({
+					type : "POST",
+					url : baseURL + "integrationcash/apply",
+					data : {
+						accountNum : accountNum
+					},
+					success : function(r) {
+						if (r.code == 0) {
+							alert('申请成功！', function() {
+								getIntegrationInfo();
+								vm.reload();
+								layer.closeAll();
+							});
+						} else {
+							alert(r.msg);
+						}
 					}
-				}
-			});
+				});
+			}
+			
+			
 		},
 		btn2 : function() {
 			layer.closeAll();
@@ -109,6 +123,7 @@ function getIntegrationInfo(){
 				console.log(r.info.sum);
 				$('#remainMoney').html(r.info.sum);
 				$('#ableCash').html(r.info.ableCash+"元");
+				$('#ableCashValue').val(r.info.ableCash);
 				$('#applySum').html(r.info.applySum==null?0:r.info.applySum);
 				
 			} else {

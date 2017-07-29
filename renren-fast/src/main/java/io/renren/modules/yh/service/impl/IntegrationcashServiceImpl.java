@@ -101,9 +101,10 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 			String proportion = configtableEntities.getConfigValue();
 			Integer proportionNum = Integer.valueOf(proportion);
 			
-			Long userIntegral =  user.getUserIntegral();
+			//还可兑现积分
+			Long userIntegral =  user.getUserIntegral()-applySum;
 			
-			Long ableCash = userIntegral/proportionNum;
+			Double ableCash = userIntegral/(double)proportionNum;
 			map.put("ableCash", ableCash);
 		}
 		

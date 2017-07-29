@@ -44,6 +44,10 @@ public class IntegrationcashController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("integrationcash:list")
 	public R list(@RequestParam Map<String, Object> params){
+		
+		SysUserEntity userEntity = this.getUser();
+		params.put("userPermission", userEntity.getUserPermission());
+		params.put("userId", userEntity.getUserId());
 		//查询列表数据
         Query query = new Query(params);
 
