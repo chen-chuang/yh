@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.WithdrawEntity;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface WithdrawService {
 	void apply(WithdrawEntity withdrawEntity);
 
 	void operate(Map<String, Object> params);
+
+	Map<String, Object> getCashInfo(SysUserEntity user);
 }

@@ -1,6 +1,7 @@
 $(function () {
 	
-	getCurrentLoginUser();
+	/*getCurrentLoginUser();*/
+	getCashInfo();
 	
     $("#jqGrid").jqGrid({
         url: baseURL + 'withdraw/list',
@@ -20,11 +21,7 @@ $(function () {
 				}
 			}}, 			
 			{ label: '操作时间',hidden:true, name: 'operateTime', index: 'operate_time', width: 80 }, 			
-			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
-			{ label: '操作', hidden:false, width: 80,formatter: function(value, options, row){
-				console.log(row.id);
-				return '<a onclick=accept('+row.id+')>受理</a>|<a onclick=complete('+row.id+')>完成</a>';
-			}}
+			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 }
         ],
 		viewrecords: true,
         height: 385,
@@ -61,47 +58,23 @@ $(function () {
     });
 });
 
-function getCurrentLoginUser(){
+/*function getCurrentLoginUser(){
     $.get(baseURL + "sys/user/currentLoginUser", function(r){
     	vm.currentPermission = r.currentLoginUser.userPermission;
 	});
-}
+}*/
 
-function accept(id){
+function getCashInfo(){
 	$.ajax({
 		type : "POST",
-		url : baseURL + "withdraw/operate",
-		data : {
-			id : id,
-			type:"accept"
-		},
+		url : baseURL + "withdraw/getCashInfo",
 		success : function(r) {
 			if (r.code == 0) {
-				alert('受理成功！', function() {
-					vm.reload();
-					layer.closeAll();
-				});
-			} else {
-				alert(r.msg);
-			}
-		}
-	});
-}
-
-function complete(id){
-	$.ajax({
-		type : "POST",
-		url : baseURL + "withdraw/operate",
-		data : {
-			id : id,
-			type:"complete"
-		},
-		success : function(r) {
-			if (r.code == 0) {
-				alert('已完成！', function() {
-					vm.reload();
-					layer.closeAll();
-				});
+				$('#remainMoney').html(r.info.sum==null?0:r.info.sum);
+				$('#ableCash').html(r.info.ableCash==null?0:r.info.ableCash+"元");
+				$('#ableCashValue').val(r.info.ableCash);
+				$('#applySum').html(r.info.applySum==null?0:r.info.applySum);
+				
 			} else {
 				alert(r.msg);
 			}
@@ -113,7 +86,7 @@ function openAccount() {
 	var content = '<div style="position: relative;top: 60px;">'
 			+ '<div class="col-sm-2 control-label">提现金额</div>'
 			+ '<div class="col-sm-10" >'
-			+ '<input id="accountNum"  class="form-control"></input>' 
+			+ '<input id="accountNum"  class="form-control" placeholder=可提现'+$('#ableCash').html()+'></input>' 
 			+ '</div>'
 			+ '</div>';
 
@@ -130,23 +103,34 @@ function openAccount() {
 		content : content,
 		yes : function() {
 			var accountNum = $('#accountNum').val();
-			$.ajax({
-				type : "POST",
-				url : baseURL + "withdraw/apply",
-				data : {
-					accountNum : accountNum
-				},
-				success : function(r) {
-					if (r.code == 0) {
-						alert('申请成功！', function() {
-							vm.reload();
-							layer.closeAll();
-						});
-					} else {
-						alert(r.msg);
+			if(accountNum==null || accountNum==0 ){
+				return;
+			}
+			
+			if(parseFloat(accountNum)>parseFloat($("#ableCashValue").val())){
+				alert('您输入的金额超过提现的限额！');
+			    return;
+				
+			}else{
+				$.ajax({
+					type : "POST",
+					url : baseURL + "withdraw/apply",
+					data : {
+						accountNum : accountNum
+					},
+					success : function(r) {
+						if (r.code == 0) {
+							alert('申请成功！', function() {
+								getCashInfo();
+								vm.reload();
+								layer.closeAll();
+							});
+						} else {
+							alert(r.msg);
+						}
 					}
-				}
-			});
+				});
+			}
 		},
 		btn2 : function() {
 			layer.closeAll();

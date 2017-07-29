@@ -1,15 +1,12 @@
 $(function () {
-	
-	getIntegrationInfo();
+
 	
     $("#jqGrid").jqGrid({
-        url: baseURL + 'integrationcash/list',
+        url: baseURL + 'withdraw/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', hidden:true,name: 'id', index: 'id', width: 50, key: true },
-			{ label: '申请用户id',hidden:true, name: 'applyUserId', index: 'apply_user_id', width: 80 }, 
-			{ label: '申请用户', name: 'applyUserName', index: 'apply_user_name', width: 80 }, 				
-			{ label: '兑现积分', name: 'integration', index: 'integration', width: 80 }, 			
+			{ label: 'id',hidden:true, name: 'id', index: 'id', width: 50, key: true },
+			{ label: '申请用户编码', name: 'applyUserId', index: 'apply_user_id', width: 80 }, 			
 			{ label: '提现金额', name: 'withdrawalamount', index: 'withdrawalAmount', width: 80 }, 			
 			{ label: '提现申请时间', name: 'applyTime', index: 'apply_time', width: 80 }, 			
 			{ label: '提现状态', name: 'withdrawStatus', index: 'withdraw_status', width: 80, formatter: function(value, options, row){
@@ -20,9 +17,20 @@ $(function () {
 				}else if(value===3){
 					return "已完成";
 				}
-			}}, 					
-			{ label: '操作时间', name: 'operateTime', index: 'operate_time', width: 80 }, 			
-			{ label: '管理员id',hidden:true, name: 'userId', index: 'user_id', width: 80 }			
+			}}, 			
+			{ label: '操作时间',name: 'operateTime', index: 'operate_time', width: 80 }, 			
+			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
+			{ label: '操作', width: 80,formatter: function(value, options, row){
+				console.log(row.id);
+				if(row.withdrawStatus===1){
+					return '<a onclick=operate('+row.id+','+'"accept")>受理</a>';
+				}else if(row.withdrawStatus===2){
+					return '<a onclick=operate('+row.id+','+'"complete")>完成</a>';
+				}else{
+					return "";
+				}
+				
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -47,83 +55,30 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
-        }
-    });    
+        	
+        /*	$("#jqGrid").setGridParam().showCol("operateTime").trigger("reloadGrid");
 
+        	$("#jqGrid").setGridParam().hideCol("userId").trigger("reloadGrid");*/
+        	
+        	if(vm.currentPermission==1){
+        		
+        	}
+        }
+    });
 });
 
-function openAccount(){   	
-	
-	var content = '<div style="position: relative;top: 60px;">'
-		+ '<div class="col-sm-2 control-label">提现金额</div>'
-		+ '<div class="col-sm-10" >'
-		+ '<input id="accountNum"  class="form-control" placeholder=可兑现'+$('#ableCash').html()+'></input>' 
-		+ '</div>'
-		+ '</div>';
 
-	layer.open({
-		type : 1,
-		title : '积分兑现',
-		area : [ '390px', '260px' ],
-		shade : 0,
-		id : 'LAY_layuipro' // 设定一个id，防止重复弹出
-		,
-		btn : [ '确定', '关闭' ],
-		moveType : 1 // 拖拽模式，0或者1
-		,
-		content : content,
-		yes : function() {
-			var accountNum = $('#accountNum').val();
-			
-			if(accountNum==null || accountNum==0 ){
-				return;
-			}
-			
-			if(parseFloat(accountNum)>parseFloat($("#ableCashValue").val())){
-				alert('您输入的金额超过能兑换的限额！');
-			    return;
-				
-			}else{
-				$.ajax({
-					type : "POST",
-					url : baseURL + "integrationcash/apply",
-					data : {
-						accountNum : accountNum
-					},
-					success : function(r) {
-						if (r.code == 0) {
-							alert('申请成功！', function() {
-								getIntegrationInfo();
-								vm.reload();
-								layer.closeAll();
-							});
-						} else {
-							alert(r.msg);
-						}
-					}
-				});
-			}
-			
-			
-		},
-		btn2 : function() {
-			layer.closeAll();
-		}
-	});
-	
-}
-
-function getIntegrationInfo(){
+function operate(id,type){
 	$.ajax({
 		type : "POST",
-		url : baseURL + "integrationcash/getIntegrationInfo",
+		url : baseURL + "withdraw/operate",
+		data:{id:id,type:type},
 		success : function(r) {
 			if (r.code == 0) {
-				$('#remainMoney').html(r.info.sum);
-				$('#ableCash').html(r.info.ableCash+"元");
-				$('#ableCashValue').val(r.info.ableCash);
-				$('#applySum').html(r.info.applySum==null?0:r.info.applySum);
-				
+				alert('操作成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
 			} else {
 				alert(r.msg);
 			}
@@ -131,12 +86,14 @@ function getIntegrationInfo(){
 	});
 }
 
+
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		showList: true,
 		title: null,
-		integrationcash: {}
+		withdraw: {},
+		currentPermission:3
 	},
 	methods: {
 		query: function () {
@@ -145,7 +102,7 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.integrationcash = {};
+			vm.withdraw = {};
 		},
 		update: function (event) {
 			var id = getSelectedRow();
@@ -158,12 +115,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.integrationcash.id == null ? "integrationcash/save" : "integrationcash/update";
+			var url = vm.withdraw.id == null ? "withdraw/save" : "withdraw/update";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
                 contentType: "application/json",
-			    data: JSON.stringify(vm.integrationcash),
+			    data: JSON.stringify(vm.withdraw),
 			    success: function(r){
 			    	if(r.code === 0){
 						alert('操作成功', function(index){
@@ -184,7 +141,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "integrationcash/delete",
+				    url: baseURL + "withdraw/delete",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
@@ -200,8 +157,8 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get(baseURL + "integrationcash/info/"+id, function(r){
-                vm.integrationcash = r.integrationcash;
+			$.get(baseURL + "withdraw/info/"+id, function(r){
+                vm.withdraw = r.withdraw;
             });
 		},
 		reload: function (event) {

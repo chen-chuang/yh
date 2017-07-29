@@ -6,6 +6,7 @@ import io.renren.modules.sys.dao.BaseDao;
 import java.math.BigDecimal;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 资金账户表
@@ -19,6 +20,6 @@ public interface AccountDao extends BaseDao<AccountEntity> {
 
 	AccountEntity queryByUserId(Long applyUserId);
 
-	void updatePrice(Long applyUserId, BigDecimal surplusPrice);
+	void updatePrice(@Param("applyUserId")Long applyUserId, @Param("surplusPrice")BigDecimal surplusPrice);
 	
 }

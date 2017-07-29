@@ -24,6 +24,10 @@
 		    <if test = "applyUserId !=null">
 		        apply_user_id = #{applyUserId}
 		    </if>
+		    
+		     <if test = "userId !=null">
+		        user_id = #{userId}
+		    </if>
 		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -90,6 +94,11 @@
 	<update id="operate" parameterType="java.util.Map">
 		update sys_withdraw set `operate_time` = #{operateTime},`withdraw_status` = #{withdrawStatus}, `user_id` = #{userId} where id = #{id}
 	</update>
+	
+	<select id="getSumApplyCash" resultType="java.math.BigDecimal">
+		select sum(withdrawalAmount) from  sys_withdraw where apply_user_id =#{userId} and withdraw_status!=3
+	</select>
+	
 	
 
 </mapper>
