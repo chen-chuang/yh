@@ -105,9 +105,11 @@ function getIntegrationInfo(){
 		url : baseURL + "integrationcash/getIntegrationInfo",
 		success : function(r) {
 			if (r.code == 0) {
-				
-				$('#remainMoney').val(r.info["sum"]);
-				
+				console.log(r.info);
+				console.log(r.info.sum);
+				$('#remainMoney').html(r.info.sum);
+				$('#ableCash').html(r.info.ableCash+"元");
+				$('#applySum').html(r.info.applySum==null?0:r.info.applySum);
 				
 			} else {
 				alert(r.msg);

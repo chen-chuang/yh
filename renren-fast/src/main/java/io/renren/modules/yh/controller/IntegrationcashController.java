@@ -131,4 +131,33 @@ public class IntegrationcashController extends AbstractController {
 		return R.ok().put("info", info);
 	}
 	
+	@RequestMapping("/agree")
+	public R agree(@RequestParam("id") String id){
+		
+		IntegrationcashEntity integrationcashEntity = integrationcashService.queryObject(Integer.valueOf(id));
+		
+		integrationcashEntity.setOperateTime(new Date());
+		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.ACCEPTED.getStatus());
+		integrationcashEntity.setUserId(getUserId());	
+		
+		integrationcashService.update(integrationcashEntity);		
+		
+		return R.ok();
+	}
+	
+	
+	@RequestMapping("/complete")
+	public R complete(@RequestParam("id") String id){
+		
+        IntegrationcashEntity integrationcashEntity = integrationcashService.queryObject(Integer.valueOf(id));
+		
+		integrationcashEntity.setOperateTime(new Date());
+		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.COMPLETE.getStatus());
+		integrationcashEntity.setUserId(getUserId());	
+		
+		integrationcashService.update(integrationcashEntity);		
+		
+		return R.ok();
+	}
+	
 }
