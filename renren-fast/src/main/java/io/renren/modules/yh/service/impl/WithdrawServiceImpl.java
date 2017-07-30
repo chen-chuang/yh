@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.AccountDao;
 import io.renren.modules.yh.dao.WithdrawDao;
 import io.renren.modules.yh.entity.AccountEntity;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.WithdrawEntity;
 import io.renren.modules.yh.entity.enums.EnumWithDrawStatus;
 import io.renren.modules.yh.service.WithdrawService;
@@ -81,6 +84,33 @@ public class WithdrawServiceImpl implements WithdrawService {
 			
 			accountDao.updatePrice(withdrawEntity.getApplyUserId(),surplusPrice);
 		}
+	}
+
+	@Override
+	public Map<String, Object> getCashInfo(SysUserEntity user) {
+		
+	    Map<String,Object> map = new HashMap<String,Object>();
+		
+		//得到申请中的总金额
+		BigDecimal applySum = withdrawDao.getSumApplyCash(user.getUserId());
+		
+		AccountEntity accountEntity = accountDao.queryByUserId(user.getUserId());
+		
+		if(accountEntity!=null){
+			BigDecimal ableCash = accountEntity.getPrice().subtract(applySum);
+			map.put("ableCash", ableCash);
+			if(ableCash.compareTo(new BigDecimal(0))==-1){
+				map.put("ableCash", 0);
+			}
+		}
+		
+		if(accountEntity!=null){
+			map.put("sum", accountEntity.getPrice());
+		}
+		
+		map.put("applySum",applySum);
+		
+		return map;
 	}
 	
 }

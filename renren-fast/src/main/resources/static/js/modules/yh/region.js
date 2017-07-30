@@ -1,4 +1,4 @@
-$(function () {
+/*$(function () {
     $("#jqGrid").jqGrid({
         url: baseURL + 'region/list',
         datatype: "json",
@@ -32,14 +32,57 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+});*/
+
+
+function getRegionId () {
+    var selected = $('#regionTable').bootstrapTreeTable('getSelections');
+    if (selected.length == 0) {
+        return null;
+    } else {
+        return selected[0].id;
+    }
+}
+
+
+var Region = {
+	    id: "regionTable",
+	    table: null,
+	    layerIndex: -1
+	};
+
+	/**
+	 * 初始化表格的列
+	 */
+Region.initColumn = function () {
+    var columns = [
+        {field: 'selectItem', radio: true},
+        {title: '区域编码', field: 'id', visible: false, align: 'center', valign: 'middle', width: '80px'},
+        {title: '区域名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'}]
+    return columns;
+};
+
+$(function () {
+    var colunms = Region.initColumn();
+    var table = new TreeTable(Region.id, baseURL + "region/getAll", colunms);
+    table.setExpandColumn(2);
+    table.setIdField("id");
+    table.setCodeField("id");
+    table.setParentCodeField("pid");
+    table.setExpandAll(false);
+    table.init();
+    Region.table = table;
 });
+
+
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		showList: true,
 		title: null,
-		region: {}
+		region: {},
+		fatherShow:true
 	},
 	methods: {
 		query: function () {
@@ -48,21 +91,50 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.region = {};
+			vm.region = {};			
+			
+			var id = getRegionId();			
+			
+			if(id==null){
+				// $('input:radio:first').attr('checked', 'checked');
+				 vm.fatherShow=false;
+				 vm.region.pid=0;
+			}else{
+				//$('input:radio:last').attr('checked', 'checked');
+				$.ajax({
+					type: "POST",
+				    url: baseURL + "region/info/"+id,
+				    success: function(r){
+				    	if(r.code === 0){
+				    		vm.region.pid = r.region.id;
+						   $("#pname").val(r.region.name);
+						}
+					}
+				});
+				vm.fatherShow=true;
+			}
+	        $("#regionId").removeAttr('disabled');
 		},
 		update: function (event) {
-			var id = getSelectedRow();
+			var id = getRegionId();
 			if(id == null){
 				return ;
 			}
 			vm.showList = false;
-            vm.title = "修改";
+            vm.title = "修改";            
+            vm.getInfo(id);  
             
-            vm.getInfo(id)
+            vm.fatherShow = false;
+			 $("#regionId").attr('disabled','true');
 		},
 		saveOrUpdate: function (event) {
 			
-			var url ="region/save";
+			var url=null;
+			
+			if(vm.title=="新增"){
+				url ="region/save";			    
+			}
+			
 			if(vm.title=="修改"){
 				url="region/update";
 			}
@@ -84,8 +156,8 @@ var vm = new Vue({
 			});
 		},
 		del: function (event) {
-			var ids = getSelectedRows();
-			if(ids == null){
+			var id = getRegionId();
+			if(id == null){
 				return ;
 			}
 			
@@ -94,11 +166,14 @@ var vm = new Vue({
 					type: "POST",
 				    url: baseURL + "region/delete",
                     contentType: "application/json",
-				    data: JSON.stringify(ids),
+				    data: JSON.stringify(id),
 				    success: function(r){
 						if(r.code == 0){
-							alert(r.msg, function(index){
+							/*alert(r.msg, function(index){
 								$("#jqGrid").trigger("reloadGrid");
+							});*/
+							alert(r.msg, function(){
+								vm.reload();
 							});
 						}else{
 							alert(r.msg);
@@ -114,10 +189,11 @@ var vm = new Vue({
 		},
 		reload: function (event) {
 			vm.showList = true;
-			var page = $("#jqGrid").jqGrid('getGridParam','page');
+			/*var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 page:page
-            }).trigger("reloadGrid");
+            }).trigger("reloadGrid");*/
+            Region.table.refresh();
 		}
 	}
 });

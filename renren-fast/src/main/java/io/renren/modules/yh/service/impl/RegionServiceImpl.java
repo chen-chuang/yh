@@ -2,6 +2,7 @@ package io.renren.modules.yh.service.impl;
 
 import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -188,5 +189,14 @@ public class RegionServiceImpl implements RegionService {
 		return regionDao.apiTown(areaID);
 	}
 	
+	@Override
+	public Map<String, Object> getParentKeyValue(String id){
+		return regionDao.getParentKeyValue(id);
+	}
+	
+	@Override
+	public int onlyId(Integer id){
+		return regionDao.onlyId(id);
+	}
 	
 }

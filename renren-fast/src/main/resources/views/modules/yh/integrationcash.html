@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>积分兑现表（销售人员）</title>
+<title>积分兑现申请（销售人员）</title>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -29,16 +29,21 @@
 				<div class="cw_infon_2_kyzj">
 					<span class="f_left">总积分：</span>
 					<span class="cw_infon_2_red f_left" id="remainMoney">0.00&nbsp;</span>
-					<a href="javascript:openAccount()" class="cw_kaihu">兑现</a>
+					<span class="f_left">可兑现：</span>
+					<span class="cw_infon_2_red f_left" id="ableCash">0.00&nbsp;</span>
+					<input type=hidden id="ableCashValue">
+					<span class="f_left">申请中(冻结)：</span>
+					<span class="cw_infon_2_red f_left" id="applySum">0.00&nbsp;</span>
+					<a href="javascript:openAccount()" class="cw_zhuanchu">兑现</a>
 				</div>				
 			</div>
 		</div>
 	<div v-show="showList">
-		<div class="grid-btn">
+		<!-- <div class="grid-btn">
 			<a v-if="hasPermission('integrationcash:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
 			<a v-if="hasPermission('integrationcash:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
 			<a v-if="hasPermission('integrationcash:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
-		</div>
+		</div> -->
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
     </div>

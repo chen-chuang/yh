@@ -22,24 +22,20 @@
 </head>
 <body>
 <div id="rrapp" v-cloak>
-	
-	<div class="cw_infon" id="glance">
-		<div class="cw_infon_pic"></div>
-		<div class="cw_infon_2">
-			<div class="cw_infon_2_name">资金账户</div>
-			<div class="cw_infon_2_kyzj">
-				<span class="f_left">总资金：</span>
-				<span class="cw_infon_2_red f_left" id="remainMoney">0.00&nbsp;</span>
-				<span class="f_left">可提现：</span>
-				<span class="cw_infon_2_red f_left" id="ableCash">0.00&nbsp;</span>
-				<input type=hidden id="ableCashValue">
-				<span class="f_left">申请中(冻结)：</span>
-				<span class="cw_infon_2_red f_left" id="applySum">0.00&nbsp;</span>
-				<a href="javascript:openAccount()" class="cw_zhuanchu">提现</a>
-			</div>				
+
+	<!-- <div v-if="currentPermission==3" class="cw_info">
+		<div class="cw_infon" id="glance">
+			<div class="cw_infon_pic"></div>
+			<div class="cw_infon_2">
+				<div class="cw_infon_2_name">资金账户</div>
+				<div class="cw_infon_2_kyzj">
+					<span class="f_left">总资金：</span>
+					<span class="cw_infon_2_red f_left" name="remainMoney">0.00&nbsp;元</span>
+					<a href="javascript:openAccount()" class="cw_kaihu">提现</a>
+				</div>				
+			</div>
 		</div>
-	</div>
-	
+	</div> -->
 	<div v-show="showList">
 		<!-- <div class="grid-btn">
 			<a v-if="hasPermission('withdraw:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
@@ -98,6 +94,6 @@
 	</div> -->
 </div>
 
-<script src="../../js/modules/yh/withdraw.js"></script>
+<script src="../../js/modules/yh/withdrawlist.js"></script>
 </body>
 </html>

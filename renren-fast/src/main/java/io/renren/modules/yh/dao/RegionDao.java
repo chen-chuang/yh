@@ -26,5 +26,9 @@ public interface RegionDao extends BaseDao<RegionEntity> {
 	List<RegionEntity> getChildrenByPid(int pid);
 
 	List<TownDTO> apiTown(String areaID);
+
+	Map<String, Object> getParentKeyValue(String id);
+
+	int onlyId(Integer id);
 	
 }

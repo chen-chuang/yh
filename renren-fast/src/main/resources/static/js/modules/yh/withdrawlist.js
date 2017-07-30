@@ -1,17 +1,36 @@
 $(function () {
+
+	
     $("#jqGrid").jqGrid({
-        url: baseURL + 'configtable/list',
+        url: baseURL + 'withdraw/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', hidden:true,name: 'id', index: 'id', width: 50, key: true },
-			{ label: '配置key',hidden:true, name: 'configKey', index: 'config_key', width: 80 }, 			
-			{ label: '配置名称', name: 'configName', index: 'config_name', width: 80 }, 			
-			{ label: '配置值', name: 'configValue', index: 'config_value', width: 80 }, 			
-			{ label: '配置人id', hidden:true,name: 'configUserId', index: 'config_user_id', width: 80 }, 			
-			{ label: '配置人名称', name: 'configUserName', index: 'config_user_name', width: 80 }, 			
-			{ label: '配置人区域id', hidden:true,name: 'configRegionId', index: 'config_region_id', width: 80 }, 			
-			{ label: '区域名称', name: 'configReginName', index: 'config_regin_name', width: 80 }, 			
-			{ label: '配置时间', name: 'configCreateTime', index: 'config_create_time', width: 80 }			
+			{ label: 'id',hidden:true, name: 'id', index: 'id', width: 50, key: true },
+			{ label: '申请用户编码', name: 'applyUserId', index: 'apply_user_id', width: 80 }, 			
+			{ label: '提现金额', name: 'withdrawalamount', index: 'withdrawalAmount', width: 80 }, 			
+			{ label: '提现申请时间', name: 'applyTime', index: 'apply_time', width: 80 }, 			
+			{ label: '提现状态', name: 'withdrawStatus', index: 'withdraw_status', width: 80, formatter: function(value, options, row){
+				if(value===1){
+					return "申请中";
+				}else if(value===2){
+					return "已受理";
+				}else if(value===3){
+					return "已完成";
+				}
+			}}, 			
+			{ label: '操作时间',name: 'operateTime', index: 'operate_time', width: 80 }, 			
+			{ label: '管理员id', hidden:true,name: 'userId', index: 'user_id', width: 80 },
+			{ label: '操作', width: 80,formatter: function(value, options, row){
+				console.log(row.id);
+				if(row.withdrawStatus===1){
+					return '<a onclick=operate('+row.id+','+'"accept")>受理</a>';
+				}else if(row.withdrawStatus===2){
+					return '<a onclick=operate('+row.id+','+'"complete")>完成</a>';
+				}else{
+					return "";
+				}
+				
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -36,39 +55,54 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        	
+        /*	$("#jqGrid").setGridParam().showCol("operateTime").trigger("reloadGrid");
+
+        	$("#jqGrid").setGridParam().hideCol("userId").trigger("reloadGrid");*/
+        	
+        	if(vm.currentPermission==1){
+        		
+        	}
         }
     });
 });
+
+
+function operate(id,type){
+	$.ajax({
+		type : "POST",
+		url : baseURL + "withdraw/operate",
+		data:{id:id,type:type},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('操作成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}
+
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 		showList: true,
 		title: null,
-		configtable: {}
+		withdraw: {},
+		currentPermission:3
 	},
 	methods: {
 		query: function () {
 			vm.reload();
 		},
-		add: function(type){
+		add: function(){
 			vm.showList = false;
-			
-			vm.configtable = {};
-			
-			if(type==1){
-				vm.title = "设置销售员兑换比例";
-				vm.configtable.configKey="sale";
-				vm.configtable.configName="销售员兑换比例";
-			}else if(type==2){
-				vm.title = "设置配送员兑换比例";
-				vm.configtable.configKey="delivery"
-				vm.configtable.configName="配送员兑换比例";
-			}else if(type==3){
-				vm.title = "设置起送金额";
-				vm.configtable.configKey="delivery_amount";
-				vm.configtable.configName="起送金额";
-			}
+			vm.title = "新增";
+			vm.withdraw = {};
 		},
 		update: function (event) {
 			var id = getSelectedRow();
@@ -81,12 +115,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.configtable.id == null ? "configtable/save" : "configtable/update";
+			var url = vm.withdraw.id == null ? "withdraw/save" : "withdraw/update";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
                 contentType: "application/json",
-			    data: JSON.stringify(vm.configtable),
+			    data: JSON.stringify(vm.withdraw),
 			    success: function(r){
 			    	if(r.code === 0){
 						alert('操作成功', function(index){
@@ -107,7 +141,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "configtable/delete",
+				    url: baseURL + "withdraw/delete",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
@@ -123,8 +157,8 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get(baseURL + "configtable/info/"+id, function(r){
-                vm.configtable = r.configtable;
+			$.get(baseURL + "withdraw/info/"+id, function(r){
+                vm.withdraw = r.withdraw;
             });
 		},
 		reload: function (event) {

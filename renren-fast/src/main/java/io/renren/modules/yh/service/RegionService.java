@@ -39,6 +39,10 @@ public interface RegionService {
 	List<String> getFullRegion(int id);
 
 	List<TownDTO> apiTown(String areaID);
+
+	Map<String, Object> getParentKeyValue(String id);
+
+	int onlyId(Integer id);
 	
 	
 }

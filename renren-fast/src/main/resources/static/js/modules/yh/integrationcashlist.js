@@ -1,7 +1,5 @@
 $(function () {
 	
-	getIntegrationInfo();
-	
     $("#jqGrid").jqGrid({
         url: baseURL + 'integrationcash/list',
         datatype: "json",
@@ -22,7 +20,18 @@ $(function () {
 				}
 			}}, 					
 			{ label: '操作时间', name: 'operateTime', index: 'operate_time', width: 80 }, 			
-			{ label: '管理员id',hidden:true, name: 'userId', index: 'user_id', width: 80 }			
+			{ label: '管理员id',hidden:true, name: 'userId', index: 'user_id', width: 80 },
+			{ label: '操作', width: 80,formatter: function(value, options, row){
+				console.log(row.id);
+				if(row.withdrawStatus===1){
+					return '<a onclick=agree('+row.id+')>受理</a>';
+				}else if(row.withdrawStatus===2){
+					return '<a onclick=complete('+row.id+')>完成</a>';
+				}else{
+					return "";
+				}
+				
+			}}
         ],
 		viewrecords: true,
         height: 385,
@@ -52,78 +61,35 @@ $(function () {
 
 });
 
-function openAccount(){   	
-	
-	var content = '<div style="position: relative;top: 60px;">'
-		+ '<div class="col-sm-2 control-label">提现金额</div>'
-		+ '<div class="col-sm-10" >'
-		+ '<input id="accountNum"  class="form-control" placeholder=可兑现'+$('#ableCash').html()+'></input>' 
-		+ '</div>'
-		+ '</div>';
-
-	layer.open({
-		type : 1,
-		title : '积分兑现',
-		area : [ '390px', '260px' ],
-		shade : 0,
-		id : 'LAY_layuipro' // 设定一个id，防止重复弹出
-		,
-		btn : [ '确定', '关闭' ],
-		moveType : 1 // 拖拽模式，0或者1
-		,
-		content : content,
-		yes : function() {
-			var accountNum = $('#accountNum').val();
-			
-			if(accountNum==null || accountNum==0 ){
-				return;
-			}
-			
-			if(parseFloat(accountNum)>parseFloat($("#ableCashValue").val())){
-				alert('您输入的金额超过能兑换的限额！');
-			    return;
-				
-			}else{
-				$.ajax({
-					type : "POST",
-					url : baseURL + "integrationcash/apply",
-					data : {
-						accountNum : accountNum
-					},
-					success : function(r) {
-						if (r.code == 0) {
-							alert('申请成功！', function() {
-								getIntegrationInfo();
-								vm.reload();
-								layer.closeAll();
-							});
-						} else {
-							alert(r.msg);
-						}
-					}
-				});
-			}
-			
-			
-		},
-		btn2 : function() {
-			layer.closeAll();
-		}
-	});
-	
-}
-
-function getIntegrationInfo(){
+function agree(id){
 	$.ajax({
 		type : "POST",
-		url : baseURL + "integrationcash/getIntegrationInfo",
+		url : baseURL + "integrationcash/agree",
+		data:{id:id},
 		success : function(r) {
 			if (r.code == 0) {
-				$('#remainMoney').html(r.info.sum);
-				$('#ableCash').html(r.info.ableCash+"元");
-				$('#ableCashValue').val(r.info.ableCash);
-				$('#applySum').html(r.info.applySum==null?0:r.info.applySum);
-				
+				alert('操作成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}
+
+function complete(id){
+	$.ajax({
+		type : "POST",
+		url : baseURL + "integrationcash/complete",
+		data:{id:id},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('操作成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
 			} else {
 				alert(r.msg);
 			}

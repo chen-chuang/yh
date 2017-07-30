@@ -3,6 +3,7 @@ package io.renren.modules.yh.dao;
 import io.renren.modules.yh.entity.WithdrawEntity;
 import io.renren.modules.sys.dao.BaseDao;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +19,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface WithdrawDao extends BaseDao<WithdrawEntity> {
 
 	void operate(Map<String, Object> params);
+
+	BigDecimal getSumApplyCash(Long userId);
 	
 }

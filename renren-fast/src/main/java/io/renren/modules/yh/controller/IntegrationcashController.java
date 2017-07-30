@@ -44,6 +44,10 @@ public class IntegrationcashController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("integrationcash:list")
 	public R list(@RequestParam Map<String, Object> params){
+		
+		SysUserEntity userEntity = this.getUser();
+		params.put("userPermission", userEntity.getUserPermission());
+		params.put("userId", userEntity.getUserId());
 		//查询列表数据
         Query query = new Query(params);
 
@@ -129,6 +133,29 @@ public class IntegrationcashController extends AbstractController {
 		Map<String,Object> info = integrationcashService.getIntegrationInfo(user);
 		
 		return R.ok().put("info", info);
+	}
+	
+	@RequestMapping("/agree")
+	public R agree(@RequestParam("id") String id){
+		
+		IntegrationcashEntity integrationcashEntity = integrationcashService.queryObject(Integer.valueOf(id));
+		
+		integrationcashEntity.setOperateTime(new Date());
+		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.ACCEPTED.getStatus());
+		integrationcashEntity.setUserId(getUserId());	
+		
+		integrationcashService.update(integrationcashEntity);		
+		
+		return R.ok();
+	}
+	
+	
+	@RequestMapping("/complete")
+	public R complete(@RequestParam("id") String id){
+		
+        integrationcashService.complete(id);	
+		
+		return R.ok();
 	}
 	
 }

@@ -1,9 +1,11 @@
 package io.renren.modules.yh.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.mockito.exceptions.PrintableInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,6 +70,12 @@ public class RegionController {
 	@RequestMapping("/save")
 	@RequiresPermissions("region:save")
 	public R save(@RequestBody RegionEntity region){
+		
+		int count = regionService.onlyId(region.getId());
+		if(count>0){
+			return R.error("已存在编码为"+region.getId()+"的行政区域！");					
+		}
+		
 		regionService.save(region);
 		
 		return R.ok();
@@ -89,8 +97,8 @@ public class RegionController {
 	 */
 	@RequestMapping("/delete")
 	@RequiresPermissions("region:delete")
-	public R delete(@RequestBody Integer[] ids){
-		
+	public R delete(@RequestBody Integer id){
+		Integer[] ids = new Integer[]{id};
 		String msg = regionService.deleteBatch(ids);
 		
 		return R.ok(msg);
@@ -126,6 +134,20 @@ public class RegionController {
 		
 		return R.ok().put("region", region);
 		
+	}
+	
+	@RequestMapping("/getAll")
+	public List<RegionEntity> getAll(){
+		List<RegionEntity> regionList = regionService.queryList(new HashMap<String, Object>());
+		
+        return regionList;
+    }
+	
+	
+	@RequestMapping("/getParentKeyValue")
+	public R getParentKeyValue(String id){
+		Map<String, Object> map = regionService.getParentKeyValue(id);
+		return R.ok().put("info", map);
 	}
 	
 }

@@ -53,6 +53,10 @@ public class WithdrawController extends AbstractController {
 			params.put("applyUserId", user.getUserId());
 		}
 		
+		if(user.getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			params.put("userId", user.getUserId());
+		}		
+		
 		//查询列表数据
         Query query = new Query(params);
 
@@ -148,6 +152,17 @@ public class WithdrawController extends AbstractController {
 		withdrawService.operate(params);
 		
 		return R.ok();
+	}
+	
+	
+	@RequestMapping("/getCashInfo")
+	public R getCashInfo(){
+		
+		SysUserEntity user = this.getUser();
+		
+		Map<String,Object> info = withdrawService.getCashInfo(user);
+		
+		return R.ok().put("info", info);
 	}
 	
 }
