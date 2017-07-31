@@ -3,12 +3,21 @@ $(function () {
         url: baseURL + 'orderintegration/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
+			{ label: 'id', hidden:true,name: 'id', index: 'id', width: 50, key: true },
 			{ label: '用户id', name: 'userId', index: 'user_id', width: 80 }, 			
 			{ label: '订单id', name: 'orderId', index: 'order_id', width: 80 }, 			
 			{ label: '订单金额', name: 'orderSumPrice', index: 'order_sum_price', width: 80 }, 			
 			{ label: '生成积分', name: 'integration', index: 'integration', width: 80 }, 			
-			{ label: '价格积分类型（1：配送积分?，2：销售积分）', name: 'priceIntegrationType', index: 'price_integration_type', width: 80 }			
+			{ label: '价格积分类型（1：配送积分?，2：销售积分）',hidden:true, name: 'priceIntegrationType', index: 'price_integration_type', width: 80 },
+			{ label: '是否返点', name: 'isRebate', index: 'is_rebate', width: 80, formatter: function(value, options, row){
+				  if(value==0){
+					  return "未返点";
+				  }
+				  if(value==1){
+					  return "已返点";
+				  }
+				}
+			}
         ],
 		viewrecords: true,
         height: 385,
@@ -35,6 +44,35 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+    $("#deliveryUser").autocomplete({  
+        minLength: 0,  
+        source: function( request, response ) {  
+            $.ajax({  
+                 url : baseURL + 'sys/user/getDelivery',  
+                 type : "post",  
+                 dataType : "json",                       
+                 success: function( data ) {  
+                      response( $.map( data.userinfo, function( item ) {  
+                            return {  
+                              label: item.user_name,  
+                              value: item.user_id  
+                            }  
+                      }));  
+                }  
+           });  
+        },  
+        focus: function( event, ui ) {  
+            $("#deliveryUser").val( ui.item.label );  
+            $("#deliveryUserId").val( ui.item.value );  
+              return false;  
+            },  
+        select: function( event, ui ) {  
+            $("#deliveryUser").val( ui.item.label );  
+            $("#deliveryUserId").val( ui.item.value );  
+            return false;  
+        }  
+     });  
 });
 
 var vm = new Vue({
@@ -47,6 +85,54 @@ var vm = new Vue({
 	methods: {
 		query: function () {
 			vm.reload();
+		},
+		rebate:function(){
+			var type = $("#rebate").val();
+			var deliveryUserId = $("#deliveryUserId").val();
+			if(deliveryUserId==null){
+				alert("为确保准确返点，请输入配送员名，按人头逐一返点！");
+				return;
+			}
+			
+			var ids = getSelectedRows();
+			if(ids == null){
+				confirm('由于您未选中需要返点的记录，默认根据查询条件（时间）进行批量返点，确定吗？', function(){
+					$.ajax({
+						type: "POST",
+					    url: baseURL + "orderintegration/rebate",
+	                    contentType: "application/json",
+					    data: {'startTime':$("#startTime").val(),'endTime': $("#endTime").val(),'deliveryUserId':$("#deliveryUserId").val()  },
+					    success: function(r){
+							if(r.code == 0){
+								alert('批量返点成功', function(index){
+									$("#jqGrid").trigger("reloadGrid");
+								});
+							}else{
+								alert(r.msg);
+							}
+						}
+					});
+				});
+			}else{
+				$.ajax({
+					type: "POST",
+				    url: baseURL + "orderintegration/rebateByIds",
+                    contentType: "application/json",
+				    data: JSON.stringify(ids),
+				    success: function(r){
+						if(r.code == 0){
+							alert('操作成功', function(index){
+								$("#jqGrid").trigger("reloadGrid");
+							});
+						}else{
+							alert(r.msg);
+						}
+					}
+				});
+			}
+			
+			
+			
 		},
 		add: function(){
 			vm.showList = false;
@@ -114,6 +200,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
+				postData:{'startTime': $("#startTime").val(),'endTime': $("#endTime").val(),'type':$("#type").val()},
                 page:page
             }).trigger("reloadGrid");
 		}

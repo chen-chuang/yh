@@ -221,5 +221,11 @@ public class SysUserController extends AbstractController {
 		return R.ok().put("currentLoginUser", currentLoginUser);
 	}
 	
+	@RequestMapping("/getDelivery")
+	public R getDelivery(){
+		List<Map<String, Object>> userinfo = sysUserService.getDelivery(getUserId());
+		return R.ok().put("userinfo", userinfo);
+	}
+	
 	
 }

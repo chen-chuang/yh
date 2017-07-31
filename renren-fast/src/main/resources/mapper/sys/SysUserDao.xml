@@ -189,5 +189,12 @@
 	    where user_permission = 4 and belong_to_agency_id = (select belong_to_agency_id from sys_user where user_id = #{userId})
 	</select>
 	
+	<select id="getDelivery" resultType="java.util.Map">
+	    select user_id,user_name  from sys_user 
+	    where belong_to_agency_id = #{userId}
+	</select>
+	
+	
+	
 
 </mapper>

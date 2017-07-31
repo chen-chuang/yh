@@ -188,4 +188,10 @@ public class SysUserServiceImpl implements SysUserService {
 		return maps;	
 		
 	}
+	
+	@Override
+	public List<Map<String, Object>> getDelivery(Long userId){
+		List<Map<String, Object>> maps = sysUserDao.getDelivery(userId);
+		return maps;	
+	}
 }

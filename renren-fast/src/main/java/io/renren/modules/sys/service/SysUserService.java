@@ -90,4 +90,6 @@ public interface SysUserService {
 	 *@时间 2017年7月26日下午4:29:42
 	 */
 	List<Map<String, Object>> getDeliveryPerson(Long userId);
+
+	List<Map<String, Object>> getDelivery(Long userId);
 }

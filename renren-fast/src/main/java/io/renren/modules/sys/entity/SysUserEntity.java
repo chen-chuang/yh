@@ -1,15 +1,18 @@
 package io.renren.modules.sys.entity;
 
-import io.renren.common.validator.group.AddGroup;
-import io.renren.common.validator.group.UpdateGroup;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 
 /**
  * 系统用户
@@ -86,6 +89,7 @@ public class SysUserEntity implements Serializable {
 	
 	private String belongToAgencyName;
 	
+	@NotNull(message="用户角色不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer userPermission;
 	
 	public Long getBelongToAgencyId() {

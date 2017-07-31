@@ -59,4 +59,6 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	void addIntegral(@Param("integral") Long integral,@Param("userId") Long userId);
 
 	List<Map<String, Object>> getDeliveryPerson(Long userId);
+
+	List<Map<String, Object>> getDelivery(Long userId);
 }

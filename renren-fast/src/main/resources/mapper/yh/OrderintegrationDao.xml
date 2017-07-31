@@ -21,6 +21,19 @@
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.OrderintegrationEntity">
 		select * from sys_orderintegration
+		<where>
+			user_id in (select user_id from sys_user where belong_to_agency_id = #{userId})
+			<if test="startTime != null">
+			   and time&gt;=#{startTime}
+			</if> 
+			<if test="endTime != null">
+			   and time&lt;=#{startTime}
+			</if> 
+			<if test="type != null">
+			   and is_rebate = #{type}
+			</if> 
+			
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -85,5 +98,43 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<update id="rebate">
+		update sys_orderintegration set is_rebate = 1 
+		<where>
+			<if test="startTime != null">
+			   and time&gt;=#{startTime}
+			</if> 
+			<if test="endTime != null">
+			   and time&lt;=#{startTime}
+			</if> 
+			<if test="deliveryUserId != null">
+			   and user_id = #{deliveryUserId}
+			</if> 
+		</where>
+	</update>
+	
+	<update id="rebateByIds">
+		update sys_orderintegration set is_rebate = 1 where id in 		
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+	
+	<select select="rebateDetail" resultType="java.util.Map">
+		select user_id,sum(integration),sum(order_sum_price) from sys_orderintegration 
+        <where>
+			<if test="startTime != null">
+			   and time&gt;=#{startTime}
+			</if> 
+			<if test="endTime != null">
+			   and time&lt;=#{startTime}
+			</if> 
+			<if test="deliveryUserId != null">
+			   and userId = #{deliveryUserId}
+			</if> 
+		</where>
+		group by user_id
+	</select>
 
 </mapper>

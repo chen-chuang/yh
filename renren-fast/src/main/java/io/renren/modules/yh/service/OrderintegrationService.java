@@ -27,4 +27,8 @@ public interface OrderintegrationService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+	void rebate(String startTime, String endTime, String deliveryUserId);
+
+	void rebateByIds(Integer[] ids);
 }

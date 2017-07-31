@@ -51,5 +51,15 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	public void deleteBatch(Integer[] ids){
 		orderintegrationDao.deleteBatch(ids);
 	}
+
+	@Override
+	public void rebate(String startTime, String endTime, String deliveryUserId) {
+		orderintegrationDao.rebate(startTime, endTime, deliveryUserId);		
+	}
+
+	@Override
+	public void rebateByIds(Integer[] ids) {
+		orderintegrationDao.rebateByIds(ids);
+	}
 	
 }

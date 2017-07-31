@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.service.OrderintegrationService;
 import io.renren.common.utils.PageUtils;
@@ -29,7 +30,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("orderintegration")
-public class OrderintegrationController {
+public class OrderintegrationController extends AbstractController {
 	@Autowired
 	private OrderintegrationService orderintegrationService;
 	
@@ -40,6 +41,8 @@ public class OrderintegrationController {
 	@RequiresPermissions("orderintegration:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
+		params.put("userId", getUserId());
+		
         Query query = new Query(params);
 
 		List<OrderintegrationEntity> orderintegrationList = orderintegrationService.queryList(query);
@@ -91,6 +94,22 @@ public class OrderintegrationController {
 	@RequiresPermissions("orderintegration:delete")
 	public R delete(@RequestBody Integer[] ids){
 		orderintegrationService.deleteBatch(ids);
+		
+		return R.ok();
+	}
+	
+	@RequestMapping("/rebate")
+	public R rebate(String startTime,String endTime,String deliveryUserId){
+		
+		orderintegrationService.rebate(startTime,endTime,deliveryUserId);
+		
+		return R.ok();
+	}
+	
+	@RequestMapping("/rebateByIds")
+	public R rebateByIds(@RequestBody Integer[] ids){
+		
+		orderintegrationService.rebateByIds(ids);
 		
 		return R.ok();
 	}
