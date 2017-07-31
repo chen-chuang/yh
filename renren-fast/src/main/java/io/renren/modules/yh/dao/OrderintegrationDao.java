@@ -2,6 +2,9 @@ package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.sys.dao.BaseDao;
+
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,5 +21,9 @@ public interface OrderintegrationDao extends BaseDao<OrderintegrationEntity> {
 	void rebate(@Param("startTime")String startTime, @Param("endTime")String endTime,@Param("deliveryUserId") String deliveryUserId);
 
 	void rebateByIds(Integer[] ids);
+	
+	Map<String, Object> rebateDetailByIds(Integer[] ids);
+	
+	Map<String, Object> rebateDetail(@Param("startTime")String startTime, @Param("endTime")String endTime,@Param("deliveryUserId") String deliveryUserId);
 	
 }

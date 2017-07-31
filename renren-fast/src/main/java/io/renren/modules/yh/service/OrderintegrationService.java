@@ -5,6 +5,8 @@ import io.renren.modules.yh.entity.OrderintegrationEntity;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  * 订单积分表（销售人员、配送员）
  * 
@@ -31,4 +33,8 @@ public interface OrderintegrationService {
 	void rebate(String startTime, String endTime, String deliveryUserId);
 
 	void rebateByIds(Integer[] ids);
+	
+    Map<String, Object> rebateDetailByIds(Integer[] ids);
+	
+	Map<String, Object> rebateDetail(String startTime, String endTime,String deliveryUserId);
 }

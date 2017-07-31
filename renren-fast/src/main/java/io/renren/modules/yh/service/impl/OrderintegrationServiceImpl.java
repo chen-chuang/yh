@@ -61,5 +61,17 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	public void rebateByIds(Integer[] ids) {
 		orderintegrationDao.rebateByIds(ids);
 	}
+
+	@Override
+	public Map<String, Object> rebateDetailByIds(Integer[] ids) {
+		Map<String, Object> map = orderintegrationDao.rebateDetailByIds(ids);
+		return map;
+		
+	}
+
+	@Override
+	public Map<String, Object> rebateDetail(String startTime, String endTime, String deliveryUserId) {
+		return orderintegrationDao.rebateDetail(startTime, endTime, deliveryUserId);
+	}
 	
 }

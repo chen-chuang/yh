@@ -114,4 +114,24 @@ public class OrderintegrationController extends AbstractController {
 		return R.ok();
 	}
 	
+	
+	@RequestMapping("/rebateDetailByIds")
+	public R rebateDetailByIds(@RequestBody Integer[] ids){
+		
+		orderintegrationService.rebateDetailByIds(ids);
+		
+		return R.ok();
+	}
+	
+	@RequestMapping("/rebateDetail")
+	public R rebateDetail(String startTime, String endTime, String deliveryUserId){
+		
+		orderintegrationService.rebateDetail(startTime,endTime, deliveryUserId);
+		
+		return R.ok();
+	}
+	
+	
+	
+	
 }

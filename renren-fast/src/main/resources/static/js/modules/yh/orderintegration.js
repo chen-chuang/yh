@@ -121,7 +121,7 @@ var vm = new Vue({
 				    data: JSON.stringify(ids),
 				    success: function(r){
 						if(r.code == 0){
-							alert('操作成功', function(index){
+							alert('批量返点成功', function(index){
 								$("#jqGrid").trigger("reloadGrid");
 							});
 						}else{
