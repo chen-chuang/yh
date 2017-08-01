@@ -24,4 +24,14 @@ public interface ConfigtableDao extends BaseDao<ConfigtableEntity> {
 	 */
 	ConfigtableEntity getConfig(SysUserEntity user);
 	
+	/**
+	 * 得到积分兑现的配置（后加的 不想和getConfig混到一块了）
+	 *@描述
+	 *@param user
+	 *@return
+	 *@作者 ccchen
+	 *@时间 2017年8月1日下午7:12:35
+	 */
+	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
+	
 }

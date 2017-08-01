@@ -174,6 +174,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
+				postData:{'follwerUserId': $("#userId").val(),'type':$("#type").val()},
                 page:page
             }).trigger("reloadGrid");
 		}

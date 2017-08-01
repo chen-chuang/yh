@@ -30,9 +30,9 @@ public interface OrderintegrationService {
 	
 	void deleteBatch(Integer[] ids);
 
-	void rebate(String startTime, String endTime, String deliveryUserId);
+	void rebate(String startTime, String endTime, String deliveryUserId, String sumIntegration);
 
-	void rebateByIds(Integer[] ids);
+	void rebateByIds(Integer[] ids, String sumIntegration, String deliveryUserId);
 	
     Map<String, Object> rebateDetailByIds(Integer[] ids);
 	

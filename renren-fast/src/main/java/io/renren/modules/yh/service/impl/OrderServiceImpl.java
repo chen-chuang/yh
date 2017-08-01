@@ -168,7 +168,8 @@ public class OrderServiceImpl implements OrderService {
 			orderintegration.setOrderId(orderEntity.getOrderId());
 			orderintegration.setOrderSumPrice(allPrice);
 			orderintegration.setIntegration(thisIntegral);
-			orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分			
+			orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分		
+		    orderintegration.setTime(new Date());
 			//注意：这里设计的是给配送人员用的，是否兑换过
 			//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
 			orderintegrationDao.save(orderintegration);

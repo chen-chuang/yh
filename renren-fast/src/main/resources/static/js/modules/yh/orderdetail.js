@@ -1,17 +1,18 @@
 $(function () {
+	var orderId = parent.$('#orderId').val();
     $("#jqGrid").jqGrid({
         url: baseURL + 'orderdetail/list',
         datatype: "json",
         colModel: [			
-			{ label: 'orderId', name: 'orderId', index: 'order_id', width: 50, key: true },
-			{ label: '', name: 'productId', index: 'product_id', width: 80 }, 			
-			{ label: '', name: 'productNum', index: 'product_num', width: 80 }, 			
-			{ label: '', name: 'productName', index: 'product_name', width: 80 }, 			
-			{ label: '', name: 'productPrice', index: 'product_price', width: 80 }, 			
-			{ label: '', name: 'productSumPrice', index: 'product_sum_price', width: 80 }, 			
-			{ label: '', name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 			
-			{ label: '', name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 			
-			{ label: '', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }			
+			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 50, key: true },		
+			{ label: '产品', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }	,
+			{ label: '产品名称', name: 'productName', index: 'product_name', width: 80 }, 	
+			{ label: '产品编号', hidden:true,name: 'productId', index: 'product_id', width: 80 }, 			
+			{ label: '产品数量', name: 'productNum', index: 'product_num', width: 80 }, 			
+			{ label: '产品单价', name: 'productPrice', index: 'product_price', width: 80 }, 			
+			{ label: '产品总价', name: 'productSumPrice', index: 'product_sum_price', width: 80 }, 			
+			{ label: '企业编号',hidden:true, name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 			
+			{ label: '企业名称',hidden:true, name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 				
         ],
 		viewrecords: true,
         height: 385,
@@ -32,7 +33,10 @@ $(function () {
             page:"page", 
             rows:"limit", 
             order: "order"
+            
         },
+        postData:{orderId:orderId}
+        ,
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 

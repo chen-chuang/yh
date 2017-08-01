@@ -79,7 +79,7 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 		Long applySum = integrationcashDao.getSumIntegration(user.getUserId());
 		
 		//换算比例 展示能兑换多少钱
-        ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
+        ConfigtableEntity configtableEntities = configtableDao.getConfigIntegerationCash(user);
 		
 		if(configtableEntities!=null){
 			
@@ -115,7 +115,7 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 		Long applySum = integrationcashDao.getSumIntegration(user.getUserId());
 		
 		//换算比例 展示能兑换多少钱
-        ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
+        ConfigtableEntity configtableEntities = configtableDao.getConfigIntegerationCash(user);
 		
 		if(configtableEntities!=null){
 			
@@ -139,7 +139,7 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 	@Override
 	public void apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user){
 		
-        ConfigtableEntity configtableEntities = configtableDao.getConfig(user);
+        ConfigtableEntity configtableEntities = configtableDao.getConfigIntegerationCash(user);
 		
 		if(configtableEntities!=null){
 			

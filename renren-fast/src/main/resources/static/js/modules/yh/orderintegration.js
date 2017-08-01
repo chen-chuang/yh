@@ -87,48 +87,90 @@ var vm = new Vue({
 			vm.reload();
 		},
 		rebate:function(){
-			var type = $("#rebate").val();
+			//var type = $("#rebate").val();
 			var deliveryUserId = $("#deliveryUserId").val();
-			if(deliveryUserId==null){
+			if(deliveryUserId==null || deliveryUserId==""){
 				alert("为确保准确返点，请输入配送员名，按人头逐一返点！");
 				return;
 			}
 			
 			var ids = getSelectedRows();
 			if(ids == null){
-				confirm('由于您未选中需要返点的记录，默认根据查询条件（时间）进行批量返点，确定吗？', function(){
+				confirm('由于您未选中需要返点的记录，默认根据查询条件（时间）进行批量返点，确定吗？', function(){					
+
 					$.ajax({
 						type: "POST",
-					    url: baseURL + "orderintegration/rebate",
+					    url: baseURL + "orderintegration/rebateDetail",
 	                    contentType: "application/json",
 					    data: {'startTime':$("#startTime").val(),'endTime': $("#endTime").val(),'deliveryUserId':$("#deliveryUserId").val()  },
 					    success: function(r){
 							if(r.code == 0){
-								alert('批量返点成功', function(index){
-									$("#jqGrid").trigger("reloadGrid");
+								var content = "请核对！当前用户:"+r.detail.user_id+",兑换总积分："+r.detail.sum_integration+",兑换金额为："+r.detail.ableCash+"";
+								
+								confirm(content, function(){
+									
+									$.ajax({
+										type: "POST",
+									    url: baseURL + "orderintegration/rebate",
+					                    contentType: "application/json",
+									    data: {'startTime':$("#startTime").val(),
+									    	'endTime': $("#endTime").val(),
+									    	'deliveryUserId':$("#deliveryUserId").val(),
+									    	'sumIntegration':r.detail.sum_integration},									    
+									    success: function(r){
+											if(r.code == 0){
+												alert('批量返点成功', function(index){
+													$("#jqGrid").trigger("reloadGrid");
+												});
+											}else{
+												alert(r.msg);
+											}
+										}
+									});
 								});
 							}else{
 								alert(r.msg);
 							}
 						}
-					});
+					});					
+				
 				});
 			}else{
+				
 				$.ajax({
 					type: "POST",
-				    url: baseURL + "orderintegration/rebateByIds",
+				    url: baseURL + "orderintegration/rebateDetailByIds",
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
 						if(r.code == 0){
-							alert('批量返点成功', function(index){
-								$("#jqGrid").trigger("reloadGrid");
+							var content = "请核对！当前用户:"+r.detail.user_id+",兑换总积分："+r.detail.sum_integration+",兑换金额为："+r.detail.ableCash+"";
+							
+							confirm(content, function(){
+								
+								$.ajax({
+									type: "POST",
+								    url: baseURL + "orderintegration/rebateByIds",
+				                    contentType: "application/json",
+								    data: {'ids':JSON.stringify(ids),
+								    	'deliveryUserId':$("#deliveryUserId").val(),
+								    	'sumIntegration':r.detail.sum_integration},									    
+								    success: function(r){
+										if(r.code == 0){
+											alert('批量返点成功', function(index){
+												$("#jqGrid").trigger("reloadGrid");
+											});
+										}else{
+											alert(r.msg);
+										}
+									}
+								});
 							});
 						}else{
 							alert(r.msg);
 						}
 					}
-				});
+				});	
 			}
 			
 			

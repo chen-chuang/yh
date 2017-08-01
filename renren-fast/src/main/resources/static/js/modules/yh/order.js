@@ -35,7 +35,7 @@ $(function () {
 		    }},	
 			{ label: '操作', width: 80,formatter: function(value, options, row){
 				console.log(row.id);
-				return '<a onclick=dispatch('+row.orderId+')>配送</a>|<a onclick=complete('+row.orderId+')>完成</a>';
+				return '<a onclick=dispatch('+row.orderId+')>配送</a>|<a onclick=complete('+row.orderId+')>完成</a>|<a onclick=showdetail('+row.orderId+')>查看明细</a>';
 			}}
         ],
 		viewrecords: true,
@@ -165,6 +165,25 @@ function complete(orderId){
 			}
 		}
 	});
+}
+
+
+function showdetail(orderId){
+	$("#orderId").val(orderId);
+	 layer.open({
+	        type: 2
+	        ,title: '订单明细' 
+	        ,area: ['800px', '600px']
+	        ,shade: 0
+	        ,maxmin: true
+	        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+	        ,btn: ['确定']
+	        ,moveType: 1 //拖拽模式，0或者1
+	        ,content: '/modules/yh/orderdetail.html'
+	    	 ,yes: function(){
+	    		 layer.closeAll();
+	        }
+	      });
 }
 
 var vm = new Vue({

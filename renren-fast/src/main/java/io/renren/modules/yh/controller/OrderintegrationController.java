@@ -99,17 +99,17 @@ public class OrderintegrationController extends AbstractController {
 	}
 	
 	@RequestMapping("/rebate")
-	public R rebate(String startTime,String endTime,String deliveryUserId){
+	public R rebate(String startTime,String endTime,String deliveryUserId,String sumIntegration){
 		
-		orderintegrationService.rebate(startTime,endTime,deliveryUserId);
+		orderintegrationService.rebate(startTime,endTime,deliveryUserId,sumIntegration);
 		
 		return R.ok();
 	}
 	
 	@RequestMapping("/rebateByIds")
-	public R rebateByIds(@RequestBody Integer[] ids){
+	public R rebateByIds(@RequestBody Integer[] ids,String sumIntegration,String deliveryUserId){
 		
-		orderintegrationService.rebateByIds(ids);
+		orderintegrationService.rebateByIds(ids,sumIntegration,deliveryUserId);
 		
 		return R.ok();
 	}
@@ -126,9 +126,9 @@ public class OrderintegrationController extends AbstractController {
 	@RequestMapping("/rebateDetail")
 	public R rebateDetail(String startTime, String endTime, String deliveryUserId){
 		
-		orderintegrationService.rebateDetail(startTime,endTime, deliveryUserId);
+		Map<String, Object> map = orderintegrationService.rebateDetail(startTime,endTime, deliveryUserId);
 		
-		return R.ok();
+		return R.ok().put("detail", map);
 	}
 	
 	

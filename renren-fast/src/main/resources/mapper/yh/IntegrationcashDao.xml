@@ -29,8 +29,14 @@
 	<select id="queryList" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
 		select * from sys_integrationcash 
 		<where>
+			<if test="type!=null">
+				withdraw_status=#{type}
+			</if>
 			<if test="userPermission==3"><!-- 区域管理员 -->
 				user_id=#{userId}
+				<if test="follwerUserId!=null and follwerUserId.trim() != ''">
+					and apply_user_id=#{follwerUserId}
+				</if>
 			</if>
 			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
 				apply_user_id=#{userId}

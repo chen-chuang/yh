@@ -29,7 +29,8 @@
 	</select>
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.OrderdetailEntity">
-		select * from sys_orderdetail
+		select * from sys_orderdetail 
+		where order_id = #{orderId}		
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
