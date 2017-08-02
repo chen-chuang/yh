@@ -4,6 +4,7 @@ import io.renren.common.annotation.SysLog;
 import io.renren.modules.sys.entity.SysRoleEntity;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysRoleService;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -61,10 +62,15 @@ public class SysRoleController extends AbstractController {
 	public R select(){
 		Map<String, Object> map = new HashMap<>();
 		
-		//如果不是超级管理员，则只查询自己所拥有的角色列表
+		/*//如果不是超级管理员，则只查询自己所拥有的角色列表
 		if(getUserId() != Constant.SUPER_ADMIN){
 			map.put("createUserId", getUserId());
+		}*/
+		
+		if(!getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			map.put("createUserId", getUserId());
 		}
+		
 		List<SysRoleEntity> list = sysRoleService.queryList(map);
 		
 		return R.ok().put("list", list);

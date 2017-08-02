@@ -30,6 +30,7 @@ import io.renren.common.utils.R;
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 
 
@@ -54,7 +55,7 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("enterpriseinfo:list")
 	public R list(@RequestParam Map<String, Object> params){
-		//查询列表数据
+		//查询列表数据		
         Query query = new Query(params);
 
 		List<EnterpriseinfoEntity> enterpriseinfoList = enterpriseinfoService.queryList(query);

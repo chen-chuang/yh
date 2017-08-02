@@ -163,12 +163,7 @@ var vm = new Vue({
 			
 			
 		},
-		saveOrUpdate:function(event){
-			
-			if($("#enterpriseId")==null||$("#enterpriseId")==""){
-				alert("您输入的企业暂未录入到本系统中，请添加企业后在录入产品！");
-				return;
-			}
+		saveOrUpdate:function(event){		
 			
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
 			var formData = new FormData($("form")[0]);

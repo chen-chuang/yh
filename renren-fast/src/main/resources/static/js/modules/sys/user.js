@@ -255,9 +255,9 @@ var vm = new Vue({
 		roleList:{},
 		user:{
 			status:1,
-			roleIdList:[],
-			currentPermission:1
+			roleIdList:[]
 		},
+		currentPermission:1,
 		province:null,
 		city:null,
 		county:null
@@ -270,7 +270,8 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.roleList = {};
-			vm.user = {status:1,roleIdList:[],currentPermission:1};
+			vm.user = {status:1,roleIdList:[]};
+			vm.currentPermission=1;
 			
 			//获取角色信息
 			this.getRoleList();
@@ -286,7 +287,7 @@ var vm = new Vue({
 		getUserPermission : function(){
 		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
 		    	console.log(r.currentLoginUser.userPermission);
-		    	vm.user.currentPermission = r.currentLoginUser.userPermission;
+		    	vm.currentPermission = r.currentLoginUser.userPermission;
 			});
 		},	
 		update: function () {

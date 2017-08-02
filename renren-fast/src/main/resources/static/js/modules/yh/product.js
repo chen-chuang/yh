@@ -145,6 +145,11 @@ var vm = new Vue({
 			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
 			$("#productTypeName").val($("#productType").find("option:selected").text());
 			
+			if($("#enterpriseId").val()==null||$("#enterpriseId").val()==""){
+				alert("您输入的企业暂未录入到本系统中，请添加企业后在录入产品！");
+				return;
+			}
+			
 			var formData = new FormData($("form")[0]);			
 			
 			
