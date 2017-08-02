@@ -41,7 +41,10 @@ public class HMACSHA1 {
 	    public static void main(String[] args) {
 	    	try {
 	    		String s = HmacSHA1Encrypt("appVersion1.0uuid3821938902183908921");
-				System.out.println(s);
+	    		String ss = HmacSHA1Encrypt("appVersion1.0areaID410101latitudelongitudeplatformiPhone 6srequestTime1501662361205systemTypeiOSsystemVersion10.3.2tokenuuid5355A834-F547-4410-BA8A-511C1ECA5CC6"); 
+				String sss= HmacSHA1Encrypt("appVersion1.0areaID410101latitudelongitudeplatformiPhone 6srequestTime1501661509318systemTypeiOSsystemVersion10.3.2tokenuuid5355A834-F547-4410-BA8A-511C1ECA5CC6");
+	    		System.out.println(s);
+				System.out.println(ss);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

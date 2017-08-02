@@ -5,13 +5,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.common.utils.AppValidateUtils;
 import io.renren.common.utils.CommonUtils;
 import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
@@ -23,6 +27,7 @@ import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.modules.yh.service.ProductService;
 import io.renren.modules.yh.service.RegionService;
+import sun.reflect.generics.tree.Tree;
 
 @RequestMapping("/api")
 @RestController
@@ -94,9 +99,44 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("hotSaleProduction")
-	public R hotSaleProduction(String areaID){
-		List<CollectionDTO> info = productService.apiHotSaleProduction(areaID);
-		return R.ok().put("info", info);
+	public R hotSaleProduction(HttpServletRequest request,@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		/*String areaID = request.getParameter("areaID");
+		
+		String appVersion = request.getParameter("appVersion");
+		String systemVersion = request.getParameter("systemVersion");
+		String latitude = request.getParameter("latitude");
+		String longitude = request.getParameter("longitude");
+		String platform = request.getParameter("platform");
+		String systemType = request.getParameter("systemType");
+		String requestTime = request.getParameter("requestTime");
+		String token = request.getParameter("token");
+		String uuid = request.getParameter("uuid");
+		String sign = request.getParameter("sign");
+		
+		Map<String, String> map= new TreeMap<String, String>();
+		map.put("areaID", areaID);
+		map.put("appVersion",appVersion );
+		map.put("systemVersion", systemVersion);
+		map.put("latitude",latitude );
+		map.put("longitude",longitude );
+		map.put("platform",platform );
+		map.put("systemType",systemType );
+		map.put("requestTime",requestTime );
+		map.put("token",token );
+		map.put("uuid",uuid );*/
+		
+		String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			List<CollectionDTO> info = productService.apiHotSaleProduction(map.get("areaID"));
+			return R.ok().put("info", info);
+		}else{
+			return R.ok();
+		}		
+		
 	}
 	
 	@AuthIgnore

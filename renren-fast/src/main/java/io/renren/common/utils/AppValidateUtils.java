@@ -40,7 +40,7 @@ public class AppValidateUtils {
 		String sign=null;
 		
 		try {
-			sign = HMACSHA1.HmacSHA1Encrypt(sb.toString());
+			sign = HMACSHA1.HmacSHA1Encrypt(sb.toString()).replaceAll("\r|\n", "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
