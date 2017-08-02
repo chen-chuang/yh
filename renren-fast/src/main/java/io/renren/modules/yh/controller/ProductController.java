@@ -146,7 +146,12 @@ public class ProductController extends AbstractController {
 		product.setEnterPersonId(currentUser.getUserId());
 		product.setEnterName(currentUser.getUsername());
 		
-		productService.save(product);
+		if(product.getProductId()!=null){
+			productService.update(product);
+		}else{
+			productService.save(product);
+		}
+		
 		
 		return R.ok();
 	}
