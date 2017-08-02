@@ -37,6 +37,7 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">企业名称</div>
 			   	<div class="col-sm-10">
+			   	<input type="hidden" name="enterpriseId" v-model="enterpriseinfo.enterpriseId"/>
 			      <input type="text" class="form-control" name="enterpriseName" v-model="enterpriseinfo.enterpriseName" placeholder="企业名称"/>
 			    </div>
 			</div>
@@ -95,9 +96,9 @@
 	          </div>
 			</div>
 			
-			<input type="hidden" id="regionId">
+			<input type="hidden" name="enterpriseAreaId" id="regionId">
 			
-			<input type="hidden" id="regionName">
+			<input type="hidden" name="enterpriseAreaName" id="regionName">
 			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">详细地址</div>

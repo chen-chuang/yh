@@ -37,7 +37,7 @@ public class BaiduMap {
 					String lng = str.substring(lngStart + 5, lngEnd);
 					String lat = str.substring(lngEnd + 7, latEnd);
 					ll = lng+","+lat;
-					System.out.println(lng + "\r\n" + lat);
+					//System.out.println(lng + "\r\n" + lat);
 				}
 			}
 		} catch (Exception e) {

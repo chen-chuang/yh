@@ -120,8 +120,34 @@ public class EnterpriseinfoController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("enterpriseinfo:update")
-	public R update(@RequestBody EnterpriseinfoEntity enterpriseinfo){
-		enterpriseinfoService.update(enterpriseinfo);
+	public R update(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){		
+		
+		if(file!=null&&StringUtils.isNotBlank(file.getOriginalFilename())){
+			try {
+				String orginalFileName = file.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				String directory = ConfigConstant.ENTERPRISE_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(file.getBytes());
+			    stream.close();
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}	
+		
+		String ll = BaiduMap.getGeocoderLatitude(enterpriseinfo.getEnterpriseAddress());
+		if(StringUtils.isNotBlank(ll)){
+			String[] arrStr = ll.split(",");
+			enterpriseinfo.setEnterpriseLongitude(arrStr[0]);
+			enterpriseinfo.setEnterpriseLatitude(arrStr[1]);
+		}
+		
+		enterpriseinfoService.update(enterpriseinfo);	
 		
 		return R.ok();
 	}
