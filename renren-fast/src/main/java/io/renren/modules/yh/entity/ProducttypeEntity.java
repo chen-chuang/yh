@@ -19,6 +19,10 @@ public class ProducttypeEntity implements Serializable {
 	private Integer id;
 	//
 	private String type;
+	
+	private String imageUrl;
+	
+	private Integer showInHomepage;
 
 	/**
 	 * 设置：
@@ -43,5 +47,17 @@ public class ProducttypeEntity implements Serializable {
 	 */
 	public String getType() {
 		return type;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public Integer getShowInHomepage() {
+		return showInHomepage;
+	}
+	public void setShowInHomepage(Integer showInHomepage) {
+		this.showInHomepage = showInHomepage;
 	}
 }

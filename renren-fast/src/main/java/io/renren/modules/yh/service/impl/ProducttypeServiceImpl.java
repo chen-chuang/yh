@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service.impl;
 
+import org.apache.http.conn.util.PublicSuffixList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.ProductTypeDTO;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.dao.ProducttypeDao;
 import io.renren.modules.yh.entity.ProducttypeEntity;
@@ -69,6 +71,11 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	@Override
 	public int getProductByType(Integer[] ids){
 		return producttypeDao.getProductByType(ids);
+	}
+	
+	@Override
+	public List<ProductTypeDTO> apiGetCategory(String userID, String areaID){
+		return producttypeDao.apiGetCategory(userID, areaID);
 	}
 	
 }

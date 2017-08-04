@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.service.ProductService;
@@ -61,5 +62,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<CollectionDTO> apiSearchProduction(String keyword, String areaID){
 		return productDao.apiSearchProduction(keyword, areaID);
+	}
+	
+	@Override
+	public List<ShoppingCartDTO> apiShoppingCartList(String userID, String areaID){
+		return productDao.apiShoppingCartList(userID, areaID);
 	}
 }

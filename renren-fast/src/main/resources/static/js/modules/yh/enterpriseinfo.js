@@ -5,7 +5,14 @@ $(function () {
         colModel: [			
 			{ label: '企业ID', hidden : true,name: 'enterpriseId', index: 'enterprise_id', width: 50, key: true },
 			{ label: '企业名称', align: 'center',name: 'enterpriseName', index: 'enterprise_name', width: 80 }, 			
-			{ label: '企业图片', align: 'center',name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80 }, 			
+			{ label: '企业图片', align: 'center',name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80, formatter: function(value, options, row){
+				
+				if(value!=""&&value!=null){
+					return '<img src='+value+'>';
+				}else{
+					return value;
+				}
+			}}, 						 			
 			{ label: '企业地址', align: 'center',name: 'enterpriseAddress', index: 'enterprise_address', width: 80 }, 			
 			{ label: '手机', align: 'center',name: 'enterprisePhone', index: 'enterprise_phone', width: 80 }, 			
 			{ label: '电话', align: 'center',name: 'enterpriseTel', index: 'enterprise_tel', width: 80 }, 			

@@ -3,6 +3,7 @@ package io.renren.modules.yh.dao;
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.sys.dao.BaseDao;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface ProductDao extends BaseDao<ProductEntity> {
     Long apiQueryStore(@Param("orderProductionsID")String orderProductionsID, @Param("orderProductionsCount")String orderProductionsCount);
 
 	int apiMinusStore(String orderProductionsID, Long remainderStore);
+
+	List<ShoppingCartDTO> apiShoppingCartList(@Param("userId")String userId, @Param("areaID")String areaID);
 	
 }

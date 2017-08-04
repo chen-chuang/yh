@@ -21,11 +21,14 @@ import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.ProductTypeDTO;
+import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.modules.yh.service.ProductService;
+import io.renren.modules.yh.service.ProducttypeService;
 import io.renren.modules.yh.service.RegionService;
 import sun.reflect.generics.tree.Tree;
 
@@ -41,6 +44,9 @@ public class ApiRecommendController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ProducttypeService producttypeService;
 	
 	@AuthIgnore
 	@RequestMapping("town")
@@ -150,10 +156,37 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("shoppingCartList")
-	public R shoppingCartList(String userID,String areaID){
+	public R shoppingCartList(@RequestParam Map<String, String> map){
 		
-		//productService.apiShoppingCartList(userID,areaID);
-		return R.ok();
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+		/*List<ShoppingCartDTO> info = productService.apiShoppingCartList(map.get("userID"),map.get("areaID"));
+		return R.ok().put("info", info);*/
+        String websign = AppValidateUtils.getSign(map);
+		if(websign.equals(sign)){
+			List<ShoppingCartDTO> info = productService.apiShoppingCartList(map.get("userID"),map.get("areaID"));
+		    return R.ok().put("info", info);
+		}else{
+			return R.ok();
+		}	
+	}
+	
+	@AuthIgnore
+	@RequestMapping("getCategory")
+	public R getCategory(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			List<ProductTypeDTO> info = producttypeService.apiGetCategory(map.get("userID"),map.get("areaID"));
+			return R.ok().put("info", info);
+		}else{
+			return R.ok();
+		}	
 	}
 	
 

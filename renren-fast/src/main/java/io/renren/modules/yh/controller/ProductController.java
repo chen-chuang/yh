@@ -97,6 +97,7 @@ public class ProductController extends AbstractController {
 			try {
 				String orginalFileName = picFile.getOriginalFilename();
 				String filename = CommonUtils.generateFileName(orginalFileName);
+				//真是目录
 				String directory = ConfigConstant.ENTERPRISE_PRODUCT_PIC_DIR;
 				FileUtils.makeDir(directory);
 				String filepath = Paths.get(directory, filename).toString();
@@ -106,7 +107,8 @@ public class ProductController extends AbstractController {
 			    stream.write(picFile.getBytes());
 			    stream.close();
 			    
-			    product.setProductPictureUrl(filepath);
+			    //虚拟目录
+			    product.setProductPictureUrl("/upload/"+filename);
 			    
 			  }
 			  catch (Exception e) {
@@ -128,7 +130,7 @@ public class ProductController extends AbstractController {
 			    stream.write(videoFile.getBytes());
 			    stream.close();
 			    
-			    product.setProductVideoUrl(filepath);
+			    product.setProductVideoUrl("/upload/"+filename);
 			  }
 			  catch (Exception e) {
 				  e.printStackTrace();

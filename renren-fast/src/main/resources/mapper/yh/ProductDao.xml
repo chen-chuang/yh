@@ -31,6 +31,32 @@
         <result property="productPictureUrl" column="product_picture_url"/>
         <result property="productType" column="product_type"/>
     </resultMap>
+    
+     <resultMap type="io.renren.modules.api.entity.dto.ShoppingCartDTO" id="apiShoppingCartMap">
+        <result property="catalog" column="type"/>
+        <result property="categoryId" column="id"/>
+        <result property="categoryImageUrl" column="image_url"/>
+        
+        <collection property="data" ofType="io.renren.modules.api.entity.dto.ShoppingCartDetailDTO">
+         	<id property="productId" column="product_id"/>
+	        <result property="productName" column="product_name"/>
+	        
+	        <!-- 价钱是哪个  product_trade_price -->
+	        <result property="productRetailPrice" column="product_retail_price"/>
+	        
+	        
+	        <result property="productPictureUrl" column="product_picture_url"/>
+	        <result property="productVideoUrl" column="product_video_url"/>
+	        <result property="productNum" column="product_num"/>
+	        
+	        <!-- 是否收藏 咋这么扯淡 -->
+	        <result property="isCollected" column="isCollected"/>
+	                
+	        <result property="productDetail" column="product_detail"/>
+        </collection>
+      
+           
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProductEntity">
 		select * from sys_product where product_id = #{value}
@@ -168,6 +194,15 @@
 	
 	<select id="apiMinusStore" resultType="int">
 		update sys_product set product_num =#{remainderStore} where product_id = #{orderProductionsID}
+	</select>
+	
+	<select id="apiShoppingCartList" resultMap="apiShoppingCartMap">
+	 	select a.id,a.type,a.image_url,
+	 	b.product_id,b.product_name,b.product_retail_price,b.product_picture_url,b.product_video_url,b.product_num,
+	 	(select count(*) from sys_collection where user_id=#{userId} and product_id = b.product_id ) as  isCollected,
+	 	b.product_detail 
+	 	from sys_producttype a,sys_product b where a.id=b.product_type 
+	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId})
 	</select>
 
 </mapper>

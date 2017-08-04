@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.api.entity.dto.ProductTypeDTO;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface ProducttypeService {
 	List<Map<String, Object>> getProductType();
 
 	int getProductByType(Integer[] ids);
+
+	List<ProductTypeDTO> apiGetCategory(String userID, String areaID);
 }

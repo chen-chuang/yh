@@ -97,6 +97,8 @@ public class EnterpriseinfoController extends AbstractController {
 			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			    stream.write(file.getBytes());
 			    stream.close();
+			    
+			    enterpriseinfo.setEnterpriseImageUrl("/upload/"+filename);
 			  }
 			  catch (Exception e) {
 				  e.printStackTrace();
@@ -134,6 +136,8 @@ public class EnterpriseinfoController extends AbstractController {
 			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
 			    stream.write(file.getBytes());
 			    stream.close();
+			    
+			    enterpriseinfo.setEnterpriseImageUrl("/upload/"+filename);
 			  }
 			  catch (Exception e) {
 				  e.printStackTrace();

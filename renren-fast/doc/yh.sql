@@ -178,6 +178,8 @@ create table sys_producttype
 (
    id                   int not null auto_increment,
    type                 varchar(50),
+   `image_url` varchar(1024) DEFAULT NULL,
+  `show_in_homepage` int(11) DEFAULT NULL,
    primary key (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

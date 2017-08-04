@@ -1,86 +1,48 @@
 package io.renren.modules.api.entity.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ShoppingCartDTO {
 	
-	private Long productId;
-
-	private String productName;
+	private List<ShoppingCartDetailDTO> data;
 	
-	private BigDecimal productPrice;
+	private String catalog;
 	
-	private String productPictureUrl;
+	private int categoryId;
 	
-	private String productVideoUrl;
-	
-	private Long productStoreNum;
-	
-	private int isCollected;
-	
-	private String productDetail;
+	private String categoryImageUrl;
 
-	public Long getProductId() {
-		return productId;
+
+	public int getCategoryId() {
+		return categoryId;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getCategoryImageUrl() {
+		return categoryImageUrl;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setCategoryImageUrl(String categoryImageUrl) {
+		this.categoryImageUrl = categoryImageUrl;
 	}
 
-	public BigDecimal getProductPrice() {
-		return productPrice;
+	public List<ShoppingCartDetailDTO> getData() {
+		return data;
 	}
 
-	public void setProductPrice(BigDecimal productPrice) {
-		this.productPrice = productPrice;
+	public void setData(List<ShoppingCartDetailDTO> data) {
+		this.data = data;
 	}
 
-	public String getProductPictureUrl() {
-		return productPictureUrl;
+	public String getCatalog() {
+		return catalog;
 	}
 
-	public void setProductPictureUrl(String productPictureUrl) {
-		this.productPictureUrl = productPictureUrl;
-	}
-
-	public String getProductVideoUrl() {
-		return productVideoUrl;
-	}
-
-	public void setProductVideoUrl(String productVideoUrl) {
-		this.productVideoUrl = productVideoUrl;
-	}
-
-	public Long getProductStoreNum() {
-		return productStoreNum;
-	}
-
-	public void setProductStoreNum(Long productStoreNum) {
-		this.productStoreNum = productStoreNum;
-	}
-
-	public int getIsCollected() {
-		return isCollected;
-	}
-
-	public void setIsCollected(int isCollected) {
-		this.isCollected = isCollected;
-	}
-
-	public String getProductDetail() {
-		return productDetail;
-	}
-
-	public void setProductDetail(String productDetail) {
-		this.productDetail = productDetail;
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
 	}
 }

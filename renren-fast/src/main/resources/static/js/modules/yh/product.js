@@ -5,7 +5,14 @@ $(function () {
         colModel: [			
 			{ label: 'productId', hidden:true,name: 'productId', index: 'product_id', width: 50, key: true },
 			{ label: '产品名称', align: 'center',name: 'productName', index: 'product_name', width: 80 }, 			
-			{ label: '图片地址',align: 'center', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }, 			
+			{ label: '产品图片',align: 'center', name: 'productPictureUrl', index: 'product_picture_url', formatter: function(value, options, row){
+				
+				if(value!=""&&value!=null){
+					return '<img src='+value+'>';
+				}else{
+					return value;
+				}
+			}}, 						
 			{ label: '简介', align: 'center',name: 'productDetail', index: 'product_detail', width: 80 }, 			
 			{ label: '产品类型',align: 'center', name: 'productTypeName', index: 'product_type_name', width: 80 }, 	
 			{ label: '视频地址', align: 'center',name: 'productVideoUrl', index: 'product_video_url', formatter: function(value, options, row){
