@@ -194,6 +194,10 @@
 	    where belong_to_agency_id = #{userId}
 	</select>
 	
+	<select id="validateOnlyAgency" resultType="int">
+		select count(*) from sys_user where area_id =#{areaId} and user_permission="3"
+	</select>
+	
 	
 	
 

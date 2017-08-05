@@ -122,6 +122,15 @@ public class SysUserController extends AbstractController {
 		
 		user.setCreateUserId(getUserId());
 		
+		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
+				int count = sysUserService.validateOnlyAgency(user.getAreaId());
+				if(count>0){
+					return R.error("该区域已存在区域经销商，请重新设置区域！");
+				}
+			}
+		}
+		
 		if(getUser().getUserPermission().equals(EnumPermission.AGENCY.getType())){
 			user.setBelongToAgencyId(getUser().getUserId());
 			user.setBelongToAgencyName(getUser().getUsername());
@@ -156,6 +165,16 @@ public class SysUserController extends AbstractController {
 		ValidatorUtils.validateEntity(user, UpdateGroup.class);
 		
 		user.setCreateUserId(getUserId());
+		
+		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
+				int count = sysUserService.validateOnlyAgency(user.getAreaId());
+				if(count>0){
+					return R.error("该区域已存在区域经销商，请重新设置区域！");
+				}
+			}
+		}
+		
 		sysUserService.update(user);
 		
 		return R.ok();
@@ -211,6 +230,12 @@ public class SysUserController extends AbstractController {
 	public R setRegion(@RequestParam("userId") Long userId,
 			@RequestParam("regionId") int regionId,
 			@RequestParam("regionName") String regionName){		
+		
+		
+		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
+				int count = sysUserService.validateOnlyAgency(String.valueOf(regionId));
+				return R.error("该区域已存在区域经销商，请重新设置！");
+		}
 		
 		sysUserService.setRegion(userId,regionId,regionName);
 		return R.ok();

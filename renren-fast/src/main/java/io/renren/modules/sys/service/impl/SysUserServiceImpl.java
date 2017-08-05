@@ -194,4 +194,9 @@ public class SysUserServiceImpl implements SysUserService {
 		List<Map<String, Object>> maps = sysUserDao.getDelivery(userId);
 		return maps;	
 	}
+	
+	@Override
+	public int validateOnlyAgency(String areaId){
+		return sysUserDao.validateOnlyAgency(areaId);
+	}
 }
