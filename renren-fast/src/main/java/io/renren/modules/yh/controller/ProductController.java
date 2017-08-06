@@ -148,12 +148,8 @@ public class ProductController extends AbstractController {
 		product.setEnterPersonId(currentUser.getUserId());
 		product.setEnterName(currentUser.getUsername());
 		
-		if(product.getProductId()!=null){
-			productService.update(product);
-		}else{
-			productService.save(product);
-		}
 		
+		productService.save(product);		
 		
 		return R.ok();
 	}
@@ -163,7 +159,67 @@ public class ProductController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("product:update")
-	public R update(ProductEntity product){
+	public R update(ProductEntity product,
+			@RequestParam(value="picFile",required=false) MultipartFile picFile,
+			@RequestParam(value="videoFile",required=false) MultipartFile videoFile){
+		
+		SysUserEntity currentUser = this.getUser();
+		
+		if(picFile!=null&&StringUtils.isNotBlank(picFile.getOriginalFilename())){
+			try {
+				String orginalFileName = picFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				//真是目录
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(picFile.getBytes());
+			    stream.close();
+			    
+			    //虚拟目录
+			    product.setProductPictureUrl("/upload/"+filename);
+			    
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}		
+		
+		
+		if(videoFile!=null&&StringUtils.isNotBlank(videoFile.getOriginalFilename())){
+			try {
+				String orginalFileName = videoFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_VIDEO_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(videoFile.getBytes());
+			    stream.close();
+			    
+			    product.setProductVideoUrl("/upload/"+filename);
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}	 
+		
+		if(currentUser.getUserPermission().equals(EnumPermission.ADMIN)){
+			product.setEnterType(1);
+		}
+		
+		if(currentUser.getUserPermission().equals(EnumPermission.AGENCY)){
+			product.setEnterType(2);
+		}
+		
+		product.setEnterPersonId(currentUser.getUserId());
+		product.setEnterName(currentUser.getUsername());
+		
 		productService.update(product);
 		
 		return R.ok();

@@ -156,7 +156,7 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("shoppingCartList")
-	public R shoppingCartList(@RequestParam Map<String, String> map){
+	public R shoppingCartList(HttpServletRequest request,@RequestParam Map<String, String> map){
 		
 		String sign = map.get("sign");
 		map.remove("sign");

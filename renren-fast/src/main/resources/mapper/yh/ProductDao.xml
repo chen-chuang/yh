@@ -42,12 +42,12 @@
 	        <result property="productName" column="product_name"/>
 	        
 	        <!-- 价钱是哪个  product_trade_price -->
-	        <result property="productRetailPrice" column="product_retail_price"/>
+	        <result property="productPrice" column="product_retail_price"/>
 	        
 	        
 	        <result property="productPictureUrl" column="product_picture_url"/>
 	        <result property="productVideoUrl" column="product_video_url"/>
-	        <result property="productNum" column="product_num"/>
+	        <result property="productStoreNum" column="product_num"/>
 	        
 	        <!-- 是否收藏 咋这么扯淡 -->
 	        <result property="isCollected" column="isCollected"/>
