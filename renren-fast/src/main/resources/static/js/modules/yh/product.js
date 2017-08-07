@@ -101,6 +101,7 @@ var vm = new Vue({
 		title: null,
 		product: {isHot:1},
         enterPrises:{},
+		currentPermission:1,
         types:{}
 	},
 	methods: {
@@ -114,8 +115,16 @@ var vm = new Vue({
 			
 			this.getEnterprise();
 			
-			this.getProductType();
+			this.getProductType();	
+			
+			this.getUserPermission();
+			
 		},
+		getUserPermission : function(){
+		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
+		    	vm.currentPermission = r.currentLoginUser.userPermission;
+			});
+		},	
 		getEnterprise:function(){
 			
 			//selectDataBindByHql("enterpriseId",baseURL + "product/getEnterprise");
@@ -152,14 +161,14 @@ var vm = new Vue({
 			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
 			$("#productTypeName").val($("#productType").find("option:selected").text());
 			
-			if($("#enterpriseId").val()==null||$("#enterpriseId").val()==""){
-				alert("您输入的企业暂未录入到本系统中，请添加企业后在录入产品！");
-				return;
-			}
+			if(vm.currentPermission==1){
+				if($("#enterpriseId").val()==null||$("#enterpriseId").val()==""){
+					alert("您输入的企业暂未录入到本系统中，请添加企业后在录入产品！");
+					return;
+				}
+			}			
 			
-			var formData = new FormData($("form")[0]);			
-			
-			
+			var formData = new FormData($("form")[0]);				
 			
 			 $.ajax({  
 		            url : baseURL + url,  

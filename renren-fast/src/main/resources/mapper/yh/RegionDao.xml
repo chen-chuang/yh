@@ -82,7 +82,7 @@
 	</select>
 	
 	<select id="apiTown" resultType="io.renren.modules.api.entity.dto.TownDTO">
-		select id,name from sys_region where pid = #{areaID}   
+		select id as townID,name as townName from sys_region where pid = #{areaID}   
 	</select>
 	
 	<select id="getParentKeyValue" resultType="java.util.Map">

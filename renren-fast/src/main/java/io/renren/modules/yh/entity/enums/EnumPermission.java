@@ -8,7 +8,8 @@ public enum EnumPermission {
 	AGENCY(3,"经销商"),
 	DELIVERY_P(4,"配送员"),
 	DELIVERY_F(5,"发货员"),
-	SALE(6,"销售员");
+	SALE(6,"销售员(零售)"),
+	SALEP(7,"销售员(批发)");
 	
 	int type;
 	String name;
