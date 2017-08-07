@@ -50,12 +50,20 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("town")
-	public R town(HttpServletRequest request){
+	public R town(@RequestParam Map<String, String> map){
 		
-		String areaID = request.getParameter("areaID");
-		List<TownDTO> region = regionService.apiTown(areaID);
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		return R.ok().put("info", region);
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			List<TownDTO> region = regionService.apiTown(map.get("areaID"));			
+			return R.ok().put("info", region);
+		}else{
+			return R.ok();
+		}
+		
 		
 	}
 	
