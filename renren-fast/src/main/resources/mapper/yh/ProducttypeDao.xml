@@ -85,7 +85,7 @@
 	</select>
 	
 	<select id="apiGetCategory" resultMap="apiProducttypeMap">
-		select * from sys_producttype where enter_id = (select belong_to_agency_id from sys_user where user_id = #{userID}) limit 4
+		select * from sys_producttype where enter_id = (select belong_to_agency_id from sys_user where user_id = #{userID})
 	</select>	
 
 </mapper>
