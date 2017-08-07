@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.utils.AppValidateUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
@@ -147,18 +148,28 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("/myCollectionList")
-	public R login(String userID,String pageIndex,String pageSize){		
+	public R login(Map<String, String> map){				
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userID", userID);
-		params.put("limit", pageSize);
-		params.put("page", pageIndex);
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		Query query = new Query(params);
+        String websign = AppValidateUtils.getSign(map);
 		
-		List<CollectionDTO> collectionList = collectionService.apiQueryCollectionList(query);
-		
-		return R.ok().put("info", collectionList);
+		if(websign.equals(sign)){
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userID", map.get("userID"));
+			params.put("limit", map.get("pageSize"));
+			params.put("page", map.get("pageIndex"));
+			
+			Query query = new Query(params);
+			
+			List<CollectionDTO> collectionList = collectionService.apiQueryCollectionList(query);
+			
+			return R.ok().put("info", collectionList);
+		}else{
+			return R.error();
+		}		
 		
 	}
 	
