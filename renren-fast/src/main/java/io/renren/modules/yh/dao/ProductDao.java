@@ -25,7 +25,7 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 
 	void updateProductType(ProducttypeEntity producttype);
 
-	List<CollectionDTO> apiHotSaleProduction(String areaID);
+	List<CollectionDTO> apiHotSaleProduction(@Param("areaID")String areaID, @Param("userID")String userID);
 
 	List<CollectionDTO> apiSearchProduction(@Param("keyword")String keyword, @Param("areaID")String areaID, @Param("userID")String userID);
 

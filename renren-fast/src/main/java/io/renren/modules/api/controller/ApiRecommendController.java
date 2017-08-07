@@ -149,7 +149,7 @@ public class ApiRecommendController {
 		String websign = AppValidateUtils.getSign(map);
 		
 		if(websign.equals(sign)){
-			List<CollectionDTO> info = productService.apiHotSaleProduction(map.get("areaID"));
+			List<CollectionDTO> info = productService.apiHotSaleProduction(map.get("areaID"),map.get("userID"));
 			return R.ok().put("info", info);
 		}else{
 			return R.ok();

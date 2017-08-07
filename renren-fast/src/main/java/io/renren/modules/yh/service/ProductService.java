@@ -30,7 +30,7 @@ public interface ProductService {
 	
 	void deleteBatch(Long[] productIds);
 
-	List<CollectionDTO> apiHotSaleProduction(String areaID);
+	List<CollectionDTO> apiHotSaleProduction(String areaID, String userID);
 
 	List<CollectionDTO> apiSearchProduction(String keyword, String areaID, String userID);
 

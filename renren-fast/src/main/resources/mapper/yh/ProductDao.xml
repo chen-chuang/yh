@@ -173,9 +173,8 @@
 	
 	<select id="apiHotSaleProduction" resultMap="apiProductMap">
 		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
-		from sys_product a,sys_enterpriseinfo b
-		 where a.enterprise_id = b.enterprise_id 
-		  and b.enterprise_area_id = #{areaID} 
+		from sys_product a
+		 where a.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userID})
 		  and a.is_hot = 0  <!-- 0热销，1不热销 -->
 	</select>
 	

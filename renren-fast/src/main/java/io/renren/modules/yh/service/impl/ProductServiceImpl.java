@@ -55,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<CollectionDTO> apiHotSaleProduction(String areaID){
-		return productDao.apiHotSaleProduction(areaID);
+	public List<CollectionDTO> apiHotSaleProduction(String areaID, String userID){
+		return productDao.apiHotSaleProduction(areaID, userID);
 	}
 	
 	@Override
