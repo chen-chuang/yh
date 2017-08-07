@@ -59,4 +59,14 @@ public class CollectionServiceImpl implements CollectionService {
 		return collectionDTOs;
 	}
 	
+	@Override
+	public void apiCollectProduction(String userID, String productId, String isCollected){
+		if(isCollected.equals("1")){
+			collectionDao.apiCollectProductionInsert(userID, productId);
+		}else if(isCollected.equals("0")){
+			collectionDao.apiCollectProductionDelete(userID, productId);
+		}
+		
+	}
+	
 }

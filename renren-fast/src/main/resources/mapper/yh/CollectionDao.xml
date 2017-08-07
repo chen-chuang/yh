@@ -88,5 +88,22 @@
 		</if>
 	</select>
 	
+	<insert id="apiCollectProductionInsert">
+	    insert into sys_collection
+		(
+			`user_id`, 
+			`product_id`
+		)
+		values
+		(
+			#{userID}, 
+			#{productId}
+		)
+	</insert>
+	
+    <delete id="apiCollectProductionDelete">
+     	delete from sys_collection where user_id = #{userID} and product_id =#{productId}
+    </delete>
+	
 
 </mapper>

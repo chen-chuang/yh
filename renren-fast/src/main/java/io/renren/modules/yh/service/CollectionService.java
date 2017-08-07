@@ -31,4 +31,6 @@ public interface CollectionService {
 	void deleteBatch(Long[] userIds);
 
 	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
+
+	void apiCollectProduction(String userID, String productId, String isCollected);
 }

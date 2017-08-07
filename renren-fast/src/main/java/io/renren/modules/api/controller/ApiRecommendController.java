@@ -26,6 +26,7 @@ import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
+import io.renren.modules.yh.service.CollectionService;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.modules.yh.service.ProductService;
 import io.renren.modules.yh.service.ProducttypeService;
@@ -47,6 +48,9 @@ public class ApiRecommendController {
 	
 	@Autowired
 	private ProducttypeService producttypeService;
+	
+	@Autowired
+	private CollectionService collectionService;
 	
 	@AuthIgnore
 	@RequestMapping("town")
@@ -196,6 +200,25 @@ public class ApiRecommendController {
 			return R.ok();
 		}	
 	}
+	
+	@AuthIgnore
+	@RequestMapping("collectProduction")
+	public R collectProduction(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			collectionService.apiCollectProduction(map.get("userID"),map.get("productId"),map.get("isCollected"));
+			return R.ok();
+		}else{
+			return R.error();
+		}
+	}
+	
+	
 	
 
 }

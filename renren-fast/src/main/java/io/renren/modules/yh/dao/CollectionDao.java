@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -20,5 +21,9 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CollectionDao extends BaseDao<CollectionEntity> {
 
 	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
+	
+	void apiCollectProductionInsert(@Param("userID")String userID, @Param("productId")String productId);
+
+	void apiCollectProductionDelete(@Param("userID")String userID, @Param("productId")String productId);
 	
 }
