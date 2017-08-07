@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.common.annotation.SysLog;
@@ -148,7 +149,7 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("/myCollectionList")
-	public R login(Map<String, String> map){				
+	public R login(@RequestParam Map<String, String> map){				
 		
 		String sign = map.get("sign");
 		map.remove("sign");
