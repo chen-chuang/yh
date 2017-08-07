@@ -27,11 +27,11 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 
 	List<CollectionDTO> apiHotSaleProduction(String areaID);
 
-	List<CollectionDTO> apiSearchProduction(@Param("keyword")String keyword, @Param("areaID")String areaID);
+	List<CollectionDTO> apiSearchProduction(@Param("keyword")String keyword, @Param("areaID")String areaID, @Param("userID")String userID);
 
     Long apiQueryStore(@Param("orderProductionsID")String orderProductionsID, @Param("orderProductionsCount")String orderProductionsCount);
 
-	int apiMinusStore(String orderProductionsID, Long remainderStore);
+	Integer apiMinusStore(@Param("orderProductionsID")String orderProductionsID, @Param("remainderStore")Long remainderStore);
 
 	List<ShoppingCartDTO> apiShoppingCartList(@Param("userId")String userId, @Param("areaID")String areaID);
 	

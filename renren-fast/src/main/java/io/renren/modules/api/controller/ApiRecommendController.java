@@ -159,11 +159,22 @@ public class ApiRecommendController {
 	
 	@AuthIgnore
 	@RequestMapping("searchProduction")
-	public R searchProduction(String keyword,String areaID){
+	public R searchProduction(@RequestParam Map<String, String> map){		
 		
-		List<CollectionDTO> info = productService.apiSearchProduction(keyword,areaID);
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		return R.ok().put("info", info);
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			List<CollectionDTO> info = productService.apiSearchProduction(map.get("keyword"),map.get("areaID"),map.get("userID"));
+			
+			return R.ok().put("info", info);
+		}else{
+			return R.error();
+		}
+		
+
 	}
 	
 	@AuthIgnore

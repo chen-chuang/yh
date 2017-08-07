@@ -32,7 +32,7 @@ public interface ProductService {
 
 	List<CollectionDTO> apiHotSaleProduction(String areaID);
 
-	List<CollectionDTO> apiSearchProduction(String keyword, String areaID);
+	List<CollectionDTO> apiSearchProduction(String keyword, String areaID, String userID);
 
 	List<ShoppingCartDTO> apiShoppingCartList(String userID, String areaID);
 }

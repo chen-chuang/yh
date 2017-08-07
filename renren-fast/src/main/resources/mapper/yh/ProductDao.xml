@@ -181,19 +181,22 @@
 	
 	<select id="apiSearchProduction" resultMap="apiProductMap">
 		select a.product_id,a.product_name,a.product_detail,a.product_picture_url,a.product_type 
-		from sys_product a,sys_enterpriseinfo b
-		 where a.enterprise_id = b.enterprise_id 
-		  and b.enterprise_area_id = #{areaID} 
+		from sys_product a
+		 where a.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userID})
 		  and a.product_name like CONCAT('%',#{keyword},'%')    <!-- 0热销，1不热销 -->
 	</select>
 	
 	<!-- for update 防止并发 -->
 	<select id="apiQueryStore" resultType="java.lang.Long">
-		select product_num from sys_product where product_id = #{orderProductionsID} and product_num>#{orderProductionsCount} for update
+	  <![CDATA[
+		SET AUTOCOMMIT=0; BEGIN WORK;select product_num from sys_product where product_id = #{orderProductionsID} and product_num>#{orderProductionsCount} for update
+		]]>
 	</select>	
 	
-	<select id="apiMinusStore" resultType="int">
-		update sys_product set product_num =#{remainderStore} where product_id = #{orderProductionsID}
+	<select id="apiMinusStore" resultType="java.lang.Integer">
+	  <![CDATA[
+		update sys_product set product_num =#{remainderStore} where product_id = #{orderProductionsID}; COMMIT WORK;
+		]]>
 	</select>
 	
 	<select id="apiShoppingCartList" resultMap="apiShoppingCartMap">

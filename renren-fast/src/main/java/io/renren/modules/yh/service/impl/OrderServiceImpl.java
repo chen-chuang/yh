@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
 			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
 			if(store!=null){
 				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
-				int k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
+				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
 			}else{
 				map.put("msg", "商品库存不足！");
 				return map;

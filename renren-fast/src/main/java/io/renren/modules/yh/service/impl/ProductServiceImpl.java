@@ -60,8 +60,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<CollectionDTO> apiSearchProduction(String keyword, String areaID){
-		return productDao.apiSearchProduction(keyword, areaID);
+	public List<CollectionDTO> apiSearchProduction(String keyword, String areaID,String userID){
+		return productDao.apiSearchProduction(keyword, areaID,userID);
 	}
 	
 	@Override
