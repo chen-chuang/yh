@@ -23,6 +23,8 @@ public class ProducttypeEntity implements Serializable {
 	private String imageUrl;
 	
 	private Integer showInHomepage;
+	
+	private String enterId;
 
 	/**
 	 * 设置：
@@ -59,5 +61,11 @@ public class ProducttypeEntity implements Serializable {
 	}
 	public void setShowInHomepage(Integer showInHomepage) {
 		this.showInHomepage = showInHomepage;
+	}
+	public String getEnterId() {
+		return enterId;
+	}
+	public void setEnterId(String enterId) {
+		this.enterId = enterId;
 	}
 }

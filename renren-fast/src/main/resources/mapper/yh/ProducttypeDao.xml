@@ -9,6 +9,7 @@
         <result property="type" column="type"/>
         <result property="imageUrl" column="image_url"/>
         <result property="showInHomepage" column="show_in_homepage"/>
+        <result property="enterId" column="enter_id"/>
     </resultMap>
     
     <resultMap type="io.renren.modules.api.entity.dto.ProductTypeDTO" id="apiProducttypeMap">
@@ -23,7 +24,7 @@
 	</select>
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.ProducttypeEntity">
-		select * from sys_producttype
+		select * from sys_producttype where enter_id=#{currentUserId}
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -44,20 +45,27 @@
 	<insert id="save" parameterType="io.renren.modules.yh.entity.ProducttypeEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_producttype
 		(
-			`type`
+			`type`, 
+			`image_url`, 
+			`show_in_homepage`, 
+			`enter_id`
 		)
 		values
 		(
-			#{type}
+			#{type}, 
+			#{imageUrl}, 
+			#{showInHomepage}, 
+			#{enterId}
 		)
 	</insert>
 	 
 	<update id="update" parameterType="io.renren.modules.yh.entity.ProducttypeEntity">
 		update sys_producttype 
 		<set>
-			<if test="type != null">`type` = #{type},</if>
-			<if test="imageUrl != null">`imageUrl` = #{image_url},</if>
-			<if test="showInHomepage != null">`showInHomepage` = #{show_in_homepage}</if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="imageUrl != null">`image_url` = #{imageUrl}, </if>
+			<if test="showInHomepage != null">`show_in_homepage` = #{showInHomepage}, </if>
+			<if test="enterId != null">`enter_id` = #{enterId}</if>
 		</set>
 		where id = #{id}
 	</update>
