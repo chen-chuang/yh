@@ -78,10 +78,4 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	public List<ProductTypeDTO> apiGetCategory(String userID, String areaID){
 		return producttypeDao.apiGetCategory(userID, areaID);
 	}
-	
-	@Override
-	public List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map){
-		return producttypeDao.apiEnterpriseProducts(map);
-	}
-	
 }

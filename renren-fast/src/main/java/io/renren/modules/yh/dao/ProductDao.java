@@ -3,10 +3,12 @@ package io.renren.modules.yh.dao;
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.sys.dao.BaseDao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,5 +36,7 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 	Integer apiMinusStore(@Param("orderProductionsID")String orderProductionsID, @Param("remainderStore")Long remainderStore);
 
 	List<ShoppingCartDTO> apiShoppingCartList(@Param("userId")String userId, @Param("areaID")String areaID);
+
+	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 	
 }

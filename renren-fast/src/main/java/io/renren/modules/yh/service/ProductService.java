@@ -1,6 +1,8 @@
 package io.renren.modules.yh.service;
 
+import io.renren.common.utils.Query;
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.yh.entity.ProductEntity;
 
@@ -35,4 +37,6 @@ public interface ProductService {
 	List<CollectionDTO> apiSearchProduction(String keyword, String areaID, String userID);
 
 	List<ShoppingCartDTO> apiShoppingCartList(String userID, String areaID);
+
+	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 }

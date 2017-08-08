@@ -35,6 +35,4 @@ public interface ProducttypeService {
 	int getProductByType(Integer[] ids);
 
 	List<ProductTypeDTO> apiGetCategory(String userID, String areaID);
-
-	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 }

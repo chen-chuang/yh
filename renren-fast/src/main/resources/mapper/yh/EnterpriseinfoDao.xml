@@ -22,7 +22,7 @@
     
     
      <resultMap type="io.renren.modules.api.entity.dto.EnterpriseInfoDTO" id="apiEnterpriseinfoMap">
-        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseID" column="enterprise_id"/>
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="enterpriseImageUrl" column="enterprise_image_url"/>
         <result property="enterpriseAddress" column="enterprise_address"/>
@@ -30,7 +30,7 @@
     </resultMap>
     
       <resultMap type="io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO" id="apiEnterpriseDeatailinfoMap">
-        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="enterpriseID" column="enterprise_id"/>
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="enterpriseImageUrl" column="enterprise_image_url"/>
         <result property="enterpriseAddress" column="enterprise_address"/>

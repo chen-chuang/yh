@@ -17,7 +17,7 @@ import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
-import io.renren.modules.yh.service.ProducttypeService;
+import io.renren.modules.yh.service.ProductService;
 
 @RestController
 @RequestMapping("/api")
@@ -27,7 +27,9 @@ public class ApiEnterpriseInfoController {
 	private EnterpriseinfoService enterpriseinfoService;
 	
 	@Autowired
-	private ProducttypeService producttypeService;
+	private ProductService productService;
+	
+	
 	
 	@AuthIgnore
 	@RequestMapping("enterpriseList")
@@ -158,7 +160,7 @@ public class ApiEnterpriseInfoController {
 			
 			Query query = new Query(params);
 		
-			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
+			List<EnterpriseProductions> enterpriseProductionsList = productService.apiEnterpriseProducts(query);
 			return R.ok().put("info", enterpriseProductionsList);
 			
 		}else{
@@ -188,6 +190,37 @@ public class ApiEnterpriseInfoController {
 			
 			Query query = new Query(params);
 		
+			List<EnterpriseProductions> enterpriseProductionsList = productService.apiEnterpriseProducts(query);
+			return R.ok().put("info", enterpriseProductionsList);
+			
+		}else{
+			return R.error();
+		}
+	}
+	
+	
+/*	@AuthIgnore
+	@RequestMapping("enterpriseCity")
+	public R enterpriseCity(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			
+			String enterpriseID = map.get("enterpriseID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("enterpriseID", enterpriseID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			Query query = new Query(params);
+		
 			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
 			return R.ok().put("info", enterpriseProductionsList);
 			
@@ -195,5 +228,35 @@ public class ApiEnterpriseInfoController {
 			return R.error();
 		}
 	}
+	
+	@AuthIgnore
+	@RequestMapping("factoryCity")
+	public R factoryCity(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			
+			String enterpriseID = map.get("enterpriseID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("enterpriseID", enterpriseID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			Query query = new Query(params);
+		
+			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
+			return R.ok().put("info", enterpriseProductionsList);
+			
+		}else{
+			return R.error();
+		}
+	}*/
 
 }

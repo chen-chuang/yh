@@ -26,7 +26,5 @@ public interface ProducttypeDao extends BaseDao<ProducttypeEntity> {
 	int getProductByType(Integer[] id);
 
 	List<ProductTypeDTO> apiGetCategory(@Param("userID")String userID, @Param("areaID")String areaID);
-
-	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 	
 }

@@ -219,9 +219,9 @@
 	 	from sys_producttype a left join sys_product b on a.id=b.product_type 
 	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
 	</select>
-	
+
 	<select id="apiEnterpriseProducts" resultMap="apiEnterpriseProductMap">
-		select * from sys_product
+		select product_name,product_detail,product_picture_url,product_video_url from sys_product
 		<where>
 			<if test="enterpriseID !=null">
 				enterprise_id = #{enterpriseID}
