@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ProductTypeDTO;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.dao.ProducttypeDao;
@@ -76,6 +77,11 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	@Override
 	public List<ProductTypeDTO> apiGetCategory(String userID, String areaID){
 		return producttypeDao.apiGetCategory(userID, areaID);
+	}
+	
+	@Override
+	public List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map){
+		return producttypeDao.apiEnterpriseProducts(map);
 	}
 	
 }

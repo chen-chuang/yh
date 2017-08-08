@@ -4,18 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.common.utils.AppValidateUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
+import io.renren.modules.yh.service.ProducttypeService;
 
 @RestController
 @RequestMapping("/api")
@@ -24,61 +26,174 @@ public class ApiEnterpriseInfoController {
 	@Autowired
 	private EnterpriseinfoService enterpriseinfoService;
 	
+	@Autowired
+	private ProducttypeService producttypeService;
+	
 	@AuthIgnore
 	@RequestMapping("enterpriseList")
-	public R enterpriseList(HttpServletRequest request){
-		String userID = request.getParameter("userID");
-		String townID = request.getParameter("townID");
-		String limit = request.getParameter("pageSize");
-		String page = request.getParameter("pageIndex");
+	public R enterpriseList(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			
+			String userID = map.get("userID");
+			String townID = map.get("townID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
 
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userID", userID);
-		params.put("townID", townID);
-		params.put("limit", limit);
-		params.put("page", page);
-		
-		params.put("enterpriseType", "2");
-		
-		Query query = new Query(params);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userID", userID);
+			params.put("townID", townID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			params.put("enterpriseType", "2");
+			
+			Query query = new Query(params);
 
-		List<EnterpriseinfoEntity> enterpriseInfoList = enterpriseinfoService.apiQueryList(query);
+			List<EnterpriseinfoEntity> enterpriseInfoList = enterpriseinfoService.apiQueryList(query);
+			
+			return R.ok().put("info", enterpriseInfoList);
+		}else{
+			return R.error();
+		}		
 		
-		return R.ok().put("info", enterpriseInfoList);
+		
 	}
 	
 	@AuthIgnore
 	@RequestMapping("factoryList")
-	public R factoryList(HttpServletRequest request){
-		String userID = request.getParameter("userID");
-		String townID = request.getParameter("townID");
-		String limit = request.getParameter("pageSize");
-		String page = request.getParameter("pageIndex");
-
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userID", userID);
-		params.put("townID", townID);
-		params.put("limit", limit);
-		params.put("page", page);
+	public R factoryList(@RequestParam Map<String, String> map){
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		params.put("enterpriseType", "1");
+        String websign = AppValidateUtils.getSign(map);
 		
-		Query query = new Query(params);
+		if(websign.equals(sign)){
+			
+			String userID = map.get("userID");
+			String townID = map.get("townID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
 
-		List<EnterpriseinfoEntity> enterpriseInfoList = enterpriseinfoService.apiQueryList(query);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userID", userID);
+			params.put("townID", townID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			params.put("enterpriseType", "1");
+			
+			Query query = new Query(params);
 		
-		return R.ok().put("info", enterpriseInfoList);
+			List<EnterpriseinfoEntity> enterpriseInfoList = enterpriseinfoService.apiQueryList(query);
+			
+			return R.ok().put("info", enterpriseInfoList);
+		}else{
+			return R.error();
+		}
 	}
 	
 	
 	@AuthIgnore
 	@RequestMapping("enterpriseDetail")
-	public R enterpriseDetail(HttpServletRequest request){
-		String enterpriseId = request.getParameter("enterpriseID");
-		EnterpriseDeatailInfoDTO enterpriseDeatailInfoDTO = enterpriseinfoService.apiEnterpriseByID(enterpriseId);
-		return R.ok().put("info", enterpriseDeatailInfoDTO);
+	public R enterpriseDetail(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			String enterpriseId = map.get("enterpriseID");
+			EnterpriseDeatailInfoDTO enterpriseDeatailInfoDTO = enterpriseinfoService.apiEnterpriseByID(enterpriseId);
+			return R.ok().put("info", enterpriseDeatailInfoDTO);
+		}else{
+			return R.error();
+		}
+	}
+	
+	@AuthIgnore
+	@RequestMapping("factoryDetail")
+	public R factoryDetail(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			String enterpriseId = map.get("enterpriseID");
+			EnterpriseDeatailInfoDTO enterpriseDeatailInfoDTO = enterpriseinfoService.apiEnterpriseByID(enterpriseId);
+			return R.ok().put("info", enterpriseDeatailInfoDTO);
+		}else{
+			return R.error();
+		}
+	}
+	
+	@AuthIgnore
+	@RequestMapping("enterpriseProducts")
+	public R enterpriseProducts(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			
+			String enterpriseID = map.get("enterpriseID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("enterpriseID", enterpriseID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			Query query = new Query(params);
+		
+			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
+			return R.ok().put("info", enterpriseProductionsList);
+			
+		}else{
+			return R.error();
+		}
+	}
+	
+	@AuthIgnore
+	@RequestMapping("factoryProducts")
+	public R factoryProducts(@RequestParam Map<String, String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			
+			String enterpriseID = map.get("enterpriseID");
+			String limit = map.get("pageSize");
+			String page = map.get("pageIndex");
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("enterpriseID", enterpriseID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			Query query = new Query(params);
+		
+			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
+			return R.ok().put("info", enterpriseProductionsList);
+			
+		}else{
+			return R.error();
+		}
 	}
 
 }

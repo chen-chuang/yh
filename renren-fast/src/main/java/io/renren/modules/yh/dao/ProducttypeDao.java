@@ -1,6 +1,7 @@
 package io.renren.modules.yh.dao;
 
 import io.renren.modules.yh.entity.ProducttypeEntity;
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ProductTypeDTO;
 import io.renren.modules.sys.dao.BaseDao;
 
@@ -25,5 +26,7 @@ public interface ProducttypeDao extends BaseDao<ProducttypeEntity> {
 	int getProductByType(Integer[] id);
 
 	List<ProductTypeDTO> apiGetCategory(@Param("userID")String userID, @Param("areaID")String areaID);
+
+	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 	
 }

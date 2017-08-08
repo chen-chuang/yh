@@ -32,6 +32,13 @@
         <result property="productType" column="product_type"/>
     </resultMap>
     
+    <resultMap type="io.renren.modules.api.entity.dto.EnterpriseProductions" id="apiEnterpriseProductMap">
+        <result property="productName" column="product_name"/>
+        <result property="productDetail" column="product_detail"/>
+        <result property="productPictureUrl" column="product_picture_url"/>
+        <result property="productVideoUrl" column="product_video_url"/>
+    </resultMap>
+    
      <resultMap type="io.renren.modules.api.entity.dto.ShoppingCartDTO" id="apiShoppingCartMap">
         <result property="catalog" column="type"/>
         <result property="categoryId" column="id"/>
@@ -211,6 +218,26 @@
 	 	b.product_detail 
 	 	from sys_producttype a left join sys_product b on a.id=b.product_type 
 	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
+	</select>
+	
+	<select id="apiEnterpriseProducts" resultMap="apiEnterpriseProductMap">
+		select * from sys_product
+		<where>
+			<if test="enterpriseID !=null">
+				enterprise_id = #{enterpriseID}
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>	
 	</select>
 
 </mapper>

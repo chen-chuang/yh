@@ -1,10 +1,11 @@
 package io.renren.modules.yh.service;
 
-import io.renren.modules.api.entity.dto.ProductTypeDTO;
-import io.renren.modules.yh.entity.ProducttypeEntity;
-
 import java.util.List;
 import java.util.Map;
+
+import io.renren.modules.api.entity.dto.EnterpriseProductions;
+import io.renren.modules.api.entity.dto.ProductTypeDTO;
+import io.renren.modules.yh.entity.ProducttypeEntity;
 
 /**
  * 产品分类表
@@ -34,4 +35,6 @@ public interface ProducttypeService {
 	int getProductByType(Integer[] ids);
 
 	List<ProductTypeDTO> apiGetCategory(String userID, String areaID);
+
+	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 }

@@ -130,7 +130,7 @@
 	</delete>
 	
 	
-	<select id="apiQueryList" resultType="io.renren.modules.api.entity.dto.EnterpriseInfoDTO">
+	<select id="apiQueryList" resultMap="apiEnterpriseinfoMap">
 		select * from sys_enterpriseinfo
 		<where>
 		    <if test="townID != null">
@@ -154,7 +154,7 @@
 		</if>
 	</select>
 	
-	<select id="apiEnterpriseByID" resultType="io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO">
+	<select id="apiEnterpriseByID" resultMap="apiEnterpriseDeatailinfoMap">
 		select * from sys_enterpriseinfo where `enterprise_id` = #{enterpriseId} 
 	</select>
 	
