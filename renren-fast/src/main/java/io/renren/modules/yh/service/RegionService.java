@@ -47,7 +47,7 @@ public interface RegionService {
 
 	List<RegionDTO> apiEnterpriseCity();
 
-	List<RegionDTO> apiEnterpriseProducts();
+	List<RegionDTO> apiApiFactoryCity();
 	
 	
 }

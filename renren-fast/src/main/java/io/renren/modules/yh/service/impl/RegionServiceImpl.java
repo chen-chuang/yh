@@ -246,7 +246,7 @@ public class RegionServiceImpl implements RegionService {
 	}
 
 	@Override
-	public List<RegionDTO> apiEnterpriseProducts(){
+	public List<RegionDTO> apiApiFactoryCity(){
         List<Map<String, String>> list = enterpriseinfoDao.apiEnterpriseCity(1);
 		
 		Map<String,String> existMap = new HashMap<String,String>();
