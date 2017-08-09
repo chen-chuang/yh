@@ -1,21 +1,21 @@
 package io.renren.modules.yh.service.impl;
 
-import org.apache.shiro.crypto.hash.Hash;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.ws.FaultAction;
+import io.renren.modules.api.entity.dto.RegionDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.sys.dao.SysUserDao;
-import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.yh.dao.EnterpriseinfoDao;
 import io.renren.modules.yh.dao.RegionDao;
 import io.renren.modules.yh.entity.RegionEntity;
@@ -197,6 +197,96 @@ public class RegionServiceImpl implements RegionService {
 	@Override
 	public int onlyId(Integer id){
 		return regionDao.onlyId(id);
+	}
+	
+	@Override
+	public List<RegionDTO> apiEnterpriseCity(){
+		List<Map<String, String>> list = enterpriseinfoDao.apiEnterpriseCity(2);
+		
+		Map<String,String> existMap = new HashMap<String,String>();
+		
+		List<RegionDTO> trees = new ArrayList<>();
+		
+		List<RegionDTO> rootTrees = new ArrayList<RegionDTO>();
+		
+		//根据底层节点找到递归找到父节点，组成list
+		for(Map<String, String> map : list){
+            int id = Integer.parseInt(map.get("areaId"));
+            List<String> areaIds = getFullRegion(id);
+            for(int i=0;i<areaIds.size();i++){
+            	if(!existMap.containsKey(areaIds.get(i))){
+            		RegionDTO regionEntity =  regionDao.queryTreeObject(areaIds.get(i));
+            		trees.add(regionEntity);
+            	}
+            	existMap.put(areaIds.get(i), areaIds.get(i));
+            }
+            
+		}
+		
+		//拼成树
+		
+        for (RegionDTO tree : trees) {
+            if(tree.getPid() == 0){
+                rootTrees.add(tree);
+            }
+            for (RegionDTO t : trees) {
+                if(t.getPid() == tree.getId()){
+                    if(tree.getSub() == null){
+                        List<RegionDTO> myChildrens = new ArrayList<RegionDTO>();
+                        myChildrens.add(t);
+                        tree.setSub(myChildrens);
+                    }else{
+                        tree.getSub().add(t);
+                    }
+                }
+            }
+        }
+		
+		return rootTrees;
+	}
+
+	@Override
+	public List<RegionDTO> apiEnterpriseProducts(){
+        List<Map<String, String>> list = enterpriseinfoDao.apiEnterpriseCity(1);
+		
+		Map<String,String> existMap = new HashMap<String,String>();
+		
+		List<RegionDTO> trees = new ArrayList<>();
+		
+		//根据底层节点找到递归找到父节点，组成list
+		for(Map<String, String> map : list){
+            int id = Integer.parseInt(map.get("areaId"));
+            List<String> areaIds = getFullRegion(id);
+            for(int i=0;i<areaIds.size();i++){
+            	if(!existMap.containsKey(areaIds.get(i))){
+            		RegionDTO regionEntity =  regionDao.queryTreeObject(areaIds.get(i));
+            		trees.add(regionEntity);
+            	}
+            	existMap.put(areaIds.get(i), areaIds.get(i));
+            }
+            
+		}
+		
+		//拼成树
+		  List<RegionDTO> rootTrees = new ArrayList<RegionDTO>();
+	        for (RegionDTO tree : trees) {
+	            if(tree.getPid() == 0){
+	                rootTrees.add(tree);
+	            }
+	            for (RegionDTO t : trees) {
+	                if(t.getPid() == tree.getId()){
+	                    if(tree.getSub() == null){
+	                        List<RegionDTO> myChildrens = new ArrayList<RegionDTO>();
+	                        myChildrens.add(t);
+	                        tree.setSub(myChildrens);
+	                    }else{
+	                        tree.getSub().add(t);
+	                    }
+	                }
+	            }
+	        }
+		
+		return rootTrees;
 	}
 	
 }

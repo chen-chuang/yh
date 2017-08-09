@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.api.entity.dto.RegionDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.yh.entity.RegionEntity;
 
@@ -43,6 +44,10 @@ public interface RegionService {
 	Map<String, Object> getParentKeyValue(String id);
 
 	int onlyId(Integer id);
+
+	List<RegionDTO> apiEnterpriseCity();
+
+	List<RegionDTO> apiEnterpriseProducts();
 	
 	
 }

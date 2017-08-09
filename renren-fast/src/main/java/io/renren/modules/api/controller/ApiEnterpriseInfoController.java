@@ -15,9 +15,11 @@ import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.api.entity.dto.EnterpriseProductions;
+import io.renren.modules.api.entity.dto.RegionDTO;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 import io.renren.modules.yh.service.ProductService;
+import io.renren.modules.yh.service.RegionService;
 
 @RestController
 @RequestMapping("/api")
@@ -29,7 +31,8 @@ public class ApiEnterpriseInfoController {
 	@Autowired
 	private ProductService productService;
 	
-	
+	@Autowired
+	private RegionService regionService;
 	
 	@AuthIgnore
 	@RequestMapping("enterpriseList")
@@ -199,34 +202,25 @@ public class ApiEnterpriseInfoController {
 	}
 	
 	
-/*	@AuthIgnore
+	@AuthIgnore
 	@RequestMapping("enterpriseCity")
 	public R enterpriseCity(@RequestParam Map<String, String> map){
 		
-		String sign = map.get("sign");
+	/*	String sign = map.get("sign");
 		map.remove("sign");
 		
         String websign = AppValidateUtils.getSign(map);
 		
 		if(websign.equals(sign)){
-			
-			String enterpriseID = map.get("enterpriseID");
-			String limit = map.get("pageSize");
-			String page = map.get("pageIndex");
-
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("enterpriseID", enterpriseID);
-			params.put("limit", limit);
-			params.put("page", page);
-			
-			Query query = new Query(params);
 		
-			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
-			return R.ok().put("info", enterpriseProductionsList);
+			List<RegionDTO> enterpriseCity = regionService.apiEnterpriseCity();
+			return R.ok().put("info", enterpriseCity);
 			
 		}else{
 			return R.error();
-		}
+		}*/
+		List<RegionDTO> enterpriseCity = regionService.apiEnterpriseCity();
+		return R.ok().put("info", enterpriseCity);
 	}
 	
 	@AuthIgnore
@@ -240,23 +234,12 @@ public class ApiEnterpriseInfoController {
 		
 		if(websign.equals(sign)){
 			
-			String enterpriseID = map.get("enterpriseID");
-			String limit = map.get("pageSize");
-			String page = map.get("pageIndex");
-
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("enterpriseID", enterpriseID);
-			params.put("limit", limit);
-			params.put("page", page);
-			
-			Query query = new Query(params);
-		
-			List<EnterpriseProductions> enterpriseProductionsList = producttypeService.apiEnterpriseProducts(query);
-			return R.ok().put("info", enterpriseProductionsList);
+			List<RegionDTO> factoryCity = regionService.apiEnterpriseProducts();
+			return R.ok().put("info", factoryCity);
 			
 		}else{
 			return R.error();
 		}
-	}*/
+	}
 
 }

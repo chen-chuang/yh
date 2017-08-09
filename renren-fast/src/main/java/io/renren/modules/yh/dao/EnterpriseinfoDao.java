@@ -30,6 +30,8 @@ public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
 
 	int updateRegion(RegionEntity region);
 
-	int isExistByRegion(Integer id); 
+	int isExistByRegion(Integer id);
+
+	List<Map<String, String>> apiEnterpriseCity(int type); 
 	
 }

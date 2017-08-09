@@ -10,10 +10,20 @@
         <result property="pid" column="pid"/>
     </resultMap>
     
+    <resultMap type="io.renren.modules.api.entity.dto.RegionDTO" id="apiRegionDTOMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="pid" column="pid"/>
+    </resultMap>
+    
     <resultMap type="io.renren.modules.api.entity.dto.TownDTO" id="apiRegionMap">
         <result property="townID" column="id"/>
         <result property="townName" column="name"/>
     </resultMap>
+    
+    <select id="queryTreeObject" resultMap="apiRegionDTOMap">
+		select * from sys_region where id = #{value}
+	</select>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.RegionEntity">
 		select * from sys_region where id = #{value}

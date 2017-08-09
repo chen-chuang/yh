@@ -175,5 +175,9 @@
 		select count(*) from sys_enterpriseinfo where enterprise_area_id = #{id}
 	</select>
 	
+	
+	<select id="apiEnterpriseCity" resultType="java.util.Map">
+		select distinct(enterprise_area_id) as areaId from sys_enterpriseinfo where enterprise_type = #{type}
+	</select>
 
 </mapper>

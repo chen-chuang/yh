@@ -1,13 +1,14 @@
 package io.renren.modules.yh.dao;
 
-import io.renren.modules.yh.entity.RegionEntity;
-import io.renren.modules.api.entity.dto.TownDTO;
-import io.renren.modules.sys.dao.BaseDao;
-
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import io.renren.modules.api.entity.dto.RegionDTO;
+import io.renren.modules.api.entity.dto.TownDTO;
+import io.renren.modules.sys.dao.BaseDao;
+import io.renren.modules.yh.entity.RegionEntity;
 
 /**
  * 行政区划表
@@ -30,5 +31,7 @@ public interface RegionDao extends BaseDao<RegionEntity> {
 	Map<String, Object> getParentKeyValue(String id);
 
 	int onlyId(Integer id);
+	
+	RegionDTO queryTreeObject(Object id);
 	
 }
