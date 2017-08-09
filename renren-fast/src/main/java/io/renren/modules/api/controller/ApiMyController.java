@@ -67,10 +67,10 @@ public class ApiMyController {
 		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.APPLY.getStatus());		
 		
 		try{
-			integrationcashService.apiWithdraw(integrationcashEntity,user);
-			return R.ok().put("info", "申请成功");
+			R r = integrationcashService.apiWithdraw(integrationcashEntity,user);
+			return r;
 		}catch (Exception e) {
-			return R.ok().put("info", "申请失败");
+			return R.error().put("info", "系统错误，请稍后再试...");
 		}
 		
 		

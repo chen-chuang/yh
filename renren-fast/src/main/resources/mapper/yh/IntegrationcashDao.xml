@@ -18,8 +18,8 @@
     
     <resultMap type="io.renren.modules.api.entity.dto.WithDrawDTO" id="apiIntegrationcashMap">
         <result property="withdrawalAmount" column="withdrawalAmount"/>
-        <result property="applyTime" column="apply_time"/>
-        <result property="withdrawStatus" column="withdraw_status"/>
+        <result property="withdrawalTime" column="apply_time"/>
+        <result property="withdrawalStatus" column="withdraw_status"/>
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
@@ -29,17 +29,17 @@
 	<select id="queryList" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
 		select * from sys_integrationcash 
 		<where>
-			<if test="type!=null">
+			<if test="type!=null and type.trim()!=''">
 				withdraw_status=#{type}
 			</if>
 			<if test="userPermission==3"><!-- 区域管理员 -->
-				user_id=#{userId}
+				and apply_user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
 				<if test="follwerUserId!=null and follwerUserId.trim() != ''">
 					and apply_user_id=#{follwerUserId}
 				</if>
 			</if>
 			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
-				apply_user_id=#{userId}
+				and apply_user_id=#{userId}
 			</if>
 		</where>
         <choose>
@@ -57,6 +57,20 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from sys_integrationcash 
+		<where>
+			<if test="type!=null and type.trim()!=''">
+				withdraw_status=#{type}
+			</if>
+			<if test="userPermission==3"><!-- 区域管理员 -->
+				and apply_user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
+				<if test="follwerUserId!=null and follwerUserId.trim() != ''">
+					and apply_user_id=#{follwerUserId}
+				</if>
+			</if>
+			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
+				and apply_user_id=#{userId}
+			</if>
+		</where>
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.IntegrationcashEntity" useGeneratedKeys="true" keyProperty="id">
@@ -117,7 +131,7 @@
 	<select id="apiWithdrawRecordList" resultMap = "apiIntegrationcashMap">
 		select withdrawalAmount,apply_time,
 		(case withdraw_status when 1 then '待转账' when 2 then '待转账' when 3 then '已完成' else null end) as withdraw_status 
-		 from sys_integrationcash where user_Id = #{userID} 
+		 from sys_integrationcash where apply_user_id = #{userID} 
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>

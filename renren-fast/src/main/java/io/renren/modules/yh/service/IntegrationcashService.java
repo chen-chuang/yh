@@ -1,6 +1,7 @@
 package io.renren.modules.yh.service;
 
 import io.renren.common.utils.Query;
+import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
@@ -35,7 +36,7 @@ public interface IntegrationcashService {
 
 	Map<String, Object> getIntegrationInfo(SysUserEntity user);
 
-	void apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user);
+	R apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user);
 
 	List<WithDrawDTO> apiWithdrawRecordList(Map<String, Object> map);
 

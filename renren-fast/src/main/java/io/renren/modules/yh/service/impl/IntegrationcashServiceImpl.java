@@ -9,12 +9,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.IntegrationcashDao;
 import io.renren.modules.yh.entity.ConfigtableEntity;
@@ -137,7 +136,7 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 	}
 	
 	@Override
-	public void apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user){
+	public R apiWithdraw(IntegrationcashEntity integrationcashEntity, SysUserEntity user){		
 		
         ConfigtableEntity configtableEntities = configtableDao.getConfigIntegerationCash(user);
 		
@@ -153,6 +152,10 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 			integrationcashEntity.setIntegration(useIntegration);
 			
 			integrationcashDao.save(integrationcashEntity);
+			
+			return R.ok();
+		}else{
+			return R.error("所属区域经销商尚未设置积分兑现比例，暂不能兑现！");
 		}
 	}
 	

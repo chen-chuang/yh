@@ -180,7 +180,7 @@
 	</select>
 	
 	<update id="addIntegral">
-	    update sys_user set userIntegral = #{integral} where user_id = #{userId}
+	    update sys_user set user_integral = #{integral} where user_id = #{userId}
 	</update>
 	
 	
