@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
+import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -103,11 +105,9 @@ public class ApiMyController {
 		
 		Query query = new Query(params);
 
-		List<WithDrawDTO> withDrawList = integrationcashService.apiWithdrawRecordList(query);
+		List<WithDrawDTO> withDrawList = integrationcashService.apiWithdrawRecordList(query);		
 		
-		
-		return R.ok().put("info", withDrawList);	
-		
+		return R.ok().put("info", withDrawList);			
 		
 	}
 	
@@ -115,41 +115,76 @@ public class ApiMyController {
 	/**
 	 * 修改登录用户密码
 	 */
-	@SysLog("修改密码")
 	@AuthIgnore
 	@RequestMapping("/changePassword")
-	public R password(String userID,String originalPassword, String newPassword){
+	public R password(@RequestParam Map<String, String> map){
 		
-		//Assert.isBlank(newPassword, "新密码不为能空");
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		SysUserEntity sysUserEntity = sysUserService.queryObject(Long.valueOf(userID));
+        String websign = AppValidateUtils.getSign(map);
 		
-		//sha256加密
-		originalPassword = new Sha256Hash(originalPassword, sysUserEntity.getSalt()).toHex();
-		//sha256加密
-		newPassword = new Sha256Hash(newPassword,sysUserEntity.getSalt()).toHex();
-				
-		//更新密码
-		int count = sysUserService.updatePassword(Long.valueOf(userID), originalPassword, newPassword);
-		if(count == 0){
-			return R.ok().put("info", "原密码不正确");
+		if(websign.equals(sign)){
+			
+			String newPassword = map.get("newPassword");
+			String originalPassword = map.get("originalPassword");
+			String userID=map.get("userID");
+			
+			if(StringUtils.isBlank(newPassword)){
+				return R.error("新密码不能为空！");
+			}
+			
+			if(originalPassword.equals(newPassword)){
+				return R.error("新密码和原密码不能一样哦！");
+			}
+			
+			SysUserEntity sysUserEntity = sysUserService.queryObject(Long.valueOf(map.get("userID")));
+			
+			//sha256加密
+			originalPassword = new Sha256Hash(originalPassword, sysUserEntity.getSalt()).toHex();
+			//sha256加密
+			newPassword = new Sha256Hash(newPassword,sysUserEntity.getSalt()).toHex();
+					
+			//更新密码
+			int count = sysUserService.updatePassword(Long.valueOf(userID), originalPassword, newPassword);
+			if(count == 0){
+				return R.error("您输入的原密码不正确！");
+			}
+			
+			return R.ok();
+		}else{
+			return R.error();
 		}
 		
-		return R.ok().put("info", null);
+		
 	}
 	
 	@AuthIgnore
 	@RequestMapping("/login")
-	public R login(String phoneNumber,String password){		
+	public R login(@RequestParam Map<String, String> map){
 		
-		Object info = sysUserService.apiLogin(phoneNumber,password);
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		return R.ok().put("info", info);
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			Object info = sysUserService.apiLogin(map.get("phoneNumber"),map.get("password"));
+			
+			if(info instanceof LoginDTO){
+				return R.ok().put("info", info);
+			}else{
+				return R.error(String.valueOf(info));
+			}
+		}else{
+			return R.error();
+		}
+		
 	}
 	
 	@AuthIgnore
 	@RequestMapping("/myCollectionList")
-	public R login(@RequestParam Map<String, String> map){				
+	public R myCollectionList(@RequestParam Map<String, String> map){				
 		
 		String sign = map.get("sign");
 		map.remove("sign");

@@ -206,7 +206,7 @@ public class ApiEnterpriseInfoController {
 	@RequestMapping("enterpriseCity")
 	public R enterpriseCity(@RequestParam Map<String, String> map){
 		
-		String sign = map.get("sign");
+	/*	String sign = map.get("sign");
 		map.remove("sign");
 		
         String websign = AppValidateUtils.getSign(map);
@@ -218,7 +218,10 @@ public class ApiEnterpriseInfoController {
 			
 		}else{
 			return R.error();
-		}		
+		}	
+		*/
+		List<RegionDTO> enterpriseCity = regionService.apiEnterpriseCity();
+		return R.ok().put("info", enterpriseCity);
 	}
 	
 	@AuthIgnore

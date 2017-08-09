@@ -1,4 +1,4 @@
-package io.renren.common.utils;
+package io.renren.common.xss;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Tree {
+
 	  private int id;
 	     
 	    private String name;
@@ -61,28 +62,28 @@ public class Tree {
 	    }
 	 
 	    public static void main(String[] args) {
-	        Tree tree2 = new Tree(2, "顶层节点2", 0);
-	        Tree tree3 = new Tree(3, "顶层节点3", 0);
+	        Tree tree2 = new Tree(41, "河南", 0);
+	        Tree tree3 = new Tree(4121, "周口", 41);
 	         
-	        Tree tree4 = new Tree(4, "二级节点4", 1);
-	        Tree tree5 = new Tree(5, "二级节点5", 2);
-	        Tree tree6 = new Tree(6, "二级节点6", 3);
+	        Tree tree4 = new Tree(412101, "川汇区", 4121);
+	        Tree tree5 = new Tree(4101, "郑州", 41);
+	        Tree tree6 = new Tree(410101, "郑东新区", 4101);/*
 	        Tree tree1 = new Tree(1, "顶层节点1", 0);
 	         
 	        Tree tree7 = new Tree(7, "三级节点7", 4);
 	        Tree tree8 = new Tree(8, "三级节点8", 4);
-	        Tree tree9 = new Tree(9, "三级节点9", 5);
+	        Tree tree9 = new Tree(9, "三级节点9", 5);*/
 	         
 	        List<Tree> trees = new ArrayList<Tree>();
-	        trees.add(tree9);
+	       /* trees.add(tree9);
 	        trees.add(tree8);
-	        trees.add(tree7);
+	        trees.add(tree7);*/
 	        trees.add(tree6);
 	        trees.add(tree5);
 	        trees.add(tree4);
 	        trees.add(tree3);
 	        trees.add(tree2);
-	        trees.add(tree1);
+	       /* trees.add(tree1);*/
 	 
 	        List<Tree> rootTrees = new ArrayList<Tree>();
 	        for (Tree tree : trees) {
@@ -106,5 +107,5 @@ public class Tree {
 	        System.out.println(new Gson().toJson(rootTrees));
 	         
 	    }
-}
 
+}

@@ -11,6 +11,8 @@ public class LoginDTO {
 	private int areaID;
 	
 	private Long userIntegral;
+	
+	private String token;
 
 	public String getUserID() {
 		return userID;
@@ -50,6 +52,14 @@ public class LoginDTO {
 
 	public void setUserIntegral(Long userIntegral) {
 		this.userIntegral = userIntegral;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

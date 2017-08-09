@@ -12,15 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.renren.common.exception.RRException;
 import io.renren.common.utils.Constant;
 import io.renren.modules.api.entity.dto.LoginDTO;
+import io.renren.modules.api.service.TokenService;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
-import io.renren.modules.yh.entity.RegionEntity;
 import io.renren.modules.yh.service.RegionService;
 
 
@@ -42,6 +41,9 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysRoleService sysRoleService;
 	@Autowired
 	private RegionService regionService;
+	
+	@Autowired
+	private TokenService tokenService;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -127,17 +129,17 @@ public class SysUserServiceImpl implements SysUserService {
 	 */
 	private void checkRole(SysUserEntity user){
 		//如果不是超级管理员，则需要判断用户的角色是否自己创建
-		if(user.getCreateUserId() == Constant.SUPER_ADMIN){
+		/*if(user.getCreateUserId() == Constant.SUPER_ADMIN){
 			return ;
 		}
 		
 		//查询用户创建的角色列表
-		List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());
+		List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());*/
 		
 		//判断是否越权
-		if(!roleIdList.containsAll(user.getRoleIdList())){
+		/*if(!roleIdList.containsAll(user.getRoleIdList())){
 			throw new RRException("新增用户所选角色，不是本人创建");
-		}
+		}*/
 	}
 	
 	@Override
@@ -175,6 +177,9 @@ public class SysUserServiceImpl implements SysUserService {
 		if(info == null){
 			msg = "您输入的密码有误！";
 			return msg;
+		}else{
+			Map<String, Object> map = tokenService.createToken(Long.valueOf(info.getUserID()));
+			info.setToken(map.get("token").toString());
 		}		
 		
 		return info;		

@@ -133,7 +133,7 @@
 	<select id="apiQueryList" resultMap="apiEnterpriseinfoMap">
 		select * from sys_enterpriseinfo
 		<where>
-		    <if test="townID != null">
+		    <if test="townID != null and townID.trim() != ''">
 				and `enterprise_area_id` = #{townID} 
 			</if>
 			<if test="enterpriseType != null">

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aliyun.oss.model.InitiateMultipartUploadRequest;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.ws.FaultAction;
+
 import io.renren.modules.api.entity.dto.RegionDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.sys.dao.SysUserDao;
@@ -205,14 +208,18 @@ public class RegionServiceImpl implements RegionService {
 		
 		Map<String,String> existMap = new HashMap<String,String>();
 		
-		List<RegionDTO> trees = new ArrayList<>();
+		List<RegionDTO> trees = new ArrayList<RegionDTO>();
 		
 		List<RegionDTO> rootTrees = new ArrayList<RegionDTO>();
 		
 		//根据底层节点找到递归找到父节点，组成list
 		for(Map<String, String> map : list){
+			if(StringUtils.isBlank(map.get("areaId"))){
+				continue;
+			}
             int id = Integer.parseInt(map.get("areaId"));
             List<String> areaIds = getFullRegion(id);
+            areaIds.add(String.valueOf(id));
             for(int i=0;i<areaIds.size();i++){
             	if(!existMap.containsKey(areaIds.get(i))){
             		RegionDTO regionEntity =  regionDao.queryTreeObject(areaIds.get(i));
@@ -224,23 +231,25 @@ public class RegionServiceImpl implements RegionService {
 		}
 		
 		//拼成树
-		
-        for (RegionDTO tree : trees) {
-            if(tree.getPid() == 0){
-                rootTrees.add(tree);
-            }
-            for (RegionDTO t : trees) {
-                if(t.getPid() == tree.getId()){
-                    if(tree.getSub() == null){
-                        List<RegionDTO> myChildrens = new ArrayList<RegionDTO>();
-                        myChildrens.add(t);
-                        tree.setSub(myChildrens);
-                    }else{
-                        tree.getSub().add(t);
-                    }
-                }
-            }
-        }
+		if(trees!=null&&trees.size()>0){
+			
+		  for (RegionDTO tree : trees) {
+	            if(tree.getPid().equals(0)){
+	                rootTrees.add(tree);
+	            }
+	            for (RegionDTO t : trees) {
+	                if(t.getPid().equals(tree.getId())){
+	                    if(tree.getSub() == null){
+	                        List<RegionDTO> myChildrens = new ArrayList<RegionDTO>();
+	                        myChildrens.add(t);
+	                        tree.setSub(myChildrens);
+	                    }else{
+	                        tree.getSub().add(t);
+	                    }
+	                }
+	            }
+	        }
+		}	    
 		
 		return rootTrees;
 	}
@@ -255,8 +264,12 @@ public class RegionServiceImpl implements RegionService {
 		
 		//根据底层节点找到递归找到父节点，组成list
 		for(Map<String, String> map : list){
+			if(StringUtils.isBlank(map.get("areaId"))){
+				continue;
+			}
             int id = Integer.parseInt(map.get("areaId"));
             List<String> areaIds = getFullRegion(id);
+            areaIds.add(String.valueOf(id));
             for(int i=0;i<areaIds.size();i++){
             	if(!existMap.containsKey(areaIds.get(i))){
             		RegionDTO regionEntity =  regionDao.queryTreeObject(areaIds.get(i));
@@ -266,15 +279,17 @@ public class RegionServiceImpl implements RegionService {
             }
             
 		}
+		List<RegionDTO> rootTrees = new ArrayList<RegionDTO>();
 		
 		//拼成树
-		  List<RegionDTO> rootTrees = new ArrayList<RegionDTO>();
-	        for (RegionDTO tree : trees) {
-	            if(tree.getPid() == 0){
+		if(trees!=null&&trees.size()>0){
+			
+		  for (RegionDTO tree : trees) {
+	            if(tree.getPid().equals(0)){
 	                rootTrees.add(tree);
 	            }
 	            for (RegionDTO t : trees) {
-	                if(t.getPid() == tree.getId()){
+	                if(t.getPid().equals(tree.getId())){
 	                    if(tree.getSub() == null){
 	                        List<RegionDTO> myChildrens = new ArrayList<RegionDTO>();
 	                        myChildrens.add(t);
@@ -285,6 +300,7 @@ public class RegionServiceImpl implements RegionService {
 	                }
 	            }
 	        }
+		}	
 		
 		return rootTrees;
 	}
