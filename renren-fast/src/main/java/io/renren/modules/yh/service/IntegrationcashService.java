@@ -1,13 +1,13 @@
 package io.renren.modules.yh.service;
 
-import io.renren.common.utils.Query;
+import java.util.List;
+import java.util.Map;
+
 import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 积分兑现表（销售人员）
@@ -40,5 +40,6 @@ public interface IntegrationcashService {
 
 	List<WithDrawDTO> apiWithdrawRecordList(Map<String, Object> map);
 
-	void complete(String id);
+	void complete(String id);	
+
 }

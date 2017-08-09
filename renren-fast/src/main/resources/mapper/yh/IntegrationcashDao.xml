@@ -131,7 +131,7 @@
 	<select id="apiWithdrawRecordList" resultMap = "apiIntegrationcashMap">
 		select withdrawalAmount,apply_time,
 		(case withdraw_status when 1 then '待转账' when 2 then '待转账' when 3 then '已完成' else null end) as withdraw_status 
-		 from sys_integrationcash where apply_user_id = #{userID} 
+		 from sys_integrationcash where apply_user_id = #{userID} order by apply_time desc 
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>

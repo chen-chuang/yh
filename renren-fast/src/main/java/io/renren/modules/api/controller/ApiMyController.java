@@ -26,9 +26,11 @@ import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.IntegrationcashEntity;
 import io.renren.modules.yh.entity.enums.EnumIntegrationCash;
 import io.renren.modules.yh.service.CollectionService;
+import io.renren.modules.yh.service.ConfigtableService;
 import io.renren.modules.yh.service.IntegrationcashService;
 import io.renren.modules.yh.service.OrderService;
 
@@ -48,30 +50,44 @@ public class ApiMyController {
 	@Autowired
 	private CollectionService collectionService;
 	
+	@Autowired
+	private ConfigtableService configtableService;
+	
 	@AuthIgnore
 	@RequestMapping("withdraw")
-	public R withdraw(HttpServletRequest request){
+	public R withdraw(@RequestParam Map<String, String> map){
 		
-		String userID = request.getParameter("userID");
-		String withdrawalAmount = request.getParameter("withdrawalAmount");
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-	    BigDecimal account = new BigDecimal(withdrawalAmount);
+        String websign = AppValidateUtils.getSign(map);
 		
-		SysUserEntity user =  sysUserService.queryObject(Long.valueOf(userID));
-		
-		IntegrationcashEntity integrationcashEntity = new IntegrationcashEntity();
-		integrationcashEntity.setApplyTime(new Date());
-		integrationcashEntity.setApplyUserId(user.getUserId());
-		integrationcashEntity.setApplyUserName(user.getUsername());
-		integrationcashEntity.setWithdrawalamount(account);
-		integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.APPLY.getStatus());		
-		
-		try{
-			R r = integrationcashService.apiWithdraw(integrationcashEntity,user);
-			return r;
-		}catch (Exception e) {
-			return R.error().put("info", "系统错误，请稍后再试...");
+		if(websign.equals(sign)){
+			String userID = map.get("userID");
+			String withdrawalAmount =  map.get("withdrawalAmount");
+			
+		    BigDecimal account = new BigDecimal(withdrawalAmount);
+			
+			SysUserEntity user =  sysUserService.queryObject(Long.valueOf(userID));
+			
+			IntegrationcashEntity integrationcashEntity = new IntegrationcashEntity();
+			integrationcashEntity.setApplyTime(new Date());
+			integrationcashEntity.setApplyUserId(user.getUserId());
+			integrationcashEntity.setApplyUserName(user.getUsername());
+			integrationcashEntity.setWithdrawalamount(account);
+			integrationcashEntity.setWithdrawStatus(EnumIntegrationCash.APPLY.getStatus());		
+			
+			try{
+				R r = integrationcashService.apiWithdraw(integrationcashEntity,user);
+				return r;
+			}catch (Exception e) {
+				return R.error().put("info", "系统错误，请稍后再试...");
+			}
+		}else{
+			return R.error();
 		}
+		
+		
 		
 		
 	}
@@ -91,23 +107,32 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("withdrawRecordList")
-	public R withdrawRecordList(HttpServletRequest request){
+	public R withdrawRecordList(@RequestParam Map<String, String> map){
 		
-		String userID = request.getParameter("userID");
-		String page = request.getParameter("pageIndex");
-		String limit = request.getParameter("pageSize");
+		String sign = map.get("sign");
+		map.remove("sign");
 		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			String userID = map.get("userID");
+			String page = map.get("pageIndex");
+			String limit = map.get("pageSize");
+			
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userID", userID);
-		params.put("limit", limit);
-		params.put("page", page);
-		
-		Query query = new Query(params);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userID", userID);
+			params.put("limit", limit);
+			params.put("page", page);
+			
+			Query query = new Query(params);
 
-		List<WithDrawDTO> withDrawList = integrationcashService.apiWithdrawRecordList(query);		
-		
-		return R.ok().put("info", withDrawList);			
+			List<WithDrawDTO> withDrawList = integrationcashService.apiWithdrawRecordList(query);		
+			
+			return R.ok().put("info", withDrawList);	
+		}else{
+			return R.error();
+		}				
 		
 	}
 	
@@ -211,16 +236,36 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("/userIntegral")
-	public R userIntegral(String userID){		
+	public R userIntegral(@RequestParam Map<String, String> mapRequest){	
 		
-		Map<String,Object> map = new HashMap<String,Object>();
+		String sign = mapRequest.get("sign");
+		mapRequest.remove("sign");
 		
-		Long userId = Long.parseLong(userID);
-		SysUserEntity user = sysUserService.queryObject(userId);
+        String websign = AppValidateUtils.getSign(mapRequest);
 		
-		map.put("userIntegral", user.getUserIntegral());
+		if(websign.equals(sign)){
+			Map<String,Object> map = new HashMap<String,Object>();
+			
+			Long userId = Long.parseLong(mapRequest.get("userID"));
+			SysUserEntity user = sysUserService.queryObject(userId);
+			
+			ConfigtableEntity configtableEntity = configtableService.getConfigIntegerationCash(user);
+			
+			map.put("userIntegral", user.getUserIntegral());
+			
+			if(configtableEntity!=null){
+				map.put("scoreScale", configtableEntity.getConfigValue());
+			}else{
+				map.put("scoreScale", 1);
+			}
+			
+			
+			return R.ok().put("info", map);
+		}else{
+			return R.error();
+		}
 		
-		return R.ok().put("info", map);
+		
 		
 	}
 	

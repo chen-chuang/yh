@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ConfigtableService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+	
+	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
 }

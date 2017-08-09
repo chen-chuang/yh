@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler;
 
 import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
@@ -155,7 +156,19 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 			
 			return R.ok();
 		}else{
-			return R.error("所属区域经销商尚未设置积分兑现比例，暂不能兑现！");
+			//return R.error("所属区域经销商尚未设置积分兑现比例，暂不能兑现！");
+			String proportion = "1";
+			BigDecimal proportionNum = new BigDecimal(proportion);
+			
+			BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
+			
+			//通过比例计算提及的积分
+			Long useIntegration = amount.multiply(proportionNum).longValue();
+			integrationcashEntity.setIntegration(useIntegration);
+			
+			integrationcashDao.save(integrationcashEntity);
+			
+			return R.ok();
 		}
 	}
 	
@@ -185,5 +198,6 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 		sysUserDao.addIntegral(remainderIntegration, userEntity.getUserId());
 		
 	}
+
 	
 }

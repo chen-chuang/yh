@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.service.ConfigtableService;
@@ -50,6 +51,12 @@ public class ConfigtableServiceImpl implements ConfigtableService {
 	@Override
 	public void deleteBatch(Integer[] ids){
 		configtableDao.deleteBatch(ids);
+	}
+	
+	
+	@Override
+	public ConfigtableEntity getConfigIntegerationCash(SysUserEntity user){
+		return configtableDao.getConfigIntegerationCash(user);
 	}
 	
 }
