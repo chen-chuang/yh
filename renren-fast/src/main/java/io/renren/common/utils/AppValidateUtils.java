@@ -33,7 +33,7 @@ public class AppValidateUtils {
     public static String getSign(Map<String, String> map){
     	Map<String, String> sortMap = sortMapByKey(map);
     	StringBuilder sb = new StringBuilder();
-		for (Map.Entry<String, String> entry : map.entrySet()) {
+		for (Map.Entry<String, String> entry : sortMap.entrySet()) {
 		   sb.append(entry.getKey()).append(entry.getValue());
 		}
 		
