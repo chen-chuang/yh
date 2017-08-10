@@ -195,7 +195,13 @@
 	</select>
 	
 	<select id="validateOnlyAgency" resultType="int">
-		select count(*) from sys_user where area_id =#{areaId} and user_permission="3"
+		select count(*) from sys_user 
+		<where>
+			area_id =#{areaId} and user_permission="3"
+			<if test="userId!=null">
+				and user_id!=#{user_id}
+			</if>
+		</where>
 	</select>
 	
 	

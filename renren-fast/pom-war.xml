@@ -170,6 +170,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
+        <!-- alipay -->
+        <dependency>
+            <groupId>com.alipay</groupId>
+            <artifactId>sdk-java</artifactId>
+            <version>20170307</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
     </dependencies>
 
     <build>

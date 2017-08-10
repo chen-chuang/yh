@@ -62,5 +62,5 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 
 	List<Map<String, Object>> getDelivery(Long userId);
 
-	int validateOnlyAgency(String areaId);
+	int validateOnlyAgency(String areaId, Long userId);
 }

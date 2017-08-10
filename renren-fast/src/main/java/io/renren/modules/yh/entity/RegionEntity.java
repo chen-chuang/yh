@@ -3,6 +3,12 @@ package io.renren.modules.yh.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
+
 
 
 /**
@@ -18,6 +24,7 @@ public class RegionEntity implements Serializable {
 	//
 	private Integer id;
 	//行政区划名称
+	@NotBlank(message="行政区域不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String name;
 	//父ID
 	private Integer pid;

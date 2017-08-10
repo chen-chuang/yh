@@ -201,7 +201,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 	
 	@Override
-	public int validateOnlyAgency(String areaId){
-		return sysUserDao.validateOnlyAgency(areaId);
+	public int validateOnlyAgency(String areaId, Long userId){
+		return sysUserDao.validateOnlyAgency(areaId,userId);
 	}
 }

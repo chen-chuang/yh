@@ -124,7 +124,7 @@ public class SysUserController extends AbstractController {
 		
 		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
 			if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
-				int count = sysUserService.validateOnlyAgency(user.getAreaId());
+				int count = sysUserService.validateOnlyAgency(user.getAreaId(),null);
 				if(count>0){
 					return R.error("该区域已存在区域经销商，请重新设置区域！");
 				}
@@ -168,7 +168,7 @@ public class SysUserController extends AbstractController {
 		
 		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
 			if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
-				int count = sysUserService.validateOnlyAgency(user.getAreaId());
+				int count = sysUserService.validateOnlyAgency(user.getAreaId(),user.getUserId());
 				if(count>0){
 					return R.error("该区域已存在区域经销商，请重新设置区域！");
 				}
@@ -233,7 +233,7 @@ public class SysUserController extends AbstractController {
 		
 		
 		if(getUser().getUserPermission().equals(EnumPermission.ADMIN.getType())){
-				int count = sysUserService.validateOnlyAgency(String.valueOf(regionId));
+				int count = sysUserService.validateOnlyAgency(String.valueOf(regionId),userId);
 				return R.error("该区域已存在区域经销商，请重新设置！");
 		}
 		

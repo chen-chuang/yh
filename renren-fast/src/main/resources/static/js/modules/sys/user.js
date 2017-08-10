@@ -288,6 +288,38 @@ var vm = new Vue({
 		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
 		    	console.log(r.currentLoginUser.userPermission);
 		    	vm.currentPermission = r.currentLoginUser.userPermission;
+		    	if(r.currentLoginUser.userPermission==1){
+		    		
+		    		$("#province").removeAttr("disabled");
+		    		$("#city").removeAttr("disabled");
+		    		$("#county").removeAttr("disabled");
+		    		
+		    		/*$("#permissionSelect option[value='4']").remove();
+		    		$("#permissionSelect option[value='5']").remove();
+		    		$("#permissionSelect option[value='6']").remove();
+		    		$("#permissionSelect option[value='7']").remove();*/
+		    		
+		    	}else if(r.currentLoginUser.userPermission==3){
+		    		
+		    		$("#permissionSelect option[value='1']").remove();
+		    		$("#permissionSelect option[value='2']").remove();
+		    		$("#permissionSelect option[value='3']").remove();
+		    		$("#permissionSelect option[value='8']").remove();
+		    		
+		    		if(vm.title=="修改"){
+		    			$("#province").attr("disabled",true);
+		    			$("#city").attr("disabled",true);
+		    			$("#county").attr("disabled",true);
+		    		}
+		    		
+		    		if(vm.title == "新增"){
+		    			
+		    			$("#province").removeAttr("disabled");
+			    		$("#city").removeAttr("disabled");
+			    		$("#county").removeAttr("disabled");
+		    		}
+		    		
+		    	}
 			});
 		},	
 		update: function () {
@@ -296,8 +328,12 @@ var vm = new Vue({
 				return ;
 			}
 			
+			this.getArea();
+			
 			vm.showList = false;
             vm.title = "修改";
+            
+            vm.getArea();
 			
 			vm.getUser(userId);	    
 			
@@ -348,6 +384,13 @@ var vm = new Vue({
 			});
 		},
 		saveOrUpdate: function () {
+			
+			var countySelectId = $('#county').val();
+			
+			if(countySelectId==null ||countySelectId==""){
+				alert("用户必须要选择到区县哦~");
+				return;
+			}
 			var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";		
 		
 			vm.user.expiryDate=$('#expiryDate').val();

@@ -10,7 +10,7 @@ $(function () {
 				if(value!=""&&value!=null){
 					return '<img src='+value+'>';
 				}else{
-					return value;
+					return "";
 				}
 			}}, 						 			
 			{ label: '企业地址', align: 'center',name: 'enterpriseAddress', index: 'enterprise_address', width: 80 }, 			
@@ -20,7 +20,7 @@ $(function () {
 			{ label: '简介', align: 'center',name: 'enterpriseIntroduction', index: 'enterprise_introduction', width: 80 }, 			
 			{ label: '经度',align: 'center',hidden:true, name: 'enterpriseLongitude', index: 'enterprise_longitude', width: 80 }, 			
 			{ label: '纬度',align: 'center',hidden:true, name: 'enterpriseLatitude', index: 'enterprise_latitude', width: 80 }, 			
-			{ label: '行政区域', align: 'center',name: 'enterpriseAreaId', index: 'enterprise_area_id', width: 80 }, 			
+			{ label: '行政区域', align: 'center',name: 'enterpriseAreaName', index: 'enterprise_area_name', width: 80 }, 			
 			{ label: '商家类型', align: 'center',name: 'enterpriseType', index: 'enterprise_type', width: 80 , formatter: function(value, options, row){
 				if(value===1){
 					return "生产厂家";
@@ -95,6 +95,7 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             
+            this.getArea();
             vm.getInfo(enterpriseId);
             
 		},
@@ -109,6 +110,11 @@ var vm = new Vue({
 				vm.province=r.region[0];
 				vm.city=r.region[1];
 				vm.county=r.region[2];
+				
+				$("#province").val(r.region[0]);
+				$("#city").val(r.region[1]);
+				$("#county").val(r.region[2]);
+				
 				
 			});
 		},
@@ -171,6 +177,12 @@ var vm = new Vue({
 			
 		},
 		saveOrUpdate:function(event){		
+			
+			var county = $('#county').val();
+			if(county==null||county==""){
+				alert("用户必须要选择到区县哦~");
+				return;
+			}
 			
 			var url = vm.enterpriseinfo.enterpriseId == null ? "enterpriseinfo/save" : "enterpriseinfo/update";
 			var formData = new FormData($("form")[0]);

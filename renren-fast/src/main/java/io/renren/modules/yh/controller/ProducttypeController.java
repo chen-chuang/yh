@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.yh.service.ProducttypeService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 
 
 
@@ -29,7 +33,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("producttype")
-public class ProducttypeController {
+public class ProducttypeController extends AbstractController {
 	@Autowired
 	private ProducttypeService producttypeService;
 	
@@ -68,6 +72,8 @@ public class ProducttypeController {
 	@RequestMapping("/save")
 	@RequiresPermissions("producttype:save")
 	public R save(@RequestBody ProducttypeEntity producttype){
+		ValidatorUtils.validateEntity(producttype, AddGroup.class);
+		producttype.setEnterId(getUserId().toString());
 		producttypeService.save(producttype);
 		
 		return R.ok();
@@ -79,6 +85,11 @@ public class ProducttypeController {
 	@RequestMapping("/update")
 	@RequiresPermissions("producttype:update")
 	public R update(@RequestBody ProducttypeEntity producttype){
+		
+		ValidatorUtils.validateEntity(producttype, UpdateGroup.class);
+		
+		producttype.setEnterId(getUserId().toString());
+		
 		producttypeService.update(producttype);
 		
 		return R.ok();

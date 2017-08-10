@@ -4,11 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,10 +24,11 @@ import io.renren.common.utils.FileUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.sys.controller.AbstractController;
-import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
-import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 
 
@@ -85,6 +83,8 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequiresPermissions("enterpriseinfo:save")
 	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
+		ValidatorUtils.validateEntity(enterpriseinfo, AddGroup.class);
+		
 		if(file!=null&&StringUtils.isNotBlank(file.getOriginalFilename())){
 			try {
 				String orginalFileName = file.getOriginalFilename();
@@ -123,6 +123,8 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequestMapping("/update")
 	@RequiresPermissions("enterpriseinfo:update")
 	public R update(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){		
+		
+		ValidatorUtils.validateEntity(enterpriseinfo, UpdateGroup.class);
 		
 		if(file!=null&&StringUtils.isNotBlank(file.getOriginalFilename())){
 			try {

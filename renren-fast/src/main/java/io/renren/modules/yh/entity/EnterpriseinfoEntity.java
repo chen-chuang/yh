@@ -1,7 +1,13 @@
 package io.renren.modules.yh.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
 
 
 
@@ -18,6 +24,7 @@ public class EnterpriseinfoEntity implements Serializable {
 	//
 	private Long enterpriseId;
 	//企业名称
+	@NotBlank(message="企业名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String enterpriseName;
 	//企业图片
 	private String enterpriseImageUrl;
@@ -40,6 +47,7 @@ public class EnterpriseinfoEntity implements Serializable {
 	
 	private String enterpriseAreaName;
 	//类型（1：生产厂家，2：经销商）
+	@NotNull(message="企业类型不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer enterpriseType;
 
 	/**

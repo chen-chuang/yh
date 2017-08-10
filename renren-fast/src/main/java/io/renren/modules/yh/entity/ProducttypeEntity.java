@@ -3,6 +3,11 @@ package io.renren.modules.yh.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
+
 
 
 /**
@@ -17,7 +22,8 @@ public class ProducttypeEntity implements Serializable {
 	
 	//
 	private Integer id;
-	//
+	
+	@NotBlank(message="分类名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String type;
 	
 	private String imageUrl;
