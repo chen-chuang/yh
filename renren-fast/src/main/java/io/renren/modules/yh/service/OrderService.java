@@ -3,6 +3,7 @@ package io.renren.modules.yh.service;
 import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.yh.entity.OrderEntity;
 
@@ -33,7 +34,7 @@ public interface OrderService {
 
 	List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID);
 
-	Map<String, Object> apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID, String orderProductionsCount);
+	R apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID, String orderProductionsCount);
 
 	void dispatch(String orderId, String userId);
 	

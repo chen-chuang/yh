@@ -249,23 +249,12 @@ public class ApiMyController {
 			Long userId = Long.parseLong(mapRequest.get("userID"));
 			SysUserEntity user = sysUserService.queryObject(userId);
 			
-			ConfigtableEntity configtableEntity = configtableService.getConfigIntegerationCash(user);
-			
-			map.put("userIntegral", user.getUserIntegral());
-			
-			if(configtableEntity!=null){
-				map.put("scoreScale", configtableEntity.getConfigValue());
-			}else{
-				map.put("scoreScale", 1);
-			}
-			
+			map = sysUserService.apiUserIntegral(user);	
 			
 			return R.ok().put("info", map);
 		}else{
 			return R.error();
 		}
-		
-		
 		
 	}
 	

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.renren.common.utils.Constant;
 import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.api.service.TokenService;
 import io.renren.modules.sys.dao.SysUserDao;
@@ -20,6 +19,9 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.dao.ConfigtableDao;
+import io.renren.modules.yh.dao.IntegrationcashDao;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.service.RegionService;
 
 
@@ -44,6 +46,12 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
 	private TokenService tokenService;
+	
+	@Autowired
+	private IntegrationcashDao integrationcashDao;
+	
+	@Autowired
+	private ConfigtableDao configtableDao;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -203,5 +211,28 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public int validateOnlyAgency(String areaId, Long userId){
 		return sysUserDao.validateOnlyAgency(areaId,userId);
+	}
+
+	@Override
+	public Map<String, Object> apiUserIntegral(SysUserEntity user) {
+			
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		//得到申请中的总积分
+		Long applySum = integrationcashDao.getSumIntegration(user.getUserId());
+		
+		
+		ConfigtableEntity configtableEntity = configtableDao.getConfigIntegerationCash(user);
+		
+		if(configtableEntity!=null){
+			map.put("scoreScale", configtableEntity.getConfigValue());
+		}else{
+			map.put("scoreScale", 1);
+		}
+		
+		//得到能使用的积分
+		map.put("userIntegral", user.getUserIntegral()-applySum);
+		
+		return map;
 	}
 }

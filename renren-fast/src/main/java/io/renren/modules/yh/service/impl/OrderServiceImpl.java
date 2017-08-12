@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.renren.common.utils.DateUtils;
+import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.OrderProductions;
 import io.renren.modules.sys.dao.SysUserDao;
@@ -129,10 +130,13 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional	
-	public Map<String, Object> apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID,
+	public R apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID,
 			String orderProductionsCount) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
+		Long useIntegralCount = orderEntity.getUserIntegralCount();
 		
 		String[] orderProductionsIDs = orderProductionsID.split(",");
 		String[] orderProductionsCounts = orderProductionsCount.split(",");
@@ -143,44 +147,58 @@ public class OrderServiceImpl implements OrderService {
 			if(store!=null){
 				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
 				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
-			}else{
-				map.put("msg", "商品库存不足！");
-				return map;
+			}else{				
+				return R.error("商品库存不足！");
 			}
 			
-		}
-		//支付还未
-		orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+		}		
 		
-		//记得写销售员积分
-		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
-		ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);
-		if(configtableEntity!=null){
-			
-			//得到比例，算的积分
-			String proportion = configtableEntity.getConfigValue();
-			BigDecimal allPrice = orderEntity.getOrderAllPrice();
-			Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
-			
-			//写入积分明显表
-			OrderintegrationEntity orderintegration = new OrderintegrationEntity();
-			orderintegration.setUserId(userEntity.getUserId());
-			orderintegration.setOrderId(orderEntity.getOrderId());
-			orderintegration.setOrderSumPrice(allPrice);
-			orderintegration.setIntegration(thisIntegral);
-			orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分		
-		    orderintegration.setTime(new Date());
-			//注意：这里设计的是给配送人员用的，是否兑换过
-			//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
-			orderintegrationDao.save(orderintegration);
-			
-			//相加后积分
-			Long addIntegral = thisIntegral + userEntity.getUserIntegral();
-			
-			SysUserDao.addIntegral(addIntegral,userEntity.getUserId());
-		}
+		if(orderEntity.getOrderAllPrice().equals(0)){//积分付款
 		
-		return map;
+			SysUserDao.addIntegral(userEntity.getUserIntegral()-useIntegralCount, userEntity.getUserId());
+			return R.ok("支付成功！");
+						
+		}else{//全额付款  +  金额、积分付款    并反积分，积分只反支付金额的那部分
+			
+			//说明使用 金额、积分付款
+			if(useIntegralCount>0){
+				SysUserDao.addIntegral(userEntity.getUserIntegral()-useIntegralCount, userEntity.getUserId());
+			}
+			
+			
+			//支付
+			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+			
+			
+			//记得写销售员积分
+			ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);
+			if(configtableEntity!=null){
+				
+				//得到比例，算的积分
+				String proportion = configtableEntity.getConfigValue();
+				BigDecimal allPrice = orderEntity.getOrderAllPrice();
+				Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
+				
+				//写入积分明显表
+				OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+				orderintegration.setUserId(userEntity.getUserId());
+				orderintegration.setOrderId(orderEntity.getOrderId());
+				orderintegration.setOrderSumPrice(allPrice);
+				orderintegration.setIntegration(thisIntegral);
+				orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分		
+			    orderintegration.setTime(new Date());
+				//注意：这里设计的是给配送人员用的，是否兑换过
+				//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
+				orderintegrationDao.save(orderintegration);
+				
+				//相加后积分
+				Long addIntegral = thisIntegral + userEntity.getUserIntegral();
+				
+				SysUserDao.addIntegral(addIntegral,userEntity.getUserId());
+			}
+		}			
+		
+		return R.ok("支付成功！");
 	}
 	
 	
