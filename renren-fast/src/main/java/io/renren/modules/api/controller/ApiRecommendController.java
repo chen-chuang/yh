@@ -1,37 +1,53 @@
 package io.renren.modules.api.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.google.gson.Gson;
+
 import io.renren.common.utils.AppValidateUtils;
-import io.renren.common.utils.CommonUtils;
 import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
+import io.renren.common.utils.alipay.AlipayUtil;
+import io.renren.common.utils.alipay.PayUtil;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.ProductTypeDTO;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.sys.service.impl.SysUserServiceImpl;
+import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.CollectionService;
+import io.renren.modules.yh.service.ConfigtableService;
 import io.renren.modules.yh.service.OrderService;
+import io.renren.modules.yh.service.OrderintegrationService;
 import io.renren.modules.yh.service.ProductService;
 import io.renren.modules.yh.service.ProducttypeService;
 import io.renren.modules.yh.service.RegionService;
-import sun.reflect.generics.tree.Tree;
 
 @RequestMapping("/api")
 @RestController
@@ -51,6 +67,15 @@ public class ApiRecommendController {
 	
 	@Autowired
 	private CollectionService collectionService;
+	
+	@Autowired
+	private OrderintegrationService orderintegrationService;
+	
+	@Autowired
+	private ConfigtableService configtableService;
+	
+	@Autowired
+	private SysUserService sysUserService;
 	
 	@AuthIgnore
 	@RequestMapping("town")
@@ -92,7 +117,7 @@ public class ApiRecommendController {
 		OrderEntity orderEntity = new OrderEntity();
 		
 		orderEntity.setOrderCreateTime(new Date());
-		orderEntity.setOrderId(CommonUtils.generateOrder());
+		orderEntity.setOrderId(PayUtil.getTradeNo());
 		orderEntity.setOrderType(EnumOrderType.TOBEPAID.getStatus());//默认待支付
 		
 		
@@ -100,7 +125,7 @@ public class ApiRecommendController {
 		orderEntity.setOrderAddress(orderAddress);
 		orderEntity.setTownId(Integer.valueOf(townId));
 		orderEntity.setOrderDetailAddress(orderDetailAddress);
-		orderEntity.setOrderSendTime(DateUtils.parse(orderSendTime, DateUtils.DATE_TIME_PATTERN));
+		orderEntity.setOrderSendTime(DateUtils.parse(orderSendTime, DateUtils.DATE_PATTERN));
 		orderEntity.setReceiverPhone(receiverPhone);
 		orderEntity.setReceiverName(receiverName);
 		orderEntity.setMark(mark);
@@ -116,35 +141,123 @@ public class ApiRecommendController {
 	}
 	
 	@AuthIgnore
+    @PostMapping("notify")
+    public void notify(HttpServletRequest request, HttpServletResponse response) throws AlipayApiException, IOException {
+        // 获取到返回的所有参数 先判断是否交易成功trade_status 再做签名校验
+        // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
+        // 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额），
+        // 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email），
+        // 4、验证app_id是否为该商户本身。上述1、2、3、4有任何一个验证不通过，则表明本次通知是异常通知，务必忽略。
+        // 在上述验证通过后商户必须根据支付宝不同类型的业务通知，正确的进行不同的业务处理，并且过滤重复的通知结果数据。
+        // 在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
+        if ("TRADE_SUCCESS".equals(request.getParameter("trade_status"))) {
+            Map<String, String> params = new HashMap<String, String>();
+            Map requestParams = request.getParameterMap();
+            for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+                String name = (String) iter.next();
+                String[] values = (String[]) requestParams.get(name);
+                String valueStr = "";
+                for (int i = 0; i < values.length; i++) {
+                    valueStr = (i == values.length - 1) ? valueStr + values[i]
+                            : valueStr + values[i] + ",";
+                }
+                params.put(name, valueStr);
+            }
+            boolean flag = AlipaySignature.rsaCheckV1(params, AlipayUtil.ALIPAY_PUBLIC_KEY, "UTF-8", "RSA");
+            if (flag) {
+
+                String useIntegral = URLDecoder.decode(params.get("passback_params"), "UTF-8");
+                String orderNo = params.get("out_trade_no");
+                
+                OrderEntity orderEntity = orderService.queryObject(orderNo);
+                if(orderEntity == null) {
+                    PrintWriter writer = response.getWriter();
+                    writer.write("success");//success通知支付宝不用再重复通知，但业务不处理此异常回调
+                    writer.close();
+                    return;
+                }
+                
+                //如果是我们的订单，则获取销售员id
+                SysUserEntity userEntity = sysUserService.queryObject(orderEntity.getUserId());
+                
+                BigDecimal amount = new BigDecimal(params.get("total_amount"));
+                if(amount.compareTo(orderEntity.getOrderAllPrice()) != 0) {
+                    PrintWriter writer = response.getWriter();
+                    writer.write("success");
+                    writer.close();
+                    return;
+                }
+                if(!AlipayUtil.SELLER_ID.equals(params.get("seller_id"))) {
+                    PrintWriter writer = response.getWriter();
+                    writer.write("success");
+                    writer.close();
+                    return;
+                }
+                if(!AlipayUtil.ALIPAY_APPID.equals(params.get("app_id"))) {
+                    PrintWriter writer = response.getWriter();
+                    writer.write("success");
+                    writer.close();
+                    return;
+                }
+
+                System.out.println("订单支付验签成功33：" + new Gson().toJson(params));
+                PrintWriter writer = response.getWriter();
+                writer.write("success");
+                writer.close();
+                
+                //支付
+    			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+    			orderService.update(orderEntity);
+                
+                //支付成功 处理业务
+                //记得写销售员积分
+				ConfigtableEntity configtableEntity = configtableService.getConfig(userEntity);
+				if(configtableEntity!=null){
+					
+					//得到比例，算的积分
+					String proportion = configtableEntity.getConfigValue();
+					BigDecimal allPrice = orderEntity.getOrderAllPrice();
+					Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
+					
+					//写入积分明显表
+					OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+					orderintegration.setUserId(userEntity.getUserId());
+					orderintegration.setOrderId(orderEntity.getOrderId());
+					orderintegration.setOrderSumPrice(allPrice);
+					orderintegration.setIntegration(thisIntegral);
+					orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分		
+				    orderintegration.setTime(new Date());
+					//注意：这里设计的是给配送人员用的，是否兑换过
+					//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
+				    orderintegrationService.save(orderintegration);
+					
+				    Long luseIntegral = StringUtils.isNotBlank(useIntegral)?Long.valueOf(useIntegral):0;
+				    
+					//计算积分    减去之前 加上 现在得到的
+				    Long addIntegral = thisIntegral + userEntity.getUserIntegral()-luseIntegral;					
+					
+					sysUserService.addIntegral(addIntegral,userEntity.getUserId());
+				}
+                
+         
+            } else {
+                System.out.println("订单支付验签失败33：" +new Gson().toJson(params));
+                // TODO 验签失败则记录异常日志，并在response中返回failure.
+                PrintWriter writer = response.getWriter();
+                writer.write("failure");
+                writer.close();
+            }
+
+        }
+    }
+
+	
+	@AuthIgnore
 	@RequestMapping("hotSaleProduction")
 	public R hotSaleProduction(HttpServletRequest request,@RequestParam Map<String, String> map){
 		
 		String sign = map.get("sign");
 		map.remove("sign");
-		/*String areaID = request.getParameter("areaID");
-		
-		String appVersion = request.getParameter("appVersion");
-		String systemVersion = request.getParameter("systemVersion");
-		String latitude = request.getParameter("latitude");
-		String longitude = request.getParameter("longitude");
-		String platform = request.getParameter("platform");
-		String systemType = request.getParameter("systemType");
-		String requestTime = request.getParameter("requestTime");
-		String token = request.getParameter("token");
-		String uuid = request.getParameter("uuid");
-		String sign = request.getParameter("sign");
-		
-		Map<String, String> map= new TreeMap<String, String>();
-		map.put("areaID", areaID);
-		map.put("appVersion",appVersion );
-		map.put("systemVersion", systemVersion);
-		map.put("latitude",latitude );
-		map.put("longitude",longitude );
-		map.put("platform",platform );
-		map.put("systemType",systemType );
-		map.put("requestTime",requestTime );
-		map.put("token",token );
-		map.put("uuid",uuid );*/
 		
 		String websign = AppValidateUtils.getSign(map);
 		

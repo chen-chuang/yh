@@ -30,4 +30,6 @@ public interface ConfigtableService {
 	void deleteBatch(Integer[] ids);
 	
 	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
+
+	ConfigtableEntity getConfig(SysUserEntity userEntity);
 }

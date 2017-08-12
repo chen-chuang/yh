@@ -235,4 +235,9 @@ public class SysUserServiceImpl implements SysUserService {
 		
 		return map;
 	}
+	
+	@Override
+	public void addIntegral(Long integral,Long userId){
+		sysUserDao.addIntegral(integral, userId);
+	}
 }

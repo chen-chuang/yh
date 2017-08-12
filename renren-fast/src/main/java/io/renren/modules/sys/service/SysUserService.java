@@ -96,4 +96,6 @@ public interface SysUserService {
 	int validateOnlyAgency(String areaId, Long userId);
 
 	Map<String, Object> apiUserIntegral(SysUserEntity user);
+	
+	void addIntegral(Long integral,Long userId);
 }

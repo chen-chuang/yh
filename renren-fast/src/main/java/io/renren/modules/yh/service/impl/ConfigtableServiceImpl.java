@@ -59,4 +59,9 @@ public class ConfigtableServiceImpl implements ConfigtableService {
 		return configtableDao.getConfigIntegerationCash(user);
 	}
 	
+	@Override
+	public ConfigtableEntity getConfig(SysUserEntity userEntity){
+		return configtableDao.getConfig(userEntity);
+	}
+	
 }
