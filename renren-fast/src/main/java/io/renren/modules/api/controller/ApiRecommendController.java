@@ -10,10 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,10 @@ import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
 import io.renren.common.utils.alipay.AlipayUtil;
 import io.renren.common.utils.alipay.PayUtil;
+import io.renren.common.utils.wxpay.FileUtil;
+import io.renren.common.utils.wxpay.WxPayUtil;
+import io.renren.common.utils.wxpay.WxUtil;
+import io.renren.common.utils.wxpay.XmlUtil;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.ProductTypeDTO;
@@ -36,7 +42,6 @@ import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
-import io.renren.modules.sys.service.impl.SysUserServiceImpl;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
@@ -52,6 +57,8 @@ import io.renren.modules.yh.service.RegionService;
 @RequestMapping("/api")
 @RestController
 public class ApiRecommendController {
+	
+	private static final Logger LOG = Logger.getLogger(ApiRecommendController.class);
 	
 	@Autowired
 	private RegionService regionService;
@@ -141,7 +148,7 @@ public class ApiRecommendController {
 	}
 	
 	@AuthIgnore
-    @PostMapping("notify")
+    @PostMapping("aliNotify")
     public void notify(HttpServletRequest request, HttpServletResponse response) throws AlipayApiException, IOException {
         // 获取到返回的所有参数 先判断是否交易成功trade_status 再做签名校验
         // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
@@ -250,6 +257,93 @@ public class ApiRecommendController {
 
         }
     }
+	
+	@AuthIgnore
+	@RequestMapping("wxNotify")
+	public void orderPayNotify(HttpServletRequest request, HttpServletResponse response) {
+		LOG.info("[/api/wxNotify]");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/xml");
+		try {
+			ServletInputStream in = request.getInputStream();
+			String resxml = FileUtil.readInputStream2String(in);
+			Map<String, Object> restmap = XmlUtil.xmlParse(resxml);
+			LOG.info("支付结果通知：" + restmap);
+			if ("SUCCESS".equals(restmap.get("return_code"))) {
+				// 订单支付成功 业务处理
+				String out_trade_no = String.valueOf(restmap.get("out_trade_no")); // 商户订单号
+				String total_fee =String.valueOf(restmap.get("total_fee"));
+				String useIntegral = restmap.get("attach").toString();
+				// 通过商户订单判断是否该订单已经处理 如果处理跳过 如果未处理先校验sign签名 再进行订单业务相关的处理
+				
+			    OrderEntity orderEntity = orderService.queryObject(out_trade_no);
+                if(orderEntity == null) {
+                    PrintWriter writer = response.getWriter();
+                    writer.write(setXML("SUCCESS", ""));
+                    writer.close();
+                    return;
+                }else{
+                	if(orderEntity.getOrderAllPrice().compareTo(new BigDecimal(total_fee))!=0){
+                		PrintWriter writer = response.getWriter();
+                        writer.write(setXML("SUCCESS", ""));
+                        writer.close();
+                        return;
+                	}
+                }
+                
+                //如果是我们的订单，则获取销售员id
+                SysUserEntity userEntity = sysUserService.queryObject(orderEntity.getUserId());
+
+				String sing = restmap.get("sign").toString(); // 返回的签名
+				restmap.remove("sign");
+				String signnow = WxPayUtil.getSign(restmap, WxUtil.API_SECRET);
+				if (signnow.equals(sing)) {
+					// 进行业务处理
+					LOG.info("订单支付通知： 支付成功，订单号" + out_trade_no);
+					
+					  //支付
+	    			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+	    			orderService.update(orderEntity);
+	                
+	                //支付成功 处理业务
+	                //记得写销售员积分
+					ConfigtableEntity configtableEntity = configtableService.getConfig(userEntity);
+					if(configtableEntity!=null){
+						
+						//得到比例，算的积分
+						String proportion = configtableEntity.getConfigValue();
+						BigDecimal allPrice = orderEntity.getOrderAllPrice();
+						Long thisIntegral = allPrice.longValue()*Long.valueOf(proportion); 	
+						
+						//写入积分明显表
+						OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+						orderintegration.setUserId(userEntity.getUserId());
+						orderintegration.setOrderId(orderEntity.getOrderId());
+						orderintegration.setOrderSumPrice(allPrice);
+						orderintegration.setIntegration(thisIntegral);
+						orderintegration.setPriceIntegrationType(2);//2销售积分 1配送积分		
+					    orderintegration.setTime(new Date());
+						//注意：这里设计的是给配送人员用的，是否兑换过
+						//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
+					    orderintegrationService.save(orderintegration);
+						
+					    Long luseIntegral = StringUtils.isNotBlank(useIntegral)?Long.valueOf(useIntegral):0;
+					    
+						//计算积分    减去之前 加上 现在得到的
+					    Long addIntegral = thisIntegral + userEntity.getUserIntegral()-luseIntegral;					
+						
+						sysUserService.addIntegral(addIntegral,userEntity.getUserId());
+				} else {
+					LOG.info("订单支付通知：签名错误");
+				}
+			} else {
+				LOG.info("订单支付通知：支付失败，" + restmap.get("err_code") + ":" + restmap.get("err_code_des"));
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+	}
 
 	
 	@AuthIgnore
@@ -341,6 +435,11 @@ public class ApiRecommendController {
 			return R.error();
 		}
 	}
+	
+	
+    private static String setXML(String return_code, String return_msg) {
+        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
+    }
 	
 	
 	
