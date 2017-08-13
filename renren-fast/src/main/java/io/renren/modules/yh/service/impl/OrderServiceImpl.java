@@ -1,6 +1,7 @@
 package io.renren.modules.yh.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,8 +26,8 @@ import io.renren.common.utils.R;
 import io.renren.common.utils.alipay.AlipayUtil;
 import io.renren.common.utils.alipay.CollectionUtil;
 import io.renren.common.utils.alipay.DatetimeUtil;
-import io.renren.common.utils.wxpay.HttpUtils;
 import io.renren.common.utils.alipay.PayUtil;
+import io.renren.common.utils.wxpay.HttpUtils;
 import io.renren.common.utils.wxpay.WxPayUtil;
 import io.renren.common.utils.wxpay.WxUtil;
 import io.renren.common.utils.wxpay.XmlUtil;
@@ -41,9 +42,13 @@ import io.renren.modules.yh.dao.OrderintegrationDao;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.OrderdetailEntity;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
+import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
+import io.renren.modules.yh.service.OrderdetailService;
+import io.renren.modules.yh.service.ProductService;
 
 
 
@@ -70,6 +75,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderintegrationDao orderintegrationDao;
+	
+	@Autowired
+	private ProductService productService;
 	
 	
 	
@@ -157,29 +165,55 @@ public class OrderServiceImpl implements OrderService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
+		
+		//orderEntity.setUserName(userEntity.getUsername());
+		orderDao.save(orderEntity);
+		
 		Long useIntegralCount = orderEntity.getUserIntegralCount();
 		
 		String[] orderProductionsIDs = orderProductionsID.split(",");
 		String[] orderProductionsCounts = orderProductionsCount.split(",");
 		
+		for(int i =0;i<orderProductionsIDs.length;i++){
+			
+			OrderdetailEntity orderdetailEntity =new OrderdetailEntity();
+			orderdetailEntity.setOrderId(orderEntity.getOrderId());
+			orderdetailEntity.setProductId(Long.valueOf(orderProductionsIDs[i]));
+			orderdetailEntity.setProductNum(Long.valueOf(orderProductionsCounts[i]));
+			
+			ProductEntity productEntity =productService.queryObject(Long.valueOf(orderProductionsIDs[i]));
+			
+			orderdetailEntity.setProductPrice(productEntity.getProductRetailPrice());
+			orderdetailEntity.setProductSumPrice(productEntity.getProductRetailPrice().multiply(new BigDecimal(Long.valueOf(orderProductionsCounts[i]))));
+			orderdetailEntity.setEnterpriseId(productEntity.getEnterpriseId());
+			orderdetailEntity.setEnterpriseName(productEntity.getEnterpriseName());
+			orderdetailEntity.setProductPictureUrl(productEntity.getProductPictureUrl());
+			orderdetailEntity.setProductName(productEntity.getProductName());
+			
+			orderdetailDao.save(orderdetailEntity);
+		}
+		
 		//查库存
 		for(int i =0;i<orderProductionsIDs.length;i++){
 			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
-		/*	if(store!=null){
+			if(store!=null){
 				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
 				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
 			}else{				
 				return R.error("商品库存不足！");
-			}*/
-			if(store==null){
-				return R.error("商品库存不足！");
 			}
+		/*	if(store==null){
+				return R.error("商品库存不足！");
+			}*/
 			
 		}		
 		
-		if(orderEntity.getOrderAllPrice().equals(0)){//积分付款
+		if(orderEntity.getOrderAllPrice().compareTo(new BigDecimal(0))==0){//积分付款
 		
 			SysUserDao.addIntegral(userEntity.getUserIntegral()-useIntegralCount, userEntity.getUserId());
+			  //支付
+			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
+			orderDao.update(orderEntity);
 			return R.ok("支付成功！");
 						
 		}else{//全额付款  +  金额、积分付款    并反积分，积分只反支付金额的那部分

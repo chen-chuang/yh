@@ -52,6 +52,8 @@ public class OrderEntity implements Serializable {
 	private Long deliveryUserId;
 	
 	private String deliveryUserName;
+	
+	private BigDecimal actualPayPrice ;
 
 	public Integer getIsRebate() {
 		return isRebate;
@@ -244,5 +246,11 @@ public class OrderEntity implements Serializable {
 	}
 	public void setDeliveryUserName(String deliveryUserName) {
 		this.deliveryUserName = deliveryUserName;
+	}
+	public BigDecimal getActualPayPrice() {
+		return actualPayPrice;
+	}
+	public void setActualPayPrice(BigDecimal actualPayPrice) {
+		this.actualPayPrice = actualPayPrice;
 	}
 }

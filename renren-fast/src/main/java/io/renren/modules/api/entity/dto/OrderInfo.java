@@ -8,7 +8,7 @@ public class OrderInfo {
 	
 	private String orderID;
 	
-	private Date orderSendTime;
+	private Date orderTime;
 	
 	private Long useIntegralCount;
 	
@@ -28,11 +28,11 @@ public class OrderInfo {
 	}
 
 	public Date getOrderSendTime() {
-		return orderSendTime;
+		return orderTime;
 	}
 
-	public void setOrderSendTime(Date orderSendTime) {
-		this.orderSendTime = orderSendTime;
+	public void setOrderTime(Date orderTime) {
+		this.orderTime = orderTime;
 	}
 
 	public Long getUseIntegralCount() {

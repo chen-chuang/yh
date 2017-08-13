@@ -139,12 +139,13 @@ public class ApiRecommendController {
 		orderEntity.setUserIntegralCount(Long.valueOf(useIntegralCount));
 		orderEntity.setOrderPayType(Integer.valueOf(orderPayType));
 		orderEntity.setOrderAllPrice(new BigDecimal(orderAllPrice));
+		orderEntity.setOrderCreateTime(new Date());
 		
 		Map<String, Object> info = new HashMap<String, Object>();
 		
-		info = orderService.apiSubmitOrder(orderEntity,orderProductionsID,orderProductionsCount);
+		R r = orderService.apiSubmitOrder(orderEntity,orderProductionsID,orderProductionsCount);
 		
-		return R.ok();
+		return r;
 	}
 	
 	@AuthIgnore

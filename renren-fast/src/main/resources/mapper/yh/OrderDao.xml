@@ -23,6 +23,8 @@
         <result property="userName" column="user_name"/>
         <result property="deliveryUserId" column="delivery_user_id"/>
         <result property="deliveryUserName" column="delivery_user_name"/>
+        <result property="actualPayPrice" column="actual_pay_price"/>
+        
     </resultMap>
 
 <!--     <resultMap type="io.renren.modules.api.entity.dto.OrderInfo" id="apiOrderMap">
@@ -54,7 +56,7 @@
         
         <association property="orderInfo" javaType="io.renren.modules.api.entity.dto.OrderInfo">
             <result property="orderID" column="order_id"/>
-	        <result property="orderSendTime" column="order_send_time"/>
+	        <result property="orderTime" column="order_create_time"/>
 	        <result property="useIntegralCount" column="user_integral_count"/>
 	        <result property="orderAllPrice" column="order_all_price"/>
 	        <result property="orderType" column="order_type"/>
@@ -113,10 +115,11 @@
 			`receiver_name`, 
 			`mark`, 
 			`order_pay_type`,
-			'is_rebate',
+			is_rebate,
 			user_name,
 			delivery_user_id,
-			delivery_user_name
+			delivery_user_name,
+			actual_pay_price
 			
 		)
 		values
@@ -138,7 +141,8 @@
 			#{isRebate},
 			#{userName},
 			#{deliveryUserId},
-			#{deliveryUserName}
+			#{deliveryUserName},
+			#{actualPayPrice}
 		)
 	</insert>
 	 
@@ -161,7 +165,9 @@
 			<if test="isRebate != null">'is_rebate' = #{isRebate},</if>
 			<if test="userName != null">'user_name' = #{userName},</if>
 			<if test="deliveryUserId != null">'delivery_user_id' = #{deliveryUserId},</if>
-			<if test="deliveryUserName != null">'delivery_user_name' = #{deliveryUserName}</if>
+			<if test="deliveryUserName != null">'delivery_user_name' = #{deliveryUserName},</if>
+			<if test="actualPayPrice != null">'actual_pay_price' = #{actualPayPrice}</if>
+			
 			
 		</set>
 		where order_id = #{orderId}
