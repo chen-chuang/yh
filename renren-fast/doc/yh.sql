@@ -111,6 +111,7 @@ create table sys_order
    `user_name`          varchar(50) DEFAULT NULL,
   `delivery_user_id`    bigint(20) DEFAULT NULL,
   `delivery_user_name`  varchar(50) DEFAULT NULL,
+  actual_pay_price      decimal(18,3) comment '实际支付价格',
    primary key (order_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
