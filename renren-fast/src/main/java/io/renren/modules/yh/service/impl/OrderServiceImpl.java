@@ -166,7 +166,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
 		
-		//orderEntity.setUserName(userEntity.getUsername());
+		orderEntity.setUserName(userEntity.getUsername());
 		orderDao.save(orderEntity);
 		
 		Long useIntegralCount = orderEntity.getUserIntegralCount();
@@ -208,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
 			
 		}		
 		
-		if(orderEntity.getOrderAllPrice().compareTo(new BigDecimal(0))==0){//积分付款
+		if(orderEntity.getActualPayPrice().compareTo(new BigDecimal(0))==0){//积分付款
 		
 			SysUserDao.addIntegral(userEntity.getUserIntegral()-useIntegralCount, userEntity.getUserId());
 			  //支付

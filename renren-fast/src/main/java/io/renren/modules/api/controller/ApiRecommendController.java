@@ -120,6 +120,7 @@ public class ApiRecommendController {
 		String orderAllPrice = request.getParameter("orderAllPrice");
 		String orderProductionsID = request.getParameter("orderProductionsID");
 		String orderProductionsCount = request.getParameter("orderProductionsCount");	
+		String actualPayPrice=request.getParameter("actualPayPrice");
 		
 		OrderEntity orderEntity = new OrderEntity();
 		
@@ -140,6 +141,7 @@ public class ApiRecommendController {
 		orderEntity.setOrderPayType(Integer.valueOf(orderPayType));
 		orderEntity.setOrderAllPrice(new BigDecimal(orderAllPrice));
 		orderEntity.setOrderCreateTime(new Date());
+		orderEntity.setActualPayPrice(new BigDecimal(actualPayPrice));
 		
 		Map<String, Object> info = new HashMap<String, Object>();
 		

@@ -162,11 +162,11 @@
 			<if test="receiverName != null">`receiver_name` = #{receiverName}, </if>
 			<if test="mark != null">`mark` = #{mark}, </if>
 			<if test="orderPayType != null">`order_pay_type` = #{orderPayType},</if>
-			<if test="isRebate != null">'is_rebate' = #{isRebate},</if>
-			<if test="userName != null">'user_name' = #{userName},</if>
-			<if test="deliveryUserId != null">'delivery_user_id' = #{deliveryUserId},</if>
-			<if test="deliveryUserName != null">'delivery_user_name' = #{deliveryUserName},</if>
-			<if test="actualPayPrice != null">'actual_pay_price' = #{actualPayPrice}</if>
+			<if test="isRebate != null">`is_rebate` = #{isRebate},</if>
+			<if test="userName != null">`user_name` = #{userName},</if>
+			<if test="deliveryUserId != null">`delivery_user_id` = #{deliveryUserId},</if>
+			<if test="deliveryUserName != null">`delivery_user_name` = #{deliveryUserName},</if>
+			<if test="actualPayPrice != null">`actual_pay_price` = #{actualPayPrice}</if>
 			
 			
 		</set>
