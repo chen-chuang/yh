@@ -231,7 +231,12 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 		
 		//得到能使用的积分
-		map.put("userIntegral", user.getUserIntegral()-applySum);
+		if(user.getUserIntegral()==null||user.getUserIntegral().equals(0)){
+			map.put("userIntegral", 0);
+		}else{
+			map.put("userIntegral", user.getUserIntegral()-applySum);
+		}		
+		
 		
 		return map;
 	}
