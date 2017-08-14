@@ -38,7 +38,7 @@
 					and apply_user_id=#{follwerUserId}
 				</if>
 			</if>
-			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
+			<if test="userPermission==4||userPermission==6||userPermission==7"> <!-- 销售员 配送员 -->
 				and apply_user_id=#{userId}
 			</if>
 		</where>
@@ -67,7 +67,7 @@
 					and apply_user_id=#{follwerUserId}
 				</if>
 			</if>
-			<if test="userPermission==4||userPermission==6"> <!-- 销售员 配送员 -->
+			<if test="userPermission==4||userPermission==6||userPermission==7"> <!-- 销售员 配送员 -->
 				and apply_user_id=#{userId}
 			</if>
 		</where>

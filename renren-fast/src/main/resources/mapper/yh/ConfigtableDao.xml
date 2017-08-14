@@ -102,7 +102,7 @@
 		    </if>
 		    
 		     <!-- 销售员 -->
-		     <if test = "userPermission==6"> 
+		     <if test = "userPermission==6||userPermission==7"> 
 		        config_user_id = #{belongToAgencyId}
 		        and config_key = 'sale'
 		    </if>
@@ -122,7 +122,7 @@
 		    </if>
 		    
 		     <!-- 销售员 -->
-		     <if test = "userPermission==6"> 
+		     <if test = "userPermission==6||userPermission==7"> 
 		        config_user_id = #{belongToAgencyId}
 		        and config_key = 'sale_integration_cash'
 		    </if>
