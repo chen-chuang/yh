@@ -64,6 +64,34 @@
       
            
     </resultMap>
+    
+    
+    
+      <resultMap type="io.renren.modules.api.entity.dto.ShoppingCartDTO" id="apiShoppingCartPFMap">
+        <result property="catalog" column="type"/>
+        <result property="categoryId" column="id"/>
+        <result property="categoryImageUrl" column="image_url"/>
+        
+        <collection property="data" ofType="io.renren.modules.api.entity.dto.ShoppingCartDetailDTO">
+         	<id property="productId" column="product_id"/>
+	        <result property="productName" column="product_name"/>
+	        
+	        <!-- 价钱是哪个  product_trade_price -->
+	        <result property="productPrice" column="product_trade_price"/>
+	        
+	        
+	        <result property="productPictureUrl" column="product_picture_url"/>
+	        <result property="productVideoUrl" column="product_video_url"/>
+	        <result property="productStoreNum" column="product_num"/>
+	        
+	        <!-- 是否收藏 咋这么扯淡 -->
+	        <result property="isCollected" column="isCollected"/>
+	                
+	        <result property="productDetail" column="product_detail"/>
+        </collection>
+      
+           
+    </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.ProductEntity">
 		select * from sys_product where product_id = #{value}
@@ -219,6 +247,23 @@
 	 	from sys_producttype a left join sys_product b on a.id=b.product_type 
 	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
 	</select>
+	
+	<select id="apiShoppingCartPFList" resultMap="apiShoppingCartPFMap">
+	 	<!-- select a.id,a.type,a.image_url,
+	 	b.product_id,b.product_name,b.product_retail_price,b.product_picture_url,b.product_video_url,b.product_num,
+	 	(select count(*) from sys_collection where user_id=#{userId} and product_id = b.product_id ) as  isCollected,
+	 	b.product_detail 
+	 	from sys_producttype a,sys_product b where a.id=b.product_type 
+	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) -->
+	 	select a.id,a.type,a.image_url,
+	 	b.product_id,b.product_name,b.product_trade_price,b.product_picture_url,b.product_video_url,b.product_num,
+	 	(case (select count(*) from sys_collection where user_id=#{userId} and product_id = b.product_id)   when 0 then null when 1 then 1 end) isCollected,
+	 	b.product_detail 
+	 	from sys_producttype a left join sys_product b on a.id=b.product_type 
+	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
+	</select>
+	
+	
 
 	<select id="apiEnterpriseProducts" resultMap="apiEnterpriseProductMap">
 		select product_name,product_detail,product_picture_url,product_video_url from sys_product

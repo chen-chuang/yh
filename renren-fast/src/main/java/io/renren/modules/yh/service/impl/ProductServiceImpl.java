@@ -9,8 +9,11 @@ import java.util.Map;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
+import io.renren.modules.sys.dao.SysUserDao;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ProductDao;
 import io.renren.modules.yh.entity.ProductEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.ProductService;
 
 
@@ -19,6 +22,9 @@ import io.renren.modules.yh.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private SysUserDao sysUserDao;
 	
 	@Override
 	public ProductEntity queryObject(Long productId){
@@ -67,7 +73,13 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public List<ShoppingCartDTO> apiShoppingCartList(String userID, String areaID){
-		return productDao.apiShoppingCartList(userID, areaID);
+		SysUserEntity userEntity = sysUserDao.queryObject(userID);
+		if(userEntity.getUserPermission().equals(EnumPermission.SALE.getType())){
+			return productDao.apiShoppingCartList(userID, areaID);
+		}else{
+			return productDao.apiShoppingCartPFList(userID, areaID);
+		}
+		
 	}	
 	
 	@Override

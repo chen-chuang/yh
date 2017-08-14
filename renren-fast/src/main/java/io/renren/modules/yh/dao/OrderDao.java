@@ -2,6 +2,7 @@ package io.renren.modules.yh.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,7 +22,7 @@ import io.renren.modules.yh.entity.OrderEntity;
 @Mapper
 public interface OrderDao extends BaseDao<OrderEntity> {
 
-	List<OrderDetailInfo> apiOrderList(@Param("userID") String userID, @Param("orderType") String orderType);
+	List<OrderDetailInfo> apiOrderList(Map<String, Object> map);
 
 	List<OrderDetailInfo> apiQueryOrder(@Param("startTime") Date dStartTime, @Param("endTime") Date dEndTime,  @Param("townID") String townID);
 	

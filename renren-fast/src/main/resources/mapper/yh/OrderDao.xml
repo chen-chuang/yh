@@ -56,6 +56,7 @@
         
         <association property="orderInfo" javaType="io.renren.modules.api.entity.dto.OrderInfo">
             <result property="orderID" column="order_id"/>
+            <result property="actualPayPrice" column="actual_pay_price"/>
 	        <result property="orderTime" column="order_create_time"/>
 	        <result property="useIntegralCount" column="user_integral_count"/>
 	        <result property="orderAllPrice" column="order_all_price"/>
@@ -63,6 +64,7 @@
         </association>
         
         <association property="userInfo" javaType="io.renren.modules.api.entity.dto.UserInfo">            
+           <result property="townID" column="town_id"/>   
             <result property="orderAddress" column="order_address"/>            
             <result property="orderDetailAddress" column="order_detail_address"/>
             <result property="orderSendTime" column="order_send_time"/>
@@ -188,7 +190,10 @@
 	    <!-- select a.*,b.product_name,b.product_price,b.product_picture_url,b.product_num from sys_order a,sys_orderdetail b 
 	    where a.order_id=b.order_id and a.user_id = #{userID} and a.order_type = #{orderType} -->
 	    select a.* from sys_order a
-	    where a.user_id = #{userID} and a.order_type = #{orderType}
+	    where a.user_id = #{userID} and a.order_type = #{orderType} 
+	    <if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
 	    
 	</select>
 	
@@ -205,7 +210,7 @@
 	             and order_create_time &lt;= #{endTime}
 	        </if>
 	         <if test ="townID!=null">
-	            and townId =#{townID}
+	            and town_id =#{townID}
 	        </if>
 	    </where>
 	    

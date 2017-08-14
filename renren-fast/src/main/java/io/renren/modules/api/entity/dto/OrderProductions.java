@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class OrderProductions {
 	
+	private Long productId;
+	
 	private String productName;
 	
 	private BigDecimal productPrice;
@@ -42,6 +44,14 @@ public class OrderProductions {
 
 	public void setOrderProductionsCount(int orderProductionsCount) {
 		this.orderProductionsCount = orderProductionsCount;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 }

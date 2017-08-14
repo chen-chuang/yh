@@ -30,7 +30,7 @@ public interface OrderService {
 	
 	void deleteBatch(String[] orderIds);
 
-	List<OrderDetailInfo> apiOrderList(String userID, String orderType);
+	List<OrderDetailInfo> apiOrderList(Map<String, Object> params);
 
 	List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID);
 

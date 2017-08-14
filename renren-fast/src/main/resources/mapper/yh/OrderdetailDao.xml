@@ -18,6 +18,7 @@
     
     
     <resultMap type="io.renren.modules.api.entity.dto.OrderProductions" id="apiOrderdetailMap">
+        <result property="productId" column="product_id"/>
         <result property="orderProductionsCount" column="product_num"/>
         <result property="productName" column="product_name"/>
         <result property="productPrice" column="product_price"/>
@@ -102,7 +103,7 @@
 	</delete>
 	
 	<select id="apiOrderDetailList" resultMap="apiOrderdetailMap">
-		select product_num,product_name,product_price,product_picture_url from sys_orderdetail where order_id=#{orderID}
+		select product_id,product_num,product_name,product_price,product_picture_url from sys_orderdetail where order_id=#{orderID}
 	</select>
 	
 

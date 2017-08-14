@@ -2,7 +2,10 @@ package io.renren.modules.api.entity.dto;
 
 import java.util.Date;
 
+
 public class UserInfo {
+	
+	private String townID;
 	
 	private String orderAddress;
 	
@@ -62,6 +65,14 @@ public class UserInfo {
 
 	public void setMark(String mark) {
 		this.mark = mark;
+	}
+
+	public String getTownID() {
+		return townID;
+	}
+
+	public void setTownID(String townID) {
+		this.townID = townID;
 	}
 
 }

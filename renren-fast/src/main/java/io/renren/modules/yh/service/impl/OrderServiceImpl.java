@@ -117,9 +117,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public List<OrderDetailInfo> apiOrderList(String userID, String orderType){
+	public List<OrderDetailInfo> apiOrderList(Map<String, Object> map){
 		
-		List<OrderDetailInfo> orderDetailInfo = orderDao.apiOrderList(userID, orderType);
+		List<OrderDetailInfo> orderDetailInfo = orderDao.apiOrderList(map);
 		
 		for(OrderDetailInfo order : orderDetailInfo){
 			List<OrderProductions> orderProductions = orderdetailDao.apiOrderDetailList(order.getOrderInfo().getOrderID());

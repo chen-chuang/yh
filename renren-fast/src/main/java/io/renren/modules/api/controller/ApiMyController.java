@@ -94,15 +94,24 @@ public class ApiMyController {
 	
 	@AuthIgnore
 	@RequestMapping("queryOrder")
-	public R queryOrder(HttpServletRequest request){
+	public R queryOrder(@RequestParam Map<String, String> map){
 		
-		String startTime = request.getParameter("startTime");
-		String endTime = request.getParameter("endTime");
-		String townID = request.getParameter("townID");
+		String sign = map.get("sign");
+		map.remove("sign");
 		
-		List<OrderDetailInfo> orderDetailInfo = orderService.apiQueryOrder(startTime,endTime,townID);
+        String websign = AppValidateUtils.getSign(map);
 		
-		return R.ok().put("info", orderDetailInfo);
+		if(websign.equals(sign)){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			String townID = map.get("townID");
+			
+			List<OrderDetailInfo> orderDetailInfo = orderService.apiQueryOrder(startTime,endTime,townID);
+			
+			return R.ok().put("info", orderDetailInfo);
+		}else{
+			return R.error();
+		}
 	}
 	
 	@AuthIgnore

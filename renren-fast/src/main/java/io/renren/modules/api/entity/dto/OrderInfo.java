@@ -16,6 +16,8 @@ public class OrderInfo {
 	
 	private int orderType;
 	
+	private BigDecimal actualPayPrice;
+	
 	private List<OrderProductions>  orderProductions;
 	
 
@@ -25,14 +27,6 @@ public class OrderInfo {
 
 	public void setOrderID(String orderID) {
 		this.orderID = orderID;
-	}
-
-	public Date getOrderSendTime() {
-		return orderTime;
-	}
-
-	public void setOrderTime(Date orderTime) {
-		this.orderTime = orderTime;
 	}
 
 	public Long getUseIntegralCount() {
@@ -65,6 +59,22 @@ public class OrderInfo {
 
 	public void setOrderProductions(List<OrderProductions> orderProductions) {
 		this.orderProductions = orderProductions;
+	}
+
+	public BigDecimal getActualPayPrice() {
+		return actualPayPrice;
+	}
+
+	public void setActualPayPrice(BigDecimal actualPayPrice) {
+		this.actualPayPrice = actualPayPrice;
+	}
+
+	public Date getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(Date orderTime) {
+		this.orderTime = orderTime;
 	}
 
 }
