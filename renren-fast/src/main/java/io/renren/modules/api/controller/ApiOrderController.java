@@ -55,5 +55,27 @@ public class ApiOrderController {
 			return R.error();
 		}	
 	}
+	
+	@AuthIgnore
+	@RequestMapping("delWaitingPayOrder")
+	public R delWaitingPayOrder(@RequestParam Map<String,String> map){
+		
+		String sign = map.get("sign");
+		map.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(map);
+		
+		if(websign.equals(sign)){
+			String userID = map.get("userID");
+			String orderID = map.get("orderID");
+			
+
+			orderService.apiDelWaitingPayOrder(userID,orderID);
+			
+			return R.ok();	
+		}else{
+			return R.error();
+		}	
+	}
 
 }

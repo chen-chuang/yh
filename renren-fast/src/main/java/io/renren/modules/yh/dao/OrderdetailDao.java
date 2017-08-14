@@ -7,6 +7,7 @@ import io.renren.modules.sys.dao.BaseDao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 订单明细表
@@ -19,5 +20,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrderdetailDao extends BaseDao<OrderdetailEntity> {
 
 	List<OrderProductions> apiOrderDetailList(String orderID);
+
+	void apiDelWaitingPayOrderDetail(@Param("userID")String userID, @Param("orderID")String orderID);
 	
 }

@@ -39,4 +39,6 @@ public interface OrderService {
 	void dispatch(String orderId, String userId);
 	
 	void complete(String orderId);
+
+	void apiDelWaitingPayOrder(String userID, String orderID);
 }

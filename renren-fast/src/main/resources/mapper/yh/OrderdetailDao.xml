@@ -106,5 +106,8 @@
 		select product_id,product_num,product_name,product_price,product_picture_url from sys_orderdetail where order_id=#{orderID}
 	</select>
 	
+	<delete id="apiDelWaitingPayOrderDetail">
+		delete from sys_orderdetail where order_id=#{orderID}
+	</delete>
 
 </mapper>

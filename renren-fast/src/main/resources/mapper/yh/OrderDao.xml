@@ -207,13 +207,17 @@
 	            and order_create_time &gt;= #{startTime}
 	        </if>
 	         <if test ="endTime!=null">
-	             and order_create_time &lt;= #{endTime}
+	             and order_create_time &lt; #{endTime}
 	        </if>
-	         <if test ="townID!=null">
+	         <if test ="townID!=null and townID.trim()!='' ">
 	            and town_id =#{townID}
 	        </if>
 	    </where>
 	    
 	</select>
+	
+	<delete id="apiDelWaitingPayOrder">
+		delete from sys_order where order_id=#{orderID}
+	</delete>
 
 </mapper>

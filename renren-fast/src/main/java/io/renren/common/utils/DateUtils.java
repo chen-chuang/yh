@@ -2,7 +2,10 @@ package io.renren.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * 日期处理
@@ -41,4 +44,17 @@ public class DateUtils {
         }
         return d;
     }
+    
+	public static String addByDay(Date date,int days, String ptn) {
+		Calendar calendar = new GregorianCalendar(TimeZone.getDefault());
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE, days);
+		SimpleDateFormat format = new SimpleDateFormat(ptn);
+		Date date1 = calendar.getTime();
+		return format.format(date1);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(addByDay(new Date(), 1, DATE_TIME_PATTERN));
+	}
 }

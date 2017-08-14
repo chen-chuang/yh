@@ -25,5 +25,7 @@ public interface OrderDao extends BaseDao<OrderEntity> {
 	List<OrderDetailInfo> apiOrderList(Map<String, Object> map);
 
 	List<OrderDetailInfo> apiQueryOrder(@Param("startTime") Date dStartTime, @Param("endTime") Date dEndTime,  @Param("townID") String townID);
+
+	void apiDelWaitingPayOrder(@Param("userID") String userID, @Param("orderID") String orderID);
 	
 }

@@ -139,11 +139,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 		if(StringUtils.isNotBlank(startTime)){
-			dStartTime =DateUtils.parse(startTime, DateUtils.DATE_TIME_PATTERN);
+			dStartTime =DateUtils.parse(startTime, DateUtils.DATE_PATTERN);
 		}
 		
 		if(StringUtils.isNotBlank(startTime)){
-			dEndTime =DateUtils.parse(endTime, DateUtils.DATE_TIME_PATTERN);
+			
+			dEndTime =DateUtils.parse(endTime, DateUtils.DATE_PATTERN);
+			dEndTime = DateUtils.parse(DateUtils.addByDay(dEndTime, 1, DateUtils.DATE_PATTERN),DateUtils.DATE_PATTERN);
 		}
 		
 		List<OrderDetailInfo> orderDetailInfo = orderDao.apiQueryOrder(dStartTime, dEndTime, townID);
@@ -351,5 +353,12 @@ public class OrderServiceImpl implements OrderService {
 		//订单完成
 		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
 		orderDao.update(order);
+	}
+	
+	@Override
+	@Transactional
+	public void apiDelWaitingPayOrder(String userID, String orderID){
+		orderDao.apiDelWaitingPayOrder(userID, orderID);
+		orderdetailDao.apiDelWaitingPayOrderDetail(userID, orderID);
 	}
 }
