@@ -1,5 +1,6 @@
 package io.renren.modules.sys.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +98,9 @@ public class SysUserServiceImpl implements SysUserService {
 		checkRole(user);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		List<Long> roleIdList =new ArrayList<Long>();
+		roleIdList.add(user.getUserPermission().longValue());
+		sysUserRoleService.saveOrUpdate(user.getUserId(), roleIdList);
 	}
 
 	@Override
