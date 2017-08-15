@@ -39,7 +39,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_producttype 
+		select count(*) from sys_producttype where enter_id=#{currentUserId} 
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.ProducttypeEntity" useGeneratedKeys="true" keyProperty="id">

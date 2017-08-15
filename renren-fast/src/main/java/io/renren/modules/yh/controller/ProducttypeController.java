@@ -52,6 +52,8 @@ public class ProducttypeController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("producttype:list")
 	public R list(@RequestParam Map<String, Object> params){
+		
+		params.put("currentUserId", getUserId());
 		//查询列表数据
         Query query = new Query(params);
 
