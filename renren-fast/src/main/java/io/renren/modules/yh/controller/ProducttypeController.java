@@ -1,8 +1,13 @@
 package io.renren.modules.yh.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.yh.entity.ProducttypeEntity;
 import io.renren.modules.yh.service.ProducttypeService;
+import io.renren.common.utils.CommonUtils;
+import io.renren.common.utils.ConfigConstant;
+import io.renren.common.utils.FileUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -71,9 +80,34 @@ public class ProducttypeController extends AbstractController {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("producttype:save")
-	public R save(@RequestBody ProducttypeEntity producttype){
+	public R save(ProducttypeEntity producttype,
+			@RequestParam(value="picFile",required=false) MultipartFile picFile){
 		ValidatorUtils.validateEntity(producttype, AddGroup.class);
 		producttype.setEnterId(getUserId().toString());
+		
+		if(picFile!=null&&StringUtils.isNotBlank(picFile.getOriginalFilename())){
+			try {
+				String orginalFileName = picFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				//真是目录
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(picFile.getBytes());
+			    stream.close();
+			    
+			    //虚拟目录
+			    producttype.setImageUrl("/upload/"+filename);
+			    
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}	
+		
 		producttypeService.save(producttype);
 		
 		return R.ok();
@@ -84,11 +118,35 @@ public class ProducttypeController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("producttype:update")
-	public R update(@RequestBody ProducttypeEntity producttype){
+	public R update(@RequestBody ProducttypeEntity producttype,
+			@RequestParam(value="picFile",required=false) MultipartFile picFile){
 		
 		ValidatorUtils.validateEntity(producttype, UpdateGroup.class);
 		
 		producttype.setEnterId(getUserId().toString());
+		
+		if(picFile!=null&&StringUtils.isNotBlank(picFile.getOriginalFilename())){
+			try {
+				String orginalFileName = picFile.getOriginalFilename();
+				String filename = CommonUtils.generateFileName(orginalFileName);
+				//真是目录
+				String directory = ConfigConstant.ENTERPRISE_PRODUCT_PIC_DIR;
+				FileUtils.makeDir(directory);
+				String filepath = Paths.get(directory, filename).toString();
+			
+			    BufferedOutputStream stream =
+			        new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+			    stream.write(picFile.getBytes());
+			    stream.close();
+			    
+			    //虚拟目录
+			    producttype.setImageUrl("/upload/"+filename);
+			    
+			  }
+			  catch (Exception e) {
+				  e.printStackTrace();
+			  }
+		}	
 		
 		producttypeService.update(producttype);
 		

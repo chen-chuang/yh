@@ -5,8 +5,21 @@ $(function () {
         colModel: [			
 			{ label: 'id',hidden:true, name: 'id', index: 'id', width: 50, key: true },
 			{ label: '分类名称', name: 'type', index: 'type', width: 80 }, 			
-			{ label: '图标', name: 'imageUrl', index: 'image_url', width: 80 }, 			
-			{ label: '是否展示在首页', name: 'showInHomepage', index: 'show_in_homepage', width: 80 }, 			
+			{ label: '图标', name: 'imageUrl', index: 'image_url', width: 80 ,formatter: function(value, options, row){
+				
+				if(value!=""&&value!=null){
+					return '<img src='+value+'>';
+				}else{
+					return value;
+				}
+			}}, 								
+			{ label: '是否展示在首页', name: 'showInHomepage', index: 'show_in_homepage', width: 80, formatter: function(value, options, row){
+				if(value===1){
+					return "是";
+				}else if(value===0){
+					return "否";
+				}
+			}},			
 			{ label: '',hidden:true, name: 'enterId', index: 'enter_id', width: 80 }			
         ],
 		viewrecords: true,
@@ -64,21 +77,27 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
 			var url = vm.producttype.id == null ? "producttype/save" : "producttype/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.producttype),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
-			});
+			
+			var formData = new FormData($("form")[0]);				
+			
+			 $.ajax({  
+		            url : baseURL + url,  
+		            type : 'POST',  
+		            data : formData,  
+		            async : false,  
+		            cache : false,  
+		            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
+		            processData : false,// 告诉jQuery不要去处理发送的数据  
+		            success : function(r) {  
+		            	if(r.code === 0){
+							alert('操作成功', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
+		            }  
+		        }); 
 		},
 		del: function (event) {
 			var ids = getSelectedRows();

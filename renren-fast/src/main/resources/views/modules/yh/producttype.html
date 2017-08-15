@@ -37,19 +37,24 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">分类名称</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="producttype.type" placeholder="分类名称"/>
+			      <input type="text" name="type" class="form-control" v-model="producttype.type" placeholder="分类名称"/>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">图标</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="producttype.imageUrl" placeholder="图标"/>
+			   	<input type="file" name="picFile" id="picFile">
+			     <!--  <input type="text" class="form-control" v-model="producttype.imageUrl" placeholder="图标"/> -->
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">是否展示在首页</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="producttype.showInHomepage" placeholder="是否展示在首页"/>
+			    <!--   <input type="text" class="form-control" v-model="producttype.showInHomepage" placeholder="是否展示在首页"/> -->
+			      <select v-model="producttype.showInHomepage">
+			      	<option value="1">是</option>
+			      	<option value="0">否</option>
+			      </select>
 			    </div>
 			</div>
 			<div class="form-group">
