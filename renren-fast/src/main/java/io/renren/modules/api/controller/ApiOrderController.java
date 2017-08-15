@@ -48,7 +48,7 @@ public class ApiOrderController {
 			
 			Query query = new Query(params);
 
-			List<OrderDetailInfo> info = orderService.apiOrderList(params);
+			List<OrderDetailInfo> info = orderService.apiOrderList(query);
 			
 			return R.ok().put("info", info);	
 		}else{
