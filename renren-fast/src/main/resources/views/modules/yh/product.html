@@ -100,36 +100,39 @@
 			   	   <input type="file" name = "videoFile" id="videoFile">
 			    </div>
 			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">库存</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="productNum" v-model="product.productNum" placeholder="库存"/>
-			    </div>
-			</div>
-		    <div class="form-group">
-			   	<div class="col-sm-2 control-label">批发价</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="productTradePrice" v-model="product.productTradePrice" placeholder="批发价"/>
-			    </div>
-			</div>
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">零售价</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="productRetailPrice" v-model="product.productRetailPrice" placeholder="零售价"/>
-			    </div>
-			</div>
-		
-			<div class="form-group">
-			   	<div class="col-sm-2 control-label">是否热销</div>
-			   	<div class="col-sm-10">
-			     <!--  <input type="text" class="form-control" name="isHot" v-model="product.isHot" placeholder="是否热销（1：热销，2：不热销）"/> -->
-			   		<label class="radio-inline">
-					  <input type="radio" name="isHot" value="1" v-model="product.isHot"/> 不热销
-					</label>
-					<label class="radio-inline">
-					  <input type="radio" name="isHot" value="0" v-model="product.isHot"/> 热销
-					</label>
-			    </div>
+			
+			<div v-if="currentPermission!=1||currentPermission!=2">
+				<div class="form-group">
+				   	<div class="col-sm-2 control-label">库存</div>
+				   	<div class="col-sm-10">
+				      <input type="text" class="form-control" name="productNum" v-model="product.productNum" placeholder="库存"/>
+				    </div>
+				</div>
+			    <div class="form-group">
+				   	<div class="col-sm-2 control-label">批发价</div>
+				   	<div class="col-sm-10">
+				      <input type="text" class="form-control" name="productTradePrice" v-model="product.productTradePrice" placeholder="批发价"/>
+				    </div>
+				</div>
+				<div class="form-group">
+				   	<div class="col-sm-2 control-label">零售价</div>
+				   	<div class="col-sm-10">
+				      <input type="text" class="form-control" name="productRetailPrice" v-model="product.productRetailPrice" placeholder="零售价"/>
+				    </div>
+				</div>
+			
+				<div class="form-group">
+				   	<div class="col-sm-2 control-label">是否热销</div>
+				   	<div class="col-sm-10">
+				     <!--  <input type="text" class="form-control" name="isHot" v-model="product.isHot" placeholder="是否热销（1：热销，2：不热销）"/> -->
+				   		<label class="radio-inline">
+						  <input type="radio" name="isHot" value="1" v-model="product.isHot"/> 不热销
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="isHot" value="0" v-model="product.isHot"/> 热销
+						</label>
+				    </div>
+				</div>
 			</div>
 			
 		<!-- 	<div class="form-group">

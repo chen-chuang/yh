@@ -137,12 +137,16 @@ public class ProductController extends AbstractController {
 			  }
 		}	 
 		
-		if(currentUser.getUserPermission().equals(EnumPermission.ADMIN)){
+		if(currentUser.getUserPermission().equals(EnumPermission.ADMIN.getType())){
 			product.setEnterType(1);
 		}
 		
-		if(currentUser.getUserPermission().equals(EnumPermission.AGENCY)){
+		if(currentUser.getUserPermission().equals(EnumPermission.AGENCY.getType())){
 			product.setEnterType(2);
+		}
+		
+		if(currentUser.getUserPermission().equals(EnumPermission.FACTORY.getType())){
+			product.setEnterType(3);
 		}
 		
 		product.setEnterPersonId(currentUser.getUserId());

@@ -70,7 +70,8 @@ var vm = new Vue({
 		enterpriseinfo: {},
 		province:null,
 		city:null,
-		county:null
+		county:null,
+		currentPermission:1
 	},
 	methods: {
 		query: function () {
@@ -86,7 +87,27 @@ var vm = new Vue({
 			vm.county=null;
 			
 			this.getArea();
+			
+			this.getUserPermission();
 		},
+		getUserPermission : function(){
+		    $.get(baseURL + "sys/user/currentLoginUser", function(r){
+		    	vm.currentPermission = r.currentLoginUser.userPermission;
+		    	if(vm.currentPermission==1){
+		    		$("#enterpriseType").removeAttr("disable");
+		    	}
+		    	
+                if(vm.currentPermission==2){//生产厂家
+                	$("#enterpriseType").attr("disable","disable");
+                	$("#enterpriseType").val(1);
+		    	}
+                
+                if(vm.currentPermission==3){//区域经销商
+                	$("#enterpriseType").attr("disable","disable");
+                	$("#enterpriseType").val(2);
+		    	}
+			});
+		},	
 		update: function (event) {
 			var enterpriseId = getSelectedRow();
 			if(enterpriseId == null){
@@ -97,6 +118,8 @@ var vm = new Vue({
             
             this.getArea();
             vm.getInfo(enterpriseId);
+            
+            this.getUserPermission();
             
 		},
 		getFullRegion: function(id){

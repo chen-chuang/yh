@@ -161,6 +161,27 @@ var vm = new Vue({
 			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
 			$("#productTypeName").val($("#productType").find("option:selected").text());
 			
+			if(url=="product/save"){
+				 $.ajax({  
+			            url : baseURL + url,  
+			            type : 'POST',  
+			            data : formData,  
+			            async : false,  
+			            cache : false,  
+			            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
+			            processData : false,// 告诉jQuery不要去处理发送的数据  
+			            success : function(r) {  
+			            	if(r.code === 0){
+								alert('操作成功', function(index){
+									vm.reload();
+								});
+							}else{
+								alert(r.msg);
+							}
+			            }  
+			        }); 
+			}
+			
 			if(vm.currentPermission==1){
 				if($("#enterpriseId").val()==null||$("#enterpriseId").val()==""){
 					alert("您输入的企业暂未录入到本系统中，请添加企业后在录入产品！");
