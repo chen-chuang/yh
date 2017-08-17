@@ -34,4 +34,6 @@ public interface ConfigtableService {
 	ConfigtableEntity getConfig(SysUserEntity userEntity);
 
 	String apiPriceLimit(String userID, String areaID);
+
+	int validateOnly(String configKey);
 }

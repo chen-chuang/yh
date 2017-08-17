@@ -89,7 +89,7 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-			var url = vm.configtable.id == null ? "configtable/save" : "configtable/update";
+			var url = vm.configtable.id == null ? "configtable/save" : "configtable/update";		
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,

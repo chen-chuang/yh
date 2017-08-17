@@ -36,5 +36,7 @@ public interface ConfigtableDao extends BaseDao<ConfigtableEntity> {
 	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
 
 	String apiPriceLimit(@Param("userID")String userID, @Param("areaID")String areaID);
+
+	int validateOnly(String configKey);
 	
 }
