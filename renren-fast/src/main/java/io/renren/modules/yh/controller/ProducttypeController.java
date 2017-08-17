@@ -168,7 +168,7 @@ public class ProducttypeController extends AbstractController {
 	
 	@RequestMapping("/getProductType")
 	public R getProductType(){
-		List<Map<String,Object>> types = producttypeService.getProductType();
+		List<Map<String,Object>> types = producttypeService.getProductType(getUserId());
 		
 		return R.ok().put("types", types);
 	}

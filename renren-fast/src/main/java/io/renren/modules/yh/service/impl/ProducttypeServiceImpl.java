@@ -63,8 +63,8 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> getProductType(){
-		return producttypeDao.getProductType();
+	public List<Map<String, Object>> getProductType(Long userId){
+		return producttypeDao.getProductType(userId);
 	}
 	
 	@Override
