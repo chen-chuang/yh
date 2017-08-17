@@ -32,4 +32,6 @@ public interface ConfigtableService {
 	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
 
 	ConfigtableEntity getConfig(SysUserEntity userEntity);
+
+	String apiPriceLimit(String userID, String areaID);
 }

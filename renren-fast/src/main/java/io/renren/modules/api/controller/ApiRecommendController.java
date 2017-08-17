@@ -362,7 +362,7 @@ public class ApiRecommendController {
 			List<CollectionDTO> info = productService.apiHotSaleProduction(map.get("areaID"),map.get("userID"));
 			return R.ok().put("info", info);
 		}else{
-			return R.ok();
+			return R.error();
 		}		
 		
 	}
@@ -398,10 +398,21 @@ public class ApiRecommendController {
 		return R.ok().put("info", info);*/
         String websign = AppValidateUtils.getSign(map);
 		if(websign.equals(sign)){
+			String priceLimit = configtableService.apiPriceLimit(map.get("userID"),map.get("areaID"));
 			List<ShoppingCartDTO> info = productService.apiShoppingCartList(map.get("userID"),map.get("areaID"));
-		    return R.ok().put("info", info);
+			
+			Map<String,Object> returnMap = new HashMap<String,Object>();
+			if(StringUtils.isNotBlank(priceLimit)){
+				returnMap.put("priceLimit", priceLimit);
+			}else{
+				returnMap.put("priceLimit", 0);
+			}
+			
+			returnMap.put("info", info);
+			
+		    return R.ok(returnMap);
 		}else{
-			return R.ok();
+			return R.error();
 		}	
 	}
 	
@@ -418,7 +429,7 @@ public class ApiRecommendController {
 			List<ProductTypeDTO> info = producttypeService.apiGetCategory(map.get("userID"),map.get("areaID"));
 			return R.ok().put("info", info);
 		}else{
-			return R.ok();
+			return R.error();
 		}	
 	}
 	

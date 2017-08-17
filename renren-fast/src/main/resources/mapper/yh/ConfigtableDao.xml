@@ -129,5 +129,9 @@
 		</where>
 	</select>	
 	
+	<select id="apiPriceLimit" resultType="java.lang.String">	    
+	    select config_value from sys_configtable where config_user_id = (select belong_to_agency_id from sys_user where user_id=#{userID} )
+	</select>
+	
 
 </mapper>

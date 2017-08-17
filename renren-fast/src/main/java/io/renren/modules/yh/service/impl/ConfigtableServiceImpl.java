@@ -64,4 +64,9 @@ public class ConfigtableServiceImpl implements ConfigtableService {
 		return configtableDao.getConfig(userEntity);
 	}
 	
+	
+	@Override
+	public String apiPriceLimit(String userID, String areaID){
+		return configtableDao.apiPriceLimit(userID,areaID);
+	}
 }
