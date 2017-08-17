@@ -21,7 +21,7 @@
 	</select>
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.ConfigtableEntity">
-		select * from sys_configtable
+		select * from sys_configtable where config_user_id = #{userId}
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -36,7 +36,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_configtable 
+		select count(*) from sys_configtable  where config_user_id = #{userId}
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.ConfigtableEntity" useGeneratedKeys="true" keyProperty="id">
