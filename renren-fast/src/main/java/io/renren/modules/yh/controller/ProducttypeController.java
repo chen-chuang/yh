@@ -120,7 +120,7 @@ public class ProducttypeController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("producttype:update")
-	public R update(@RequestBody ProducttypeEntity producttype,
+	public R update(ProducttypeEntity producttype,
 			@RequestParam(value="picFile",required=false) MultipartFile picFile){
 		
 		ValidatorUtils.validateEntity(producttype, UpdateGroup.class);

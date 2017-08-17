@@ -46,10 +46,8 @@ public class ProducttypeServiceImpl implements ProducttypeService {
 	}
 	
 	@Override
-	@Transactional
 	public void update(ProducttypeEntity producttype){
 		producttypeDao.update(producttype);
-		productDao.updateProductType(producttype);
 	}
 	
 	@Override
