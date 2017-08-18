@@ -313,10 +313,10 @@ var vm = new Vue({
 		    		}
 		    		
 		    		if(vm.title == "新增"){
-		    			
-		    			$("#province").removeAttr("disabled");
-			    		$("#city").removeAttr("disabled");
-			    		$("#county").removeAttr("disabled");
+		    			vm.getFullRegion(r.currentLoginUser.areaId);
+		    			$("#province").attr("disabled",true);
+			    		$("#city").attr("disabled",true);
+			    		$("#county").attr("disabled",true);
 		    		}
 		    		
 		    	}
