@@ -86,12 +86,12 @@ public class EnterpriseinfoController extends AbstractController {
 	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
 		SysUserEntity userEntity = this.getUser();
-		if(userEntity.getUserPermission().equals(EnumPermission.ADMIN.getType())){
-			int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),null,enterpriseinfo.getEnterpriseType());
-			if(count>0){
-				String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
-				return R.error("该区域已存在一个"+mString+"，不允许录入！");
-			}
+		
+		int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),null,
+				enterpriseinfo.getEnterpriseType(),enterpriseinfo.getEnterpriseId());
+		if(count>0){
+			String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
+			return R.error("该区域已存在一个"+mString+"，不允许录入！");
 		}
 		
 		ValidatorUtils.validateEntity(enterpriseinfo, AddGroup.class);
@@ -139,12 +139,12 @@ public class EnterpriseinfoController extends AbstractController {
 	public R update(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){		
 		
 		SysUserEntity userEntity = this.getUser();
-		if(userEntity.getUserPermission().equals(EnumPermission.ADMIN.getType())){
-			int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),null,enterpriseinfo.getEnterpriseType());
-			if(count>1){
-				String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
-				return R.error("该区域已存在一个"+mString+"，不允许录入！");
-			}
+		
+		int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),
+				null,enterpriseinfo.getEnterpriseType(),enterpriseinfo.getEnterpriseId());
+		if(count>0){
+			String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
+			return R.error("该区域已存在一个"+mString+"，不允许录入！");
 		}
 		
 		ValidatorUtils.validateEntity(enterpriseinfo, UpdateGroup.class);

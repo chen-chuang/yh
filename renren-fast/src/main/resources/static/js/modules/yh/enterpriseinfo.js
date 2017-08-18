@@ -80,11 +80,7 @@ var vm = new Vue({
 		add: function(){
 			vm.showList = false;
 			vm.title = "新增";
-			vm.enterpriseinfo = {};
-			
-			vm.province=null;
-			vm.city=null;
-			vm.county=null;
+			vm.enterpriseinfo = {};	
 			
 			this.getArea();
 			
@@ -142,12 +138,20 @@ var vm = new Vue({
 			});
 		},
 	    getArea:function(){
+	    	
+	    	vm.province=null;
+			vm.city=null;
+			vm.county=null;
 			
 			selectDataBindByHql('province',baseURL+"region/getCitys/0");
 			
 			$('#province').change(function() {
 				var selectProvinceId = $("#province").val();
-				selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				
+				if(selectProvinceId!=null&&selectProvinceId!=-1){
+					selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				}
+				
 				if(selectProvinceId!=-1){
 					$('#regionId').val(selectProvinceId);
 					$('#regionName').val($("#province").find("option:selected").text());
@@ -159,7 +163,11 @@ var vm = new Vue({
 			
 			$('#city').change(function() {
 				var selectCityId = $('#city').val();
-				selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				
+				if(selectCityId!=null&&selectCityId!=-1){
+					selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				}
+				
 				if(selectCityId==-1){
 					$('#regionId').val($("#province").val());
 					$('#regionName').val($("#province").find("option:selected").text());
@@ -202,7 +210,7 @@ var vm = new Vue({
 		saveOrUpdate:function(event){		
 			
 			var county = $('#county').val();
-			if(county==null||county==""){
+			if(county==null||county=="-1"){
 				alert("用户必须要选择到区县哦~");
 				return;
 			}
@@ -257,7 +265,10 @@ var vm = new Vue({
 			$.get(baseURL + "enterpriseinfo/info/"+enterpriseId, function(r){
                 vm.enterpriseinfo = r.enterpriseinfo;
                 
-                vm.getFullRegion(r.enterpriseinfo.enterpriseAreaId);
+                if(vm.title == "修改"){
+                	vm.getFullRegion(r.enterpriseinfo.enterpriseAreaId);
+                }
+                
             });
 		},
 		reload: function (event) {

@@ -74,8 +74,8 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 	}
 	
 	@Override
-	public int validateOnlyAgency(String enterpriseAreaId, String userId, Integer enterpriseType){
-		return enterpriseinfoDao.validateOnlyAgency(enterpriseAreaId,userId,enterpriseType);
+	public int validateOnlyAgency(String enterpriseAreaId, String userId, Integer enterpriseType, Long enterpriseId){
+		return enterpriseinfoDao.validateOnlyAgency(enterpriseAreaId,userId,enterpriseType,enterpriseId);
 	}
 	
 }

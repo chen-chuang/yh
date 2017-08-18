@@ -390,7 +390,7 @@ var vm = new Vue({
 			
 			var countySelectId = $('#county').val();
 			
-			if(countySelectId==null ||countySelectId==""){
+			if(countySelectId==null ||countySelectId=="-1"){
 				alert("用户必须要选择到区县哦~");
 				return;
 			}

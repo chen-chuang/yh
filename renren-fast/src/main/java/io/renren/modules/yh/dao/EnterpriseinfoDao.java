@@ -36,6 +36,6 @@ public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
 	List<Map<String, String>> apiEnterpriseCity(int type);
 
 	int validateOnlyAgency(@Param("areaId")String enterpriseAreaId, 
-			@Param("userId")String userId, @Param("enterpriseType")Integer enterpriseType); 
+			@Param("userId")String userId, @Param("enterpriseType")Integer enterpriseType, @Param("enterpriseId")Long enterpriseId); 
 	
 }

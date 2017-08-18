@@ -82,8 +82,8 @@
 			`enterprise_area_id`, 
 			`enterprise_area_name`, 
 			`enterprise_type`,
-			'enter_id',
-			'enter_name'
+			enter_id,
+			enter_name
 		)
 		values
 		(
@@ -119,8 +119,8 @@
 			<if test="enterpriseLatitude != null">`enterprise_latitude` = #{enterpriseLatitude}, </if>
 			<if test="enterpriseAreaId != null">`enterprise_area_id` = #{enterpriseAreaId}, </if>
 			<if test="enterpriseAreaName != null">`enterprise_area_name` = #{enterpriseAreaName}, </if>
-			<if test="enterpriseType != null">`enterprise_type` = #{enterpriseType}</if>
-			<if test="enterId != null">`enter_id` = #{enterId}</if>
+			<if test="enterpriseType != null">`enterprise_type` = #{enterpriseType},</if>
+			<if test="enterId != null">`enter_id` = #{enterId},</if>
 			<if test="enterName != null">`enter_name` = #{enterName}</if>
 		</set>
 		where enterprise_id = #{enterpriseId}
@@ -188,15 +188,18 @@
 		select distinct(enterprise_area_id) as areaId from sys_enterpriseinfo where enterprise_type = #{type}
 	</select>
 	
-	<select id="validateOnlyAgency">
+	<select id="validateOnlyAgency" resultType="int">
 		select count(*) from sys_enterpriseinfo 
 		<where>
 			enterprise_area_id = #{areaId}
 			<if test="userId != null and userId.trim() != ''">
 				and enter_id = #{userId}
 			</if>
-			<if test="enterpriseType != null and enterpriseType.trim() != ''">
+			<if test="enterpriseType != null">
 				and enterprise_type = #{enterpriseType}
+			</if>
+			<if test="enterpriseId != null">
+				and enterprise_id != #{enterpriseId}
 			</if>
 		</where>
 	</select>
