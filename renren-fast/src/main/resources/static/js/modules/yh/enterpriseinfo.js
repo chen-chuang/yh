@@ -265,6 +265,9 @@ var vm = new Vue({
 			$.get(baseURL + "enterpriseinfo/info/"+enterpriseId, function(r){
                 vm.enterpriseinfo = r.enterpriseinfo;
                 
+                $("#regionId").val(r.enterpriseinfo.enterpriseAreaId);
+                $("#enterpriseAddress").val(r.enterpriseinfo.enterpriseAddress);
+                
                 if(vm.title == "修改"){
                 	vm.getFullRegion(r.enterpriseinfo.enterpriseAreaId);
                 }

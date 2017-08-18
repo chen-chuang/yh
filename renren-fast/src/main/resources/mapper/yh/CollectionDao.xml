@@ -7,6 +7,7 @@
     <resultMap type="io.renren.modules.yh.entity.CollectionEntity" id="collectionMap">
         <result property="userId" column="user_id"/>
         <result property="productId" column="product_id"/>
+        <result property="time" column="time"/>
     </resultMap>
     
     <resultMap type="io.renren.modules.api.entity.dto.CollectionDTO" id="apiCollectionMap">
@@ -44,12 +45,14 @@
 		insert into sys_collection
 		(
 			`user_id`, 
-			`product_id`
+			`product_id`,
+			time
 		)
 		values
 		(
 			#{userId}, 
-			#{productId}
+			#{productId},
+			#{time}
 		)
 	</insert>
 	 
@@ -74,15 +77,8 @@
 	
 	<select id="apiQueryCollectionList" resultMap="apiCollectionMap">
 		select b.product_id,b.product_name,b.product_detail,b.product_picture_url,b.product_type from sys_collection a,sys_product b
-		 where a.product_id = b.product_id and a.user_id = #{userID} 
-        <choose>
-            <when test="sidx != null and sidx.trim() != ''">
-                order by ${sidx} ${order}
-            </when>
-			<otherwise>
-                order by user_id desc
-			</otherwise>
-        </choose>
+		 where a.product_id = b.product_id and a.user_id = #{userID}  
+       order by time desc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
@@ -92,12 +88,14 @@
 	    insert into sys_collection
 		(
 			`user_id`, 
-			`product_id`
+			`product_id`,
+			time
 		)
 		values
 		(
 			#{userID}, 
-			#{productId}
+			#{productId},
+			#{date}
 		)
 	</insert>
 	

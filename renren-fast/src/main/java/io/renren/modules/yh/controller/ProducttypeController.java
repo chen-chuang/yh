@@ -110,6 +110,9 @@ public class ProducttypeController extends AbstractController {
 			  }
 		}	
 		
+		if(producttype.getShowInHomepage()==null){
+			producttype.setShowInHomepage(0);
+		}
 		producttypeService.save(producttype);
 		
 		return R.ok();
@@ -150,6 +153,9 @@ public class ProducttypeController extends AbstractController {
 			  }
 		}	
 		
+		if(producttype.getShowInHomepage()==null){
+			producttype.setShowInHomepage(0);
+		}
 		producttypeService.update(producttype);
 		
 		return R.ok();

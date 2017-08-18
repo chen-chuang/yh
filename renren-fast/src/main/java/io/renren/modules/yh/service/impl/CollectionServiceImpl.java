@@ -3,6 +3,7 @@ package io.renren.modules.yh.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,9 +61,9 @@ public class CollectionServiceImpl implements CollectionService {
 	}
 	
 	@Override
-	public void apiCollectProduction(String userID, String productId, String isCollected){
+	public void apiCollectProduction(String userID, String productId, String isCollected, Date date){
 		if(isCollected.equals("1")){
-			collectionDao.apiCollectProductionInsert(userID, productId);
+			collectionDao.apiCollectProductionInsert(userID, productId,date);
 		}else if(isCollected.equals("0")){
 			collectionDao.apiCollectProductionDelete(userID, productId);
 		}

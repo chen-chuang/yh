@@ -4,6 +4,7 @@ import io.renren.common.utils.Query;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.yh.entity.CollectionEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,5 +33,5 @@ public interface CollectionService {
 
 	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
 
-	void apiCollectProduction(String userID, String productId, String isCollected);
+	void apiCollectProduction(String userID, String productId, String isCollected, Date date);
 }

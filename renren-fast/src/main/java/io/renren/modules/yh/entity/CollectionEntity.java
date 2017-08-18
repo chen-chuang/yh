@@ -19,6 +19,8 @@ public class CollectionEntity implements Serializable {
 	private Long userId;
 	//
 	private Long productId;
+	
+	private Date time;
 
 	/**
 	 * 设置：
@@ -43,5 +45,11 @@ public class CollectionEntity implements Serializable {
 	 */
 	public Long getProductId() {
 		return productId;
+	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
 	}
 }

@@ -4,6 +4,7 @@ import io.renren.modules.yh.entity.CollectionEntity;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.sys.dao.BaseDao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface CollectionDao extends BaseDao<CollectionEntity> {
 
 	List<CollectionDTO> apiQueryCollectionList(Map<String, Object> map);
 	
-	void apiCollectProductionInsert(@Param("userID")String userID, @Param("productId")String productId);
+	void apiCollectProductionInsert(@Param("userID")String userID, @Param("productId")String productId, @Param("date")Date date);
 
 	void apiCollectProductionDelete(@Param("userID")String userID, @Param("productId")String productId);
 	

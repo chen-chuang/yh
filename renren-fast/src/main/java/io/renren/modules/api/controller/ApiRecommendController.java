@@ -443,7 +443,7 @@ public class ApiRecommendController {
         String websign = AppValidateUtils.getSign(map);
 		
 		if(websign.equals(sign)){
-			collectionService.apiCollectProduction(map.get("userID"),map.get("productId"),map.get("isCollected"));
+			collectionService.apiCollectProduction(map.get("userID"),map.get("productId"),map.get("isCollected"),new Date());
 			return R.ok();
 		}else{
 			return R.error();
