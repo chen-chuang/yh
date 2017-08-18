@@ -72,4 +72,10 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 	public List<Map<String, Object>> getByName(String enterpriseName){
 		return enterpriseinfoDao.getByName(enterpriseName);
 	}
+	
+	@Override
+	public int validateOnlyAgency(String enterpriseAreaId, String userId, Integer enterpriseType){
+		return enterpriseinfoDao.validateOnlyAgency(enterpriseAreaId,userId,enterpriseType);
+	}
+	
 }

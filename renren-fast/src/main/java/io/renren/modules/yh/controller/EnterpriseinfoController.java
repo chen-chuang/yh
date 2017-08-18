@@ -28,7 +28,9 @@ import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 
 
@@ -83,6 +85,15 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequiresPermissions("enterpriseinfo:save")
 	public R save(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){
 		
+		SysUserEntity userEntity = this.getUser();
+		if(userEntity.getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),null,enterpriseinfo.getEnterpriseType());
+			if(count>0){
+				String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
+				return R.error("该区域已存在一个"+mString+"，不允许录入！");
+			}
+		}
+		
 		ValidatorUtils.validateEntity(enterpriseinfo, AddGroup.class);
 		
 		if(file!=null&&StringUtils.isNotBlank(file.getOriginalFilename())){
@@ -112,6 +123,9 @@ public class EnterpriseinfoController extends AbstractController {
 			enterpriseinfo.setEnterpriseLatitude(arrStr[1]);
 		}
 		
+		enterpriseinfo.setEnterId(userEntity.getUserId());
+		enterpriseinfo.setEnterName(userEntity.getUsername());
+		
 		enterpriseinfoService.save(enterpriseinfo);
 		
 		return R.ok();
@@ -123,6 +137,15 @@ public class EnterpriseinfoController extends AbstractController {
 	@RequestMapping("/update")
 	@RequiresPermissions("enterpriseinfo:update")
 	public R update(EnterpriseinfoEntity enterpriseinfo,@RequestParam(value="picFile",required=false) MultipartFile file){		
+		
+		SysUserEntity userEntity = this.getUser();
+		if(userEntity.getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			int count = enterpriseinfoService.validateOnlyAgency(enterpriseinfo.getEnterpriseAreaId(),null,enterpriseinfo.getEnterpriseType());
+			if(count>1){
+				String mString = enterpriseinfo.getEnterpriseType().equals(1)?"生产厂家":"区域经销商";
+				return R.error("该区域已存在一个"+mString+"，不允许录入！");
+			}
+		}
 		
 		ValidatorUtils.validateEntity(enterpriseinfo, UpdateGroup.class);
 		
@@ -152,6 +175,9 @@ public class EnterpriseinfoController extends AbstractController {
 			enterpriseinfo.setEnterpriseLongitude(arrStr[0]);
 			enterpriseinfo.setEnterpriseLatitude(arrStr[1]);
 		}
+		
+		enterpriseinfo.setEnterId(userEntity.getUserId());
+		enterpriseinfo.setEnterName(userEntity.getUsername());
 		
 		enterpriseinfoService.update(enterpriseinfo);	
 		

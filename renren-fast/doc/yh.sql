@@ -69,6 +69,8 @@ create table sys_enterpriseinfo
    enterprise_area_id   varchar(50) comment '行政区域',
    enterprise_type      int comment '类型（1：生产厂家，2：经销商）',   
   `enterprise_area_name` varchar(180) DEFAULT NULL,
+  `enter_id` bigint(20) DEFAULT NULL,
+  `enter_name` varchar(50) DEFAULT NULL,
    primary key (enterprise_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

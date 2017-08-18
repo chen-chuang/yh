@@ -37,4 +37,6 @@ public interface EnterpriseinfoService {
 	List<Map<String, Object>> getEnterprise();
 
 	List<Map<String, Object>> getByName(String enterpriseName);
+
+	int validateOnlyAgency(String enterpriseAreaId, String userId, Integer enterpriseType);
 }

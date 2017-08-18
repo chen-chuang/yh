@@ -18,6 +18,8 @@
         <result property="enterpriseAreaId" column="enterprise_area_id"/>
          <result property="enterpriseAreaName" column="enterprise_area_name"/>
         <result property="enterpriseType" column="enterprise_type"/>
+         <result property="enterId" column="enter_id"/>
+          <result property="enterName" column="enter_name"/>
     </resultMap>
     
     
@@ -79,7 +81,9 @@
 			`enterprise_latitude`, 
 			`enterprise_area_id`, 
 			`enterprise_area_name`, 
-			`enterprise_type`
+			`enterprise_type`,
+			'enter_id',
+			'enter_name'
 		)
 		values
 		(
@@ -95,7 +99,9 @@
 			#{enterpriseLatitude}, 
 			#{enterpriseAreaId}, 
 			#{enterpriseAreaName}, 
-			#{enterpriseType}
+			#{enterpriseType},
+			#{enterId},
+			#{enterName}
 		)
 	</insert>
 	 
@@ -114,6 +120,8 @@
 			<if test="enterpriseAreaId != null">`enterprise_area_id` = #{enterpriseAreaId}, </if>
 			<if test="enterpriseAreaName != null">`enterprise_area_name` = #{enterpriseAreaName}, </if>
 			<if test="enterpriseType != null">`enterprise_type` = #{enterpriseType}</if>
+			<if test="enterId != null">`enter_id` = #{enterId}</if>
+			<if test="enterName != null">`enter_name` = #{enterName}</if>
 		</set>
 		where enterprise_id = #{enterpriseId}
 	</update>
@@ -178,6 +186,19 @@
 	
 	<select id="apiEnterpriseCity" resultType="java.util.Map">
 		select distinct(enterprise_area_id) as areaId from sys_enterpriseinfo where enterprise_type = #{type}
+	</select>
+	
+	<select id="validateOnlyAgency">
+		select count(*) from sys_enterpriseinfo 
+		<where>
+			enterprise_area_id = #{areaId}
+			<if test="userId != null and userId.trim() != ''">
+				and enter_id = #{userId}
+			</if>
+			<if test="enterpriseType != null and enterpriseType.trim() != ''">
+				and enterprise_type = #{enterpriseType}
+			</if>
+		</where>
 	</select>
 
 </mapper>

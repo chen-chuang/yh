@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.sys.dao.BaseDao;
@@ -32,6 +33,9 @@ public interface EnterpriseinfoDao extends BaseDao<EnterpriseinfoEntity> {
 
 	int isExistByRegion(Integer id);
 
-	List<Map<String, String>> apiEnterpriseCity(int type); 
+	List<Map<String, String>> apiEnterpriseCity(int type);
+
+	int validateOnlyAgency(@Param("areaId")String enterpriseAreaId, 
+			@Param("userId")String userId, @Param("enterpriseType")Integer enterpriseType); 
 	
 }

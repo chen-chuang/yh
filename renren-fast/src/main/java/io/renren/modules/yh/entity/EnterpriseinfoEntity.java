@@ -49,6 +49,10 @@ public class EnterpriseinfoEntity implements Serializable {
 	//类型（1：生产厂家，2：经销商）
 	@NotNull(message="企业类型不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer enterpriseType;
+	
+	private Long enterId;
+	
+	private String enterName;
 
 	/**
 	 * 设置：
@@ -199,5 +203,17 @@ public class EnterpriseinfoEntity implements Serializable {
 	}
 	public void setEnterpriseAreaName(String enterpriseAreaName) {
 		this.enterpriseAreaName = enterpriseAreaName;
+	}
+	public Long getEnterId() {
+		return enterId;
+	}
+	public void setEnterId(Long enterId) {
+		this.enterId = enterId;
+	}
+	public String getEnterName() {
+		return enterName;
+	}
+	public void setEnterName(String enterName) {
+		this.enterName = enterName;
 	}
 }

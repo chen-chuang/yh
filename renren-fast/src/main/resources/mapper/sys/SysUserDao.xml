@@ -199,7 +199,7 @@
 		<where>
 			area_id =#{areaId} and user_permission="3"
 			<if test="userId!=null">
-				and user_id!=#{user_id}
+				and user_id!=#{userId}
 			</if>
 		</where>
 	</select>
