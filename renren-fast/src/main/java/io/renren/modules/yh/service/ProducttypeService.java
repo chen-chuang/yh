@@ -30,7 +30,7 @@ public interface ProducttypeService {
 	
 	void deleteBatch(Integer[] ids);
 
-	List<Map<String, Object>> getProductType();
+	List<Map<String, Object>> getProductType(Long userId);
 
 	int getProductByType(Integer[] ids);
 

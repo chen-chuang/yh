@@ -42,6 +42,8 @@ public class ConfigtableController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("configtable:list")
 	public R list(@RequestParam Map<String, Object> params){
+		
+		params.put("userId", getUserId());
 		//查询列表数据
         Query query = new Query(params);
 
@@ -71,6 +73,11 @@ public class ConfigtableController extends AbstractController {
 	@RequestMapping("/save")
 	@RequiresPermissions("configtable:save")
 	public R save(@RequestBody ConfigtableEntity configtable){
+		
+		int count = configtableService.validateOnly(configtable.getConfigKey());
+		if(count>0){
+			return R.error("已创建"+configtable.getConfigName()+",不能再次创建！");
+		}
 		
 		
 		SysUserEntity userEntity = this.getUser();

@@ -10,13 +10,13 @@ $(function () {
 				if(value!=""&&value!=null){
 					return '<img src='+value+'>';
 				}else{
-					return value;
+					return "";
 				}
 			}}, 								
 			{ label: '是否展示在首页', name: 'showInHomepage', index: 'show_in_homepage', width: 80, formatter: function(value, options, row){
 				if(value===1){
 					return "是";
-				}else if(value===0){
+				}else{
 					return "否";
 				}
 			}},			

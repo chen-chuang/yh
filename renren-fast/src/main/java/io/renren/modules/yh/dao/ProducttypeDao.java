@@ -21,7 +21,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ProducttypeDao extends BaseDao<ProducttypeEntity> {
 
-	List<Map<String, Object>> getProductType();
+	List<Map<String, Object>> getProductType(Long userId);
 
 	int getProductByType(Integer[] id);
 

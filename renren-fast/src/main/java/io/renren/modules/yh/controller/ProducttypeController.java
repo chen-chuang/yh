@@ -120,7 +120,7 @@ public class ProducttypeController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("producttype:update")
-	public R update(@RequestBody ProducttypeEntity producttype,
+	public R update(ProducttypeEntity producttype,
 			@RequestParam(value="picFile",required=false) MultipartFile picFile){
 		
 		ValidatorUtils.validateEntity(producttype, UpdateGroup.class);
@@ -168,7 +168,7 @@ public class ProducttypeController extends AbstractController {
 	
 	@RequestMapping("/getProductType")
 	public R getProductType(){
-		List<Map<String,Object>> types = producttypeService.getProductType();
+		List<Map<String,Object>> types = producttypeService.getProductType(getUserId());
 		
 		return R.ok().put("types", types);
 	}

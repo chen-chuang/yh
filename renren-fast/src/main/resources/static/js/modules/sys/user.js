@@ -40,10 +40,13 @@ $(function () {
 				}else if(value===5){
 					return "发货员";
 				}else if(value===6){
-					return "销售员";
-				}else {
-					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+					return "销售员(零售)";
+				}else if(value===7){
+					return "销售员(批发)";
 				}
+				/*else {
+					return '<a class="btn-app" onclick=setPermission("'+row.userId+'")><i class="fa fa-edit"></i></a>';
+				}*/
 			}},
 			{ label: '积分', align: 'center',name: 'userIntegral',  index:"user_integral",width: 50, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){

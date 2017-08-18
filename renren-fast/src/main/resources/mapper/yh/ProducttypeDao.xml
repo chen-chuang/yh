@@ -82,7 +82,7 @@
 	</delete>
 	
 	<select id="getProductType" resultType="java.util.Map">
-		select * from sys_producttype order by type 
+		select * from sys_producttype where enter_id =#{userId} order by type 
 	</select>
 	
 	<select id="getProductByType" resultType="int">

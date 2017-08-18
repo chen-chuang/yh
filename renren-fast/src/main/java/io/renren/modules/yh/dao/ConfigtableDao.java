@@ -3,6 +3,7 @@ package io.renren.modules.yh.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import io.renren.modules.sys.dao.BaseDao;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -33,5 +34,9 @@ public interface ConfigtableDao extends BaseDao<ConfigtableEntity> {
 	 *@时间 2017年8月1日下午7:12:35
 	 */
 	ConfigtableEntity getConfigIntegerationCash(SysUserEntity user);
+
+	String apiPriceLimit(@Param("userID")String userID, @Param("areaID")String areaID);
+
+	int validateOnly(String configKey);
 	
 }

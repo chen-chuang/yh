@@ -51,9 +51,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Override
 	public List<SysMenuEntity> getUserMenuList(Long userId) {
 		//系统管理员，拥有最高权限
-		if(userId == Constant.SUPER_ADMIN){
+		/*if(userId == Constant.SUPER_ADMIN){
 			return getAllMenuList(null);
-		}
+		}*/
 		
 		//用户菜单列表
 		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);

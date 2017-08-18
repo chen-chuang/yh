@@ -45,6 +45,8 @@ public class OrderController extends AbstractController{
 	@RequestMapping("/list")
 	@RequiresPermissions("order:list")
 	public R list(@RequestParam Map<String, Object> params){
+		
+		params.put("userId", getUserId());
 		//查询列表数据
         Query query = new Query(params);
 
