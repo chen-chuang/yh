@@ -449,7 +449,11 @@ var vm = new Vue({
 			
 			$('#province').change(function() {
 				var selectProvinceId = $("#province").val();
-				selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				
+				if(selectProvinceId!=-1&&selectProvinceId!=null){
+					selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				}
+				
 				if(selectProvinceId!=-1){
 					$('#regionId').val(selectProvinceId);
 					$('#regionName').val($("#province").find("option:selected").text());
@@ -459,7 +463,11 @@ var vm = new Vue({
 			
 			$('#city').change(function() {
 				var selectCityId = $('#city').val();
-				selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				
+				if(selectCityId!=-1&&selectCityId!=null){
+					selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				}
+				
 				if(selectCityId==-1){
 					$('#regionId').val($("#province").val());
 					$('#regionName').val($("#province").find("option:selected").text());
@@ -472,7 +480,11 @@ var vm = new Vue({
 			
 			$('#county').change(function(){
 				var countySelectId = $('#county').val();
-				selectDataBindByHql('town',  baseURL+"region/getCitys/"+countySelectId);
+				
+				if(countySelectId!=-1&&countySelectId!=null){
+					selectDataBindByHql('town',  baseURL+"region/getCitys/"+countySelectId);
+				}
+				
 				if(countySelectId==-1){
 					$('#regionId').val($("#city").val());
 					$('#regionName').val($("#province").find("option:selected").text()
