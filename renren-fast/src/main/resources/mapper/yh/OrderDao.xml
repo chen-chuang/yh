@@ -203,6 +203,7 @@
 	  
 	    select a.* from sys_order a
 	    <where>
+	        order_type = 3
 	        <if test ="startTime!=null">
 	            and order_create_time &gt;= #{startTime}
 	        </if>
