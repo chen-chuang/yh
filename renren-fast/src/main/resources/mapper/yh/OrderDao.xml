@@ -97,7 +97,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_order  where user_id in (select user_id from sys_user where belong_to_agency_id =#{user_id})
+		select count(*) from sys_order  where user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.OrderEntity">
