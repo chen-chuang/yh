@@ -320,6 +320,7 @@ var vm = new Vue({
 		    			$("#province").attr("disabled",true);
 			    		$("#city").attr("disabled",true);
 			    		$("#county").attr("disabled",true);
+			    	
 		    		}
 		    		
 		    	}

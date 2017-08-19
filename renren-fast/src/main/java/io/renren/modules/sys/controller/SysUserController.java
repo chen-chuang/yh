@@ -137,7 +137,8 @@ public class SysUserController extends AbstractController {
 			
 			//配送员和销售员行政区域  和  区域经销商一个级别
 			if(user.getUserPermission().equals(EnumPermission.DELIVERY_F.getType())
-					||user.getUserPermission().equals(EnumPermission.SALE.getType())){
+					||user.getUserPermission().equals(EnumPermission.SALE.getType())
+					||user.getUserPermission().equals(EnumPermission.SALEP.getType())){
 				user.setAreaId(getUser().getAreaId());
 				user.setUserArea(getUser().getUserArea());
 			}
