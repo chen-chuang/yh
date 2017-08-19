@@ -57,7 +57,21 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
-        	$("th[role='columnheader']").css('text-align','center');
+        	$("th[role='columnheader']").css('text-align','center')        	
+        	
+        	 $.get(baseURL + "sys/user/currentLoginUser", function(r){
+  		    	var p = r.currentLoginUser.userPermission;
+  		    	if(p==1||p==2){
+  		    		var len=$("#jqGrid").getGridParam("width");
+  		        	$("#jqGrid").setGridParam().hideCol("isHot");
+  		        	$("#jqGrid").setGridParam().hideCol("productNum");
+  		        	$("#jqGrid").setGridParam().hideCol("productTradePrice");
+  		        	$("#jqGrid").setGridParam().hideCol("productRetailPrice");
+  		        	$("#jqGrid").setGridParam().hideCol("productTypeName");
+  		        	$("#jqGrid").setGridWidth(len);
+  		    	}
+  			});
+        	
         }
     });
     
