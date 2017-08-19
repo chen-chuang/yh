@@ -8,7 +8,7 @@ $(function () {
 			{ label: '产品图片',align: 'center', name: 'productPictureUrl', index: 'product_picture_url', formatter: function(value, options, row){
 				
 				if(value!=""&&value!=null){
-					return '<img src='+value+'>';
+					return '<img style="width:80px;height:80px" src='+value+'>';
 				}else{
 					return "";
 				}
