@@ -1,5 +1,5 @@
-/*选择联系人样式*/
-.user_select_view {display:block; width:400px;height:250px;overflow:hidden;
+/*閫夋嫨鑱旂郴浜烘牱寮�*/
+.user_select_view {display:block;margin-right: 20px;overflow:hidden;
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -12,8 +12,8 @@
 .user_select_view .view_left ul {height:375px;overflow-y:auto;overflow-x:hidden;}
 .user_select_view .view_left ul li{display:inline-block;list-style:none; margin:5px;padding:3px 8px;border:1px solid #e2e2e2;border-radius:5px;line-height:25px;font-size:13px;cursor:pointer;}
 
-.user_select_view .view_right {display:inline-block;vertical-align:top;width:300px;height:450px;margin-top:10px;border:1px solid #e2e2e2;border-radius:5px}
-.user_select_view .view_right ul {height:450px;overflow-y:auto;overflow-x:hidden;}
+.user_select_view .view_right {display:inline-block;vertical-align:top;width:100%;margin-top:10px;margin-left:10px;margin-right:10px;border:1px solid #e2e2e2;border-radius:5px}
+.user_select_view .view_right ul {overflow-y:auto;overflow-x:hidden;}
 .user_select_view .view_right ul li{display:block;line-height:25px;font-size:13px;cursor:pointer;font-size:13px;line-height:45px;padding-left:5px;}
 .user_select_view .view_right ul li:hover {background-color:rgb(30,119,218);color:#fff;}
 .user_select_view .view_right ul li:active {background-color:rgb(30,119,218);color:#fff;}

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -46,7 +48,15 @@ public class OrderController extends AbstractController{
 	@RequiresPermissions("order:list")
 	public R list(@RequestParam Map<String, Object> params){
 		
-		params.put("userId", getUserId());
+		SysUserEntity user = getUser();
+		if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
+			params.put("userId", getUserId());
+		}
+		
+		if(user.getUserPermission().equals(EnumPermission.DELIVERY_F.getType())){
+			params.put("userId", user.getBelongToAgencyId());
+		}
+		
 		//查询列表数据
         Query query = new Query(params);
 
@@ -111,7 +121,7 @@ public class OrderController extends AbstractController{
 	
 	@RequestMapping("/complete")
 	public R complete(String orderId){
-		
+		orderService.complete(orderId);
 		return R.ok();
 	}
 	

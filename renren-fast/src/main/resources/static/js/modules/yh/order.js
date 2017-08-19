@@ -7,18 +7,7 @@ $(function () {
 			{ label: '销售员id',hidden:true, name: 'userId', index: 'user_id', width: 80 }, 			
 			{ label: '订单生成时间', name: 'orderCreateTime', index: 'order_create_time', width: 80 }, 			
 			{ label: '使用积分数', name: 'userIntegralCount', index: 'user_integral_count', width: 80 }, 			
-			{ label: '订单总价格', name: 'orderAllPrice', index: 'order_all_price', width: 80 }, 			
-			{ label: '订单状态', name: 'orderType', index: 'order_type', width: 80, formatter: function(value, options, row){
-				if(value===0){
-					return '<span>待支付</span>';
-				}else if(value===1){
-					return '<span>已支付</span>';
-				}else if(value===2){
-					return '<span>待配送</span>';
-				}else if(value===3){
-					return '<span>已支付</span>';
-				}
-		    }},				
+			{ label: '订单总价格', name: 'orderAllPrice', index: 'order_all_price', width: 80 }, 
 			{ label: '下单地址ID', hidden:true,name: 'townId', index: 'town_id', width: 80 }, 			
 			{ label: '下单地址', name: 'orderAddress', index: 'order_address', width: 80 }, 			
 			{ label: '要求配送时间', name: 'orderSendTime', index: 'order_send_time', width: 80 }, 			
@@ -32,9 +21,27 @@ $(function () {
 				}else if(value===2){
 					return '<span>微信</span>';
 				}
+		    }},
+		    { label: '订单状态', name: 'orderType', index: 'order_type', width: 80, formatter: function(value, options, row){
+				if(value===0){
+					return '<span>待支付</span>';
+				}else if(value===1){
+					return '<span>已支付</span>';
+				}else if(value===2){
+					return '<span>正在配送</span>';
+				}else if(value===3){
+					return '<span>已完成</span>';
+				}
 		    }},	
+		    { label: '配送员', name: 'deliveryUserName', index: 'delivery_user_name', width: 80 }, 	
 			{ label: '操作', width: 80,formatter: function(value, options, row){
-				return '<a onclick=dispatch("'+row.orderId+'")>配送</a>|<a onclick=complete("'+row.orderId+'")>完成</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+				if(row.orderType===1){
+					return '<a onclick=dispatch("'+row.orderId+'")>配送</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+				}else if(row.orderType===2){
+					return '<a onclick=complete("'+row.orderId+'")>完成</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+				}else{
+					return '<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+				}
 			}}
         ],
 		viewrecords: true,
@@ -64,8 +71,9 @@ $(function () {
     });
 });
 
-function setUserId(userId) {
+function setUserId(userId,obj) {
 	$("#userId").val(userId);
+	
 }
 
 //配送
@@ -81,7 +89,7 @@ function dispatch(orderId){
 			 +'  </ul>'
 			 +' </div>'*/
 			 +' <div class="view_right" id="view_right">'
-			 +'   <ul>';
+			 +'   <ul style="margin:0;padding:0">';
 			 
 	
 	//展示配送员
@@ -92,7 +100,7 @@ function dispatch(orderId){
 			if (r.code == 0) {
 				if(r.deliveryPerson){
 					$.each(r.deliveryPerson,function(k,v){
-						content+='<li onclick = setUserId('+v["user_id"]+') userid = '+v["user_id"]+'>'+v["user_name"]+'</li>' ;
+						content+='<li onclick = setUserId("'+v.user_id+'",this) userid = '+v["user_id"]+'>'+v.username+'</li>' ;
 					})
 					
 				}
@@ -100,57 +108,54 @@ function dispatch(orderId){
 			content +='  </ul>'
 						 +' </div>'
 						 +'</div>';
+			
+
+			 layer.open({
+			        type: 1
+			        ,title: '选择配送员' 
+			        ,area: ['450px', '300px']
+			        ,shade: 0
+			        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			        ,btn: ['确定', '关闭']
+			        ,moveType: 1 //拖拽模式，0或者1
+			        ,content: content
+			    	 ,yes: function(){    		 
+			    		
+			    		/* var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
+			    		 var regionName = $(window.frames["layui-layer-iframe1"].document).find("#regionName").val();*/
+			    		
+		    			$.ajax({
+		    				type : "POST",
+		    				url : baseURL + "order/dispatch",
+		    				data : {
+		    					orderId : orderId,
+		    					userId : $("#userId").val()
+		    				},
+		    				success : function(r) {
+		    					if (r.code == 0) {
+		    						alert('指派成功！', function() {
+		    							vm.reload();
+		    							layer.closeAll();
+		    						});
+		    					} else {
+		    						alert(r.msg);
+		    					}
+		    				}
+		    			});
+			        }
+			        ,btn2: function(){
+			          layer.closeAll();
+			        }
+			      });
 		}
 	});
-	
-	
-	
-	 layer.open({
-	        type: 1
-	        ,title: '选择配送员' 
-	        ,area: ['450px', '300px']
-	        ,shade: 0
-	        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-	        ,btn: ['确定', '关闭']
-	        ,moveType: 1 //拖拽模式，0或者1
-	        ,content: content
-	    	 ,yes: function(){    		 
-	    		
-	    		/* var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
-	    		 var regionName = $(window.frames["layui-layer-iframe1"].document).find("#regionName").val();*/
-	    		
-    			$.ajax({
-    				type : "POST",
-    				url : baseURL + "order/dispatch",
-    				data : {
-    					orderId : orderId,
-    					userId : $("#userId").val()
-    				},
-    				success : function(r) {
-    					if (r.code == 0) {
-    						alert('指派成功！', function() {
-    							vm.reload();
-    							layer.closeAll();
-    						});
-    					} else {
-    						alert(r.msg);
-    					}
-    				}
-    			});
-	        }
-	        ,btn2: function(){
-	          layer.closeAll();
-	        }
-	      });
-	 
-
 }
 function complete(orderId){
 	$.ajax({
 		type : "POST",
 		url : baseURL + "order/complete",
 		data : {
-			id : id,
+			orderId : orderId,
 			type:"accept"
 		},
 		success : function(r) {

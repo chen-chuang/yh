@@ -332,7 +332,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		//写入积分明显表
 		OrderintegrationEntity orderintegration = new OrderintegrationEntity();
-		orderintegration.setUserId(order.getUserId());
+		orderintegration.setUserId(order.getDeliveryUserId());
 		orderintegration.setOrderId(orderId);
 		orderintegration.setOrderSumPrice(order.getOrderAllPrice());
 		
@@ -340,10 +340,12 @@ public class OrderServiceImpl implements OrderService {
 		SysUserEntity userEntity = SysUserDao.queryObject(order.getDeliveryUserId());
 		ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);			
 		//得到比例，算的积分
-		String proportion = configtableEntity.getConfigValue();
-		Long thisIntegral = order.getOrderAllPrice().longValue()*Long.valueOf(proportion); 	
-		
-		orderintegration.setIntegration(thisIntegral);
+		if(configtableEntity!=null){
+			String proportion = configtableEntity.getConfigValue();
+			Long thisIntegral = order.getOrderAllPrice().longValue()*Long.valueOf(proportion); 	
+			
+			orderintegration.setIntegration(thisIntegral);
+		}		
 		orderintegration.setPriceIntegrationType(1);//2销售积分 1配送积分			
 		//注意：这里设计的是给配送人员用的，是否兑换过
 		orderintegration.setIsRebate(0); //0未兑换过，1兑换过
@@ -351,7 +353,7 @@ public class OrderServiceImpl implements OrderService {
 		orderintegrationDao.save(orderintegration);
 		
 		//订单完成
-		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
+		order.setOrderType(EnumOrderType.COMPLETE.getStatus());
 		orderDao.update(order);
 	}
 	

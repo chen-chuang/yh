@@ -59,8 +59,8 @@
 			`order_sum_price`, 
 			`integration`, 
 			`price_integration_type`,
-			'is_rebate',
-			'time'
+			is_rebate,
+			time
 		)
 		values
 		(
