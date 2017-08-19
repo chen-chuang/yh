@@ -266,6 +266,7 @@ var vm = new Vue({
                 vm.enterpriseinfo = r.enterpriseinfo;
                 
                 $("#regionId").val(r.enterpriseinfo.enterpriseAreaId);
+                $("#regionName").val(r.enterpriseinfo.enterpriseAreaName);
                 $("#enterpriseAddress").val(r.enterpriseinfo.enterpriseAddress);
                 
                 if(vm.title == "修改"){
