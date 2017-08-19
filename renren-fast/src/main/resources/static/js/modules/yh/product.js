@@ -10,7 +10,7 @@ $(function () {
 				if(value!=""&&value!=null){
 					return '<img src='+value+'>';
 				}else{
-					return value;
+					return "";
 				}
 			}}, 						
 			{ label: '简介', align: 'center',name: 'productDetail', index: 'product_detail', width: 80 }, 			
@@ -20,7 +20,7 @@ $(function () {
 				if(value!=""||value!=null){
 					return '<a class="fa-caret-square-o-right"></a>';
 				}else{
-					return value;
+					return "";
 				}
 			}}, 			
 			{ label: '库存', align: 'center',name: 'productNum', index: 'product_num', width: 80 }, 			
@@ -160,27 +160,6 @@ var vm = new Vue({
 			
 			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
 			$("#productTypeName").val($("#productType").find("option:selected").text());
-			
-			if(url=="product/save"){
-				 $.ajax({  
-			            url : baseURL + url,  
-			            type : 'POST',  
-			            data : formData,  
-			            async : false,  
-			            cache : false,  
-			            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
-			            processData : false,// 告诉jQuery不要去处理发送的数据  
-			            success : function(r) {  
-			            	if(r.code === 0){
-								alert('操作成功', function(index){
-									vm.reload();
-								});
-							}else{
-								alert(r.msg);
-							}
-			            }  
-			        }); 
-			}
 			
 			if(vm.currentPermission==1){
 				if($("#enterpriseId").val()==null||$("#enterpriseId").val()==""){
