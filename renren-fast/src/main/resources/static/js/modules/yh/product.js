@@ -151,6 +151,8 @@ var vm = new Vue({
             
             this.getProductType();
             
+            this.getUserPermission();
+            
             vm.getInfo(productId); 
             
             
