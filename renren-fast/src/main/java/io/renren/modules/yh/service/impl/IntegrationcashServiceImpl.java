@@ -89,14 +89,14 @@ public class IntegrationcashServiceImpl implements IntegrationcashService {
 			//还可兑现积分
 			Long userIntegral =  user.getUserIntegral()-applySum;
 			
+			BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
+			
+			//通过比例计算提及的积分
+			Long useIntegration = amount.multiply(proportionNum).longValue();
+			integrationcashEntity.setIntegration(useIntegration);
+			
 			//用户剩余积分 大于 可提现积分
 			if(userIntegral>integrationcashEntity.getIntegration()){
-				
-				BigDecimal amount =  integrationcashEntity.getWithdrawalamount();
-				
-				//通过比例计算提及的积分
-				Long useIntegration = amount.multiply(proportionNum).longValue();
-				integrationcashEntity.setIntegration(useIntegration);
 				
 				integrationcashDao.save(integrationcashEntity);
 			}
