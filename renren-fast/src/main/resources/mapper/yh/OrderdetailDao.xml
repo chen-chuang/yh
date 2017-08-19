@@ -46,7 +46,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_orderdetail 
+		select count(*) from sys_orderdetail where order_id = #{orderId}		
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.OrderdetailEntity">

@@ -34,8 +34,7 @@ $(function () {
 				}
 		    }},	
 			{ label: '操作', width: 80,formatter: function(value, options, row){
-				console.log(row.id);
-				return '<a onclick=dispatch('+row.orderId+')>配送</a>|<a onclick=complete('+row.orderId+')>完成</a>|<a onclick=showdetail('+row.orderId+')>查看明细</a>';
+				return '<a onclick=dispatch("'+row.orderId+'")>配送</a>|<a onclick=complete("'+row.orderId+'")>完成</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 			}}
         ],
 		viewrecords: true,
@@ -169,6 +168,7 @@ function complete(orderId){
 
 
 function showdetail(orderId){
+	console.log(orderId);
 	$("#orderId").val(orderId);
 	 layer.open({
 	        type: 2
