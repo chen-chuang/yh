@@ -29,13 +29,13 @@
 	<select id="queryList" resultType="io.renren.modules.yh.entity.IntegrationcashEntity">
 		select * from sys_integrationcash 
 		<where>
-			<if test="type!=null and type.trim()!=''">
+			<if test="type!=-1 and type!=null">
 				withdraw_status=#{type}
 			</if>
 			<if test="userPermission==3"><!-- 区域管理员 -->
 				and apply_user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
 				<if test="follwerUserId!=null and follwerUserId.trim() != ''">
-					and apply_user_id=#{follwerUserId}
+					and apply_user_name like CONCAT('%',#{follwerUserId},'%')  
 				</if>
 			</if>
 			<if test="userPermission==4||userPermission==6||userPermission==7"> <!-- 销售员 配送员 -->

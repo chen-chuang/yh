@@ -102,7 +102,9 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		integrationcash: {}
+		integrationcash: {},
+		type:-1,
+		follwerUserId:null
 	},
 	methods: {
 		query: function () {
@@ -174,7 +176,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-				postData:{'follwerUserId': $("#userId").val(),'type':$("#type").val()},
+				postData:{'follwerUserId':vm.follwerUserId,'type':vm.type},
                 page:page
             }).trigger("reloadGrid");
 		}
