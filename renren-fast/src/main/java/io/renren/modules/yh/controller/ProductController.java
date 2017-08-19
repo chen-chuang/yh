@@ -221,6 +221,10 @@ public class ProductController extends AbstractController {
 			product.setEnterType(2);
 		}
 		
+		if(currentUser.getUserPermission().equals(EnumPermission.FACTORY.getType())){
+			product.setEnterType(3);
+		}
+		
 		product.setEnterPersonId(currentUser.getUserId());
 		product.setEnterName(currentUser.getUsername());
 		

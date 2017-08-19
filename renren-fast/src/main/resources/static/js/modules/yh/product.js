@@ -168,6 +168,20 @@ var vm = new Vue({
 				}
 			}			
 			
+			
+			if(vm.currentPermission==3){
+				var length = $("#productType").size();
+				if(length<1){
+					alert("产品隶属于分类下，请先录入分类哦~");
+					return;
+				}
+				var productType = $("#productType").val();
+				if(productType==null){
+					alert("分类不允许为空");
+					return;
+				}
+			}	
+			
 			var formData = new FormData($("form")[0]);				
 			
 			 $.ajax({  
