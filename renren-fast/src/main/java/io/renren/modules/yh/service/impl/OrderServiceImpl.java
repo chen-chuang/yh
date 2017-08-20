@@ -358,12 +358,17 @@ public class OrderServiceImpl implements OrderService {
 			Long thisIntegral = order.getOrderAllPrice().longValue()*Long.valueOf(proportion); 	
 			
 			orderintegration.setIntegration(thisIntegral);
+			
+			Long userIntegral = userEntity.getUserIntegral()==null?0:userEntity.getUserIntegral();
+			userEntity.setUserIntegral(userIntegral+thisIntegral);
 		}		
 		orderintegration.setPriceIntegrationType(1);//2销售积分 1配送积分			
 		//注意：这里设计的是给配送人员用的，是否兑换过
 		orderintegration.setIsRebate(0); //0未兑换过，1兑换过
 		orderintegration.setTime(new Date());
 		orderintegrationDao.save(orderintegration);
+		
+		SysUserDao.update(userEntity);
 		
 		//订单完成
 		order.setOrderType(EnumOrderType.COMPLETE.getStatus());
