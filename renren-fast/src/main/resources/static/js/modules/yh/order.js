@@ -49,7 +49,7 @@ $(function () {
 					
 					var content="";
 					if(hasPermission('order:complete')){
-						content +='<a class="btn btn-success btn-xs" onclick=dispatch("'+row.orderId+'")>完成</a>';
+						content +='<a class="btn btn-success btn-xs" onclick=complete("'+row.orderId+'")>完成</a>';
 					}
 					
 					if(hasPermission('orderdetail:list')){

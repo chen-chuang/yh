@@ -106,7 +106,11 @@ var vm = new Vue({
 					    data: {'startTime':$("#startTime").val(),'endTime': $("#endTime").val(),'deliveryUserId':$("#deliveryUserId").val()  },
 					    success: function(r){
 							if(r.code == 0){
-								var content = "请核对！当前用户:"+r.detail.user_id+",兑换总积分："+r.detail.sum_integration+",兑换金额为："+r.detail.ableCash+"";
+								if(r.sum_integration==0||r.ableCash==0){
+									alert("暂无未返点的记录");
+									return;
+								}
+								var content = "请核对！当前用户:"+r.user_name+",兑换总积分："+r.sum_integration+",兑换金额为："+r.ableCash+"";
 								
 								confirm(content, function(){
 									
@@ -116,7 +120,7 @@ var vm = new Vue({
 									    data: {'startTime':$("#startTime").val(),
 									    	'endTime': $("#endTime").val(),
 									    	'deliveryUserId':$("#deliveryUserId").val(),
-									    	'sumIntegration':r.detail.sum_integration},									    
+									    	'sumIntegration':r.sum_integration},									    
 									    success: function(r){
 											if(r.code == 0){
 												alert('批量返点成功', function(index){
@@ -137,6 +141,9 @@ var vm = new Vue({
 				});
 			}else{
 				
+				/*var rowData = $("#grid-table").jqGrid("getRowData",id);//根据上面的id获得本行的所有数据
+			    var val= rowData.auditStatus; //获得制定列的值 （auditStatus 为colModel的name）
+*/				console.log(ids);
 				$.ajax({
 					type: "POST",
 				    url: baseURL + "orderintegration/rebateDetailByIds",
@@ -144,7 +151,11 @@ var vm = new Vue({
 				    data: JSON.stringify(ids),
 				    success: function(r){
 						if(r.code == 0){
-							var content = "请核对！当前用户:"+r.detail.user_id+",兑换总积分："+r.detail.sum_integration+",兑换金额为："+r.detail.ableCash+"";
+							if(r.sum_integration==0||r.ableCash==0){
+								alert("暂无未返点的记录");
+								return;
+							}
+							var content = "请核对！当前用户:"+r.user_name+",兑换总积分："+r.sum_integration+",兑换金额为："+r.ableCash+"";
 							
 							confirm(content, function(){
 								
@@ -153,7 +164,7 @@ var vm = new Vue({
 								    url: baseURL + "orderintegration/rebateByIds",
 								    data: {'ids':JSON.stringify(ids),
 								    	'deliveryUserId':$("#deliveryUserId").val(),
-								    	'sumIntegration':r.detail.sum_integration},									    
+								    	'sumIntegration':r.sum_integration},									    
 								    success: function(r){
 										if(r.code == 0){
 											alert('批量返点成功', function(index){

@@ -4,12 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.renren.common.utils.DateUtils;
+import io.renren.common.utils.R;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ConfigtableDao;
@@ -89,7 +88,7 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	}
 
 	@Override
-	public Map<String, Object> rebateDetailByIds(Integer[] ids) {
+	public R rebateDetailByIds(Integer[] ids) {
 		Map<String, Object> map = orderintegrationDao.rebateDetailByIds(ids);
 		
 		Long sum_integration = Long.parseLong(String.valueOf(map.get("sum_integration")));
@@ -107,16 +106,23 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 			
 			Double ableCash = sum_integration/(double)proportionNum;
 			map.put("ableCash", ableCash);
+		}else{
+			return R.error("请先配置返点比例后在进行返点！");
 		}
 			
-		return map;
+		return R.ok(map);
 		
 	}
 
 	@Override
-	public Map<String, Object> rebateDetail(Date startTime, Date endTime, String deliveryUserId) {		
+	public R rebateDetail(Date startTime, Date endTime, String deliveryUserId) {		
 	
 		Map<String, Object> map = orderintegrationDao.rebateDetail(startTime, endTime, deliveryUserId);
+		
+		if(map==null){
+			return R.error("暂无未返点记录！");
+		}
+		
 		Long sum_integration = Long.parseLong(String.valueOf(map.get("sum_integration")));
 		SysUserEntity user = sysUserDao.queryObject(deliveryUserId);
 		
@@ -130,10 +136,12 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 			
 			Double ableCash = sum_integration/(double)proportionNum;
 			map.put("ableCash", ableCash);
+		}else{
+			return R.error("请先配置返点比例后在进行返点！");
 		}
 		
 		
-		return map;
+		return R.ok(map);
 	}
 	
 }

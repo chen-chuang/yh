@@ -167,9 +167,9 @@ public class OrderintegrationController extends AbstractController {
 	@RequestMapping("/rebateDetailByIds")
 	public R rebateDetailByIds(@RequestBody Integer[] ids){
 		
-		Map<String, Object> map = orderintegrationService.rebateDetailByIds(ids);
+		R r = orderintegrationService.rebateDetailByIds(ids);
 		
-		return R.ok().put("detail", map);
+		return r;
 	}
 	
 	@RequestMapping("/rebateDetail")
@@ -187,9 +187,9 @@ public class OrderintegrationController extends AbstractController {
 			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(endTime, DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
 		}
 		
-		Map<String, Object> map = orderintegrationService.rebateDetail(dStartTime,dEndTime, deliveryUserId);
+		R r = orderintegrationService.rebateDetail(dStartTime,dEndTime, deliveryUserId);
 		
-		return R.ok().put("detail", map);
+		return r;
 	}
 	
 	

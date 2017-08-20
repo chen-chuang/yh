@@ -61,7 +61,7 @@
 	
 	
 	<update id="updateByAgency" parameterType="io.renren.modules.yh.entity.AccountEntity">
-		update sys_account set price = price + #{price} here enterprise_id = #{enterpriseId}
+		update sys_account set price = price + #{price} where enterprise_id = #{enterpriseId}
 	</update>
 	
 	

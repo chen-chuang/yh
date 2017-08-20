@@ -1,12 +1,11 @@
 package io.renren.modules.yh.service;
 
-import io.renren.modules.yh.entity.OrderintegrationEntity;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
+import io.renren.common.utils.R;
+import io.renren.modules.yh.entity.OrderintegrationEntity;
 
 /**
  * 订单积分表（销售人员、配送员）
@@ -35,7 +34,7 @@ public interface OrderintegrationService {
 
 	void rebateByIds(Integer[] ids, String sumIntegration, String deliveryUserId);
 	
-    Map<String, Object> rebateDetailByIds(Integer[] ids);
+    R rebateDetailByIds(Integer[] ids);
 	
-	Map<String, Object> rebateDetail(Date dStartTime, Date dStartTime2,String deliveryUserId);
+	R rebateDetail(Date dStartTime, Date dStartTime2,String deliveryUserId);
 }

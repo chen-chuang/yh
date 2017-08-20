@@ -145,7 +145,7 @@
 	</update>
 	
 	<select id="rebateDetail" resultType="java.util.Map">
-		select user_id,sum(integration) as sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration 
+		select user_id,user_name,sum(integration) as sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration 
         <where>
             is_rebate = 0 
 			<if test="startTime != null">
@@ -158,15 +158,15 @@
 			   and user_id = #{deliveryUserId}
 			</if> 
 		</where>
-		group by user_id
+		group by user_id,user_name
 	</select>
 	
 	<select id="rebateDetailByIds" resultType="java.util.Map">
-		select user_id,sum(integration) sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration  where id in 
+		select user_id,user_name,sum(integration) sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration  where is_rebate =0 and id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>
-		group by user_id
+		group by user_id,user_name
 	</select>
 
 </mapper>
