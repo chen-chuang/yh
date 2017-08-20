@@ -53,15 +53,14 @@ public class OrderintegrationController extends AbstractController {
 		String startTime = String.valueOf(params.get("startTime"));
 		String endTime=String.valueOf(params.get("endTime"));
 		
-		System.out.println(startTime);
-		System.out.println(endTime);
-		
 		if(StringUtils.isNotBlank(startTime)&&!startTime.equals("null")){
-			dStartTime = DateUtils.parse(String.valueOf(params.get("startTime")), DateUtils.DATE_TIME_PATTERN);
+			startTime +=" 00:00:00";
+			dStartTime = DateUtils.parse(startTime, DateUtils.DATE_TIME_PATTERN);
 		}
 		
 		if(StringUtils.isNotBlank(endTime)&&!endTime.equals("null")){
-			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(String.valueOf(params.get("endTime")), DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
+			endTime+=" 00:00:00";
+			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(endTime, DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
 		}
 		
 		params.put("startTime", dStartTime);

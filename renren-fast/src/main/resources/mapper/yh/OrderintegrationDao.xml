@@ -31,7 +31,7 @@
 			   and time&gt;=#{startTime}
 			</if> 
 			<if test="endTime != null">
-			   and time&lt;=#{startTime}
+			   and time&lt;=#{endTime}
 			</if> 
 			<if test="type != null and type.trim() != ''">
 			   and is_rebate = #{type}
@@ -62,7 +62,7 @@
 			   and time&gt;=#{startTime}
 			</if> 
 			<if test="endTime != null">
-			   and time&lt;=#{startTime}
+			   and time&lt;=#{endTime}
 			</if> 
 			<if test="type != null and type.trim() != ''">
 			   and is_rebate = #{type}
