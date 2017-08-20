@@ -2,6 +2,7 @@ package io.renren.modules.yh.service;
 
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +31,11 @@ public interface OrderintegrationService {
 	
 	void deleteBatch(Integer[] ids);
 
-	void rebate(String startTime, String endTime, String deliveryUserId, String sumIntegration);
+	void rebate(Date dStartTime, Date dEndTime, String deliveryUserId, String sumIntegration);
 
 	void rebateByIds(Integer[] ids, String sumIntegration, String deliveryUserId);
 	
     Map<String, Object> rebateDetailByIds(Integer[] ids);
 	
-	Map<String, Object> rebateDetail(String startTime, String endTime,String deliveryUserId);
+	Map<String, Object> rebateDetail(Date dStartTime, Date dStartTime2,String deliveryUserId);
 }

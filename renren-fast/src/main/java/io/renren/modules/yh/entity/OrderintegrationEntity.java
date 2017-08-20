@@ -32,6 +32,8 @@ public class OrderintegrationEntity implements Serializable {
 	private Integer isRebate;
 	
 	private Date time;
+	
+	private String userName;
 
 	public Integer getIsRebate() {
 		return isRebate;
@@ -116,5 +118,11 @@ public class OrderintegrationEntity implements Serializable {
 	}
 	public void setTime(Date time) {
 		this.time = time;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

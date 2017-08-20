@@ -1,8 +1,10 @@
 package io.renren.modules.yh.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.service.OrderintegrationService;
+import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
@@ -42,6 +45,27 @@ public class OrderintegrationController extends AbstractController {
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		params.put("userId", getUserId());
+		
+        Date dStartTime =null;
+		
+		Date dEndTime =null;
+		
+		String startTime = String.valueOf(params.get("startTime"));
+		String endTime=String.valueOf(params.get("endTime"));
+		
+		System.out.println(startTime);
+		System.out.println(endTime);
+		
+		if(StringUtils.isNotBlank(startTime)&&!startTime.equals("null")){
+			dStartTime = DateUtils.parse(String.valueOf(params.get("startTime")), DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		if(StringUtils.isNotBlank(endTime)&&!endTime.equals("null")){
+			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(String.valueOf(params.get("endTime")), DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		params.put("startTime", dStartTime);
+		params.put("endTime", dEndTime);
 		
         Query query = new Query(params);
 
@@ -101,15 +125,39 @@ public class OrderintegrationController extends AbstractController {
 	@RequestMapping("/rebate")
 	public R rebate(String startTime,String endTime,String deliveryUserId,String sumIntegration){
 		
-		orderintegrationService.rebate(startTime,endTime,deliveryUserId,sumIntegration);
+	    Date dStartTime =null;
+		
+		Date dEndTime =null;
+		
+		if(StringUtils.isNotBlank(startTime)){
+			dStartTime = DateUtils.parse(startTime, DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		if(StringUtils.isNotBlank(endTime)){
+			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(endTime, DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		orderintegrationService.rebate(dStartTime,dEndTime,deliveryUserId,sumIntegration);
 		
 		return R.ok();
 	}
 	
 	@RequestMapping("/rebateByIds")
-	public R rebateByIds(@RequestBody Integer[] ids,String sumIntegration,String deliveryUserId){
+	public R rebateByIds(String ids,String sumIntegration,String deliveryUserId){
 		
-		orderintegrationService.rebateByIds(ids,sumIntegration,deliveryUserId);
+		ids = ids.substring(1, ids.length()-1);
+		ids = ids.replace("\"", "");
+		
+		String[] id = ids.split(",");
+		Integer[] iid = new Integer[id.length];
+		
+		for(int i=0;i<id.length;i++){
+			iid[i]=Integer.valueOf(id[i]);
+		}
+		
+		orderintegrationService.rebateByIds(iid,sumIntegration,deliveryUserId);
+		
+		
 		
 		return R.ok();
 	}
@@ -118,15 +166,27 @@ public class OrderintegrationController extends AbstractController {
 	@RequestMapping("/rebateDetailByIds")
 	public R rebateDetailByIds(@RequestBody Integer[] ids){
 		
-		orderintegrationService.rebateDetailByIds(ids);
+		Map<String, Object> map = orderintegrationService.rebateDetailByIds(ids);
 		
-		return R.ok();
+		return R.ok().put("detail", map);
 	}
 	
 	@RequestMapping("/rebateDetail")
 	public R rebateDetail(String startTime, String endTime, String deliveryUserId){
 		
-		Map<String, Object> map = orderintegrationService.rebateDetail(startTime,endTime, deliveryUserId);
+		Date dStartTime =null;
+		
+		Date dEndTime =null;
+		
+		if(StringUtils.isNotBlank(startTime)){
+			dStartTime = DateUtils.parse(startTime, DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		if(StringUtils.isNotBlank(endTime)){
+			dEndTime = DateUtils.parse(DateUtils.addByDay(DateUtils.parse(endTime, DateUtils.DATE_TIME_PATTERN), 1, DateUtils.DATE_TIME_PATTERN), DateUtils.DATE_TIME_PATTERN);
+		}
+		
+		Map<String, Object> map = orderintegrationService.rebateDetail(dStartTime,dEndTime, deliveryUserId);
 		
 		return R.ok().put("detail", map);
 	}

@@ -1,12 +1,15 @@
 package io.renren.modules.yh.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import io.renren.modules.api.entity.UserEntity;
+import io.renren.common.utils.DateUtils;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.ConfigtableDao;
@@ -64,8 +67,9 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	}
 
 	@Override
-	public void rebate(String startTime, String endTime, String deliveryUserId, String sumIntegration) {
-		orderintegrationDao.rebate(startTime, endTime, deliveryUserId);		
+	@Transactional
+	public void rebate(Date dStartTime, Date dEndTime, String deliveryUserId, String sumIntegration) {
+		orderintegrationDao.rebate(dStartTime, dEndTime, deliveryUserId);		
 		
 		//减去总积分
 		SysUserEntity user = sysUserDao.queryObject(deliveryUserId);
@@ -110,7 +114,8 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	}
 
 	@Override
-	public Map<String, Object> rebateDetail(String startTime, String endTime, String deliveryUserId) {
+	public Map<String, Object> rebateDetail(Date startTime, Date endTime, String deliveryUserId) {		
+	
 		Map<String, Object> map = orderintegrationDao.rebateDetail(startTime, endTime, deliveryUserId);
 		Long sum_integration = Long.parseLong(String.valueOf(map.get("sum_integration")));
 		SysUserEntity user = sysUserDao.queryObject(deliveryUserId);

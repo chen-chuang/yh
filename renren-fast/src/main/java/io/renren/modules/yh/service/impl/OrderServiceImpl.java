@@ -333,6 +333,7 @@ public class OrderServiceImpl implements OrderService {
 		//写入积分明显表
 		OrderintegrationEntity orderintegration = new OrderintegrationEntity();
 		orderintegration.setUserId(order.getDeliveryUserId());
+		orderintegration.setUserName(order.getDeliveryUserName());
 		orderintegration.setOrderId(orderId);
 		orderintegration.setOrderSumPrice(order.getOrderAllPrice());
 		

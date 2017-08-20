@@ -4,7 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: 'id', hidden:true,name: 'id', index: 'id', width: 50, key: true },
-			{ label: '用户id', name: 'userId', index: 'user_id', width: 80 }, 			
+			{ label: '用户名', name: 'userName', index: 'user_name', width: 80 }, 			
 			{ label: '订单id', name: 'orderId', index: 'order_id', width: 80 }, 			
 			{ label: '订单金额', name: 'orderSumPrice', index: 'order_sum_price', width: 80 }, 			
 			{ label: '生成积分', name: 'integration', index: 'integration', width: 80 }, 			
@@ -51,11 +51,12 @@ $(function () {
             $.ajax({  
                  url : baseURL + 'sys/user/getDelivery',  
                  type : "post",  
-                 dataType : "json",                       
+                 dataType : "json",  
+                 data : {"name":$("#deliveryUser").val()},                           
                  success: function( data ) {  
                       response( $.map( data.userinfo, function( item ) {  
                             return {  
-                              label: item.user_name,  
+                              label: item.username,  
                               value: item.user_id  
                             }  
                       }));  
@@ -101,7 +102,6 @@ var vm = new Vue({
 					$.ajax({
 						type: "POST",
 					    url: baseURL + "orderintegration/rebateDetail",
-	                    contentType: "application/json",
 					    data: {'startTime':$("#startTime").val(),'endTime': $("#endTime").val(),'deliveryUserId':$("#deliveryUserId").val()  },
 					    success: function(r){
 							if(r.code == 0){
@@ -112,7 +112,6 @@ var vm = new Vue({
 									$.ajax({
 										type: "POST",
 									    url: baseURL + "orderintegration/rebate",
-					                    contentType: "application/json",
 									    data: {'startTime':$("#startTime").val(),
 									    	'endTime': $("#endTime").val(),
 									    	'deliveryUserId':$("#deliveryUserId").val(),
@@ -151,7 +150,6 @@ var vm = new Vue({
 								$.ajax({
 									type: "POST",
 								    url: baseURL + "orderintegration/rebateByIds",
-				                    contentType: "application/json",
 								    data: {'ids':JSON.stringify(ids),
 								    	'deliveryUserId':$("#deliveryUserId").val(),
 								    	'sumIntegration':r.detail.sum_integration},									    
@@ -242,7 +240,7 @@ var vm = new Vue({
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{ 
-				postData:{'startTime': $("#startTime").val(),'endTime': $("#endTime").val(),'type':$("#type").val()},
+				postData:{'deliveryUser':$("#deliveryUser").val(),'startTime': $("#startTime").val(),'endTime': $("#endTime").val(),'type':$("#type").val()},
                 page:page
             }).trigger("reloadGrid");
 		}

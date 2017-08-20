@@ -91,11 +91,11 @@ public interface SysUserService {
 	 */
 	List<Map<String, Object>> getDeliveryPerson(Long userId);
 
-	List<Map<String, Object>> getDelivery(Long userId);
-
 	int validateOnlyAgency(String areaId, Long userId);
 
 	Map<String, Object> apiUserIntegral(SysUserEntity user);
 	
 	void addIntegral(Long integral,Long userId);
+
+	List<Map<String, Object>> getDelivery(Long userId, String name);
 }

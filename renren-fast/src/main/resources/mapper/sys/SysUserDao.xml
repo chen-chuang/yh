@@ -191,7 +191,7 @@
 	
 	<select id="getDelivery" resultType="java.util.Map">
 	    select user_id,username  from sys_user 
-	    where belong_to_agency_id = #{userId}
+	    where user_permission = 4 and belong_to_agency_id = #{userId} and `username` like concat('%',#{name},'%') 
 	</select>
 	
 	<select id="validateOnlyAgency" resultType="int">

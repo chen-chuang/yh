@@ -206,8 +206,8 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> getDelivery(Long userId){
-		List<Map<String, Object>> maps = sysUserDao.getDelivery(userId);
+	public List<Map<String, Object>> getDelivery(Long userId,String name){
+		List<Map<String, Object>> maps = sysUserDao.getDelivery(userId,name);
 		return maps;	
 	}
 	

@@ -252,8 +252,8 @@ public class SysUserController extends AbstractController {
 	}
 	
 	@RequestMapping("/getDelivery")
-	public R getDelivery(){
-		List<Map<String, Object>> userinfo = sysUserService.getDelivery(getUserId());
+	public R getDelivery(String name){
+		List<Map<String, Object>> userinfo = sysUserService.getDelivery(getUserId(),name);
 		return R.ok().put("userinfo", userinfo);
 	}
 	

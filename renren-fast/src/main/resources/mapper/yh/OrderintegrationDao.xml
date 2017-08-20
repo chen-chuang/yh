@@ -13,6 +13,7 @@
         <result property="priceIntegrationType" column="price_integration_type"/>
         <result property="isRebate" column="is_rebate"/>
         <result property="time" column="time"/>
+        <result property="userName" column="user_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderintegrationEntity">
@@ -22,14 +23,17 @@
 	<select id="queryList" resultType="io.renren.modules.yh.entity.OrderintegrationEntity">
 		select * from sys_orderintegration
 		<where>
-			user_id in (select user_id from sys_user where belong_to_agency_id = #{userId})
+			user_id in (select user_id from sys_user where belong_to_agency_id = #{userId} and user_permission=4)
+			<if test="deliveryUser!=null and deliveryUser.trim() != ''">
+			    and user_name  like CONCAT('%',#{deliveryUser},'%')  
+			</if>
 			<if test="startTime != null">
 			   and time&gt;=#{startTime}
 			</if> 
 			<if test="endTime != null">
 			   and time&lt;=#{startTime}
 			</if> 
-			<if test="type != null">
+			<if test="type != null and type.trim() != ''">
 			   and is_rebate = #{type}
 			</if> 
 			
@@ -49,6 +53,22 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from sys_orderintegration 
+		<where>
+			user_id in (select user_id from sys_user where belong_to_agency_id = #{userId} and user_permission=4)
+			<if test="deliveryUser!=null and deliveryUser.trim() != ''">
+			    and user_name  like CONCAT('%',#{deliveryUser},'%')  
+			</if>
+			<if test="startTime != null">
+			   and time&gt;=#{startTime}
+			</if> 
+			<if test="endTime != null">
+			   and time&lt;=#{startTime}
+			</if> 
+			<if test="type != null and type.trim() != ''">
+			   and is_rebate = #{type}
+			</if> 
+			
+		</where>
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.OrderintegrationEntity" useGeneratedKeys="true" keyProperty="id">
@@ -60,7 +80,8 @@
 			`integration`, 
 			`price_integration_type`,
 			is_rebate,
-			time
+			time,
+			user_name
 		)
 		values
 		(
@@ -70,7 +91,8 @@
 			#{integration}, 
 			#{priceIntegrationType},
 			#{isRebate},
-			#{time}
+			#{time},
+			#{userName}
 		)
 	</insert>
 	 
@@ -82,8 +104,9 @@
 			<if test="orderSumPrice != null">`order_sum_price` = #{orderSumPrice}, </if>
 			<if test="integration != null">`integration` = #{integration}, </if>
 			<if test="priceIntegrationType != null">`price_integration_type` = #{priceIntegrationType},</if>
-			<if test="isRebate != null">'is_rebate'=${#isRebate},</if>
-			<if test="time != null">'time'=${#time}</if>
+			<if test="isRebate != null">'is_rebate'=#{isRebate},</if>
+			<if test="time != null">'time'=#{time},</if>
+			<if test="userName != null">'user_name'=#{userName}</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -122,8 +145,9 @@
 	</update>
 	
 	<select id="rebateDetail" resultType="java.util.Map">
-		select user_id,sum(integration) as sum_integration,sum(order_sum_price) as sum_price,from sys_orderintegration 
+		select user_id,sum(integration) as sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration 
         <where>
+            is_rebate = 0 
 			<if test="startTime != null">
 			   and time&gt;=#{startTime}
 			</if> 
@@ -131,17 +155,18 @@
 			   and time&lt;=#{startTime}
 			</if> 
 			<if test="deliveryUserId != null">
-			   and userId = #{deliveryUserId}
+			   and user_id = #{deliveryUserId}
 			</if> 
 		</where>
 		group by user_id
 	</select>
 	
 	<select id="rebateDetailByIds" resultType="java.util.Map">
-		select user_id,sum(integration) sum_integration,sum(order_sum_price) as sum_price, from sys_orderintegration  where id in 
+		select user_id,sum(integration) sum_integration,sum(order_sum_price) as sum_price from sys_orderintegration  where id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>
+		group by user_id
 	</select>
 
 </mapper>

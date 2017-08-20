@@ -3,6 +3,7 @@ package io.renren.modules.yh.dao;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.sys.dao.BaseDao;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,12 +19,12 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface OrderintegrationDao extends BaseDao<OrderintegrationEntity> {
 
-	void rebate(@Param("startTime")String startTime, @Param("endTime")String endTime,@Param("deliveryUserId") String deliveryUserId);
+	void rebate(@Param("startTime")Date dStartTime, @Param("endTime")Date dEndTime,@Param("deliveryUserId") String deliveryUserId);
 
 	void rebateByIds(Integer[] ids);
 	
-	Map<String, Object> rebateDetailByIds(Integer[] ids);
+	Map<String, Object> rebateDetailByIds(Integer[] id);
 	
-	Map<String, Object> rebateDetail(@Param("startTime")String startTime, @Param("endTime")String endTime,@Param("deliveryUserId") String deliveryUserId);
+	Map<String, Object> rebateDetail(@Param("startTime")Date startTime, @Param("endTime")Date endTime,@Param("deliveryUserId") String deliveryUserId);
 	
 }
