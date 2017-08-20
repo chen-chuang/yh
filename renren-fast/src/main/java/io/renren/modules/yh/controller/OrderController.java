@@ -129,7 +129,17 @@ public class OrderController extends AbstractController{
 	@RequestMapping("/getDeliveryPerson")
 	public R getDeliveryPerson(){
 		
-		List<Map<String, Object>> deliveryPerson = sysUserService.getDeliveryPerson(this.getUserId());
+		Long userId =null;
+		SysUserEntity user = getUser();
+		if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
+			userId = getUserId();
+		}
+		
+		if(user.getUserPermission().equals(EnumPermission.DELIVERY_F.getType())){
+			userId = user.getBelongToAgencyId();
+		}
+		
+		List<Map<String, Object>> deliveryPerson = sysUserService.getDeliveryPerson(userId);
 		return R.ok().put("deliveryPerson", deliveryPerson);
 	}
 	
