@@ -105,6 +105,7 @@ public class IntegrationcashController extends AbstractController {
 	}
 	
 	@RequestMapping("/apply")
+	@RequiresPermissions("integrationcash:apply")
 	public R apply(@RequestParam("accountNum") String accountNum){
 		
 		BigDecimal account = new BigDecimal(accountNum);
@@ -136,6 +137,7 @@ public class IntegrationcashController extends AbstractController {
 	}
 	
 	@RequestMapping("/agree")
+	@RequiresPermissions("integrationcash:agree")
 	public R agree(@RequestParam("id") String id){
 		
 		IntegrationcashEntity integrationcashEntity = integrationcashService.queryObject(Integer.valueOf(id));
@@ -151,6 +153,7 @@ public class IntegrationcashController extends AbstractController {
 	
 	
 	@RequestMapping("/complete")
+	@RequiresPermissions("integrationcash:complete")
 	public R complete(@RequestParam("id") String id){
 		
         integrationcashService.complete(id);	

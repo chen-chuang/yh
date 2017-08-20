@@ -23,9 +23,14 @@ $(function () {
 			{ label: '操作', width: 80,formatter: function(value, options, row){
 				console.log(row.id);
 				if(row.withdrawStatus===1){
-					return '<a onclick=operate('+row.id+','+'"accept")>受理</a>';
+					if(hasPermission('withdraw:operate')){
+						return '<a class="btn btn-danger btn-xs" onclick=operate('+row.id+','+'"accept")>受理</a>';
+					}
+					
 				}else if(row.withdrawStatus===2){
-					return '<a onclick=operate('+row.id+','+'"complete")>完成</a>';
+					if(hasPermission('withdraw:operate')){
+						return '<a class="btn btn-success btn-xs" onclick=operate('+row.id+','+'"complete")>完成</a>';
+					}
 				}else{
 					return "";
 				}

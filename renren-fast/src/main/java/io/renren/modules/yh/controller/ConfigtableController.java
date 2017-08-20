@@ -76,7 +76,7 @@ public class ConfigtableController extends AbstractController {
 		
 		int count = configtableService.validateOnly(configtable.getConfigKey());
 		if(count>0){
-			return R.error("已创建"+configtable.getConfigName()+",不能再次创建！");
+			return R.error("该配置项以创建不能再次创建！");
 		}
 		
 		

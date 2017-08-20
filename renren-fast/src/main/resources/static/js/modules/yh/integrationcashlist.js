@@ -24,9 +24,15 @@ $(function () {
 			{ label: '操作', width: 80,formatter: function(value, options, row){
 				console.log(row.id);
 				if(row.withdrawStatus===1){
-					return '<a onclick=agree('+row.id+')>受理</a>';
+					
+					if(hasPermission('integrationcash:agree')){
+						return '<a class="btn btn-danger btn-xs" onclick=agree('+row.id+')>受理</a>';
+					}
 				}else if(row.withdrawStatus===2){
-					return '<a onclick=complete('+row.id+')>完成</a>';
+					
+					if(hasPermission('integrationcash:agree')){
+						return '<a class="btn btn-success btn-xs" onclick=complete('+row.id+')>完成</a>';
+					}
 				}else{
 					return "";
 				}

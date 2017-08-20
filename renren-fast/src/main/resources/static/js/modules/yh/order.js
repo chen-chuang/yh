@@ -36,11 +36,31 @@ $(function () {
 		    { label: '配送员', name: 'deliveryUserName', index: 'delivery_user_name', width: 80 }, 	
 			{ label: '操作', width: 80,formatter: function(value, options, row){
 				if(row.orderType===1){
-					return '<a onclick=dispatch("'+row.orderId+'")>配送</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					var content="";
+					if(hasPermission('order:dispatch')){
+						content +='<a class="btn btn-default btn-xs" onclick=dispatch("'+row.orderId+'")>配送</a>';
+					}
+					
+					if(hasPermission('orderdetail:list')){
+						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					}
+					return content;
 				}else if(row.orderType===2){
-					return '<a onclick=complete("'+row.orderId+'")>完成</a>|<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					
+					var content="";
+					if(hasPermission('order:complete')){
+						content +='<a class="btn btn-success btn-xs" onclick=dispatch("'+row.orderId+'")>完成</a>';
+					}
+					
+					if(hasPermission('orderdetail:list')){
+						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					}
+					return content;					
+					
 				}else{
-					return '<a onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					if(hasPermission('orderdetail:list')){
+					  return '<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
+					}
 				}
 			}}
         ],

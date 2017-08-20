@@ -114,6 +114,7 @@ public class WithdrawController extends AbstractController {
 	}
 	
 	@RequestMapping("/apply")
+	@RequiresPermissions("withdraw:apply")
 	public R apply(@RequestParam("accountNum") String accountNum){
 		
 		BigDecimal num = new BigDecimal(accountNum);
@@ -131,6 +132,7 @@ public class WithdrawController extends AbstractController {
 	}
 	
 	@RequestMapping("/operate")
+	@RequiresPermissions("withdraw:operate")
 	public R operate(@RequestParam("id") Integer id,
 			@RequestParam("type") String type){
 		Map<String, Object> params =new HashMap<String,Object>();	

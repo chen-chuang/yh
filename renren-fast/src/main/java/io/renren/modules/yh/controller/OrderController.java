@@ -114,12 +114,14 @@ public class OrderController extends AbstractController{
 	}
 	
 	@RequestMapping("/dispatch")
+	@RequiresPermissions("order:dispatch")
 	public R dispatch(String orderId,String userId){
 	    orderService.dispatch(orderId,userId);
 		return R.ok();
 	}
 	
 	@RequestMapping("/complete")
+	@RequiresPermissions("order:complete")
 	public R complete(String orderId){
 		orderService.complete(orderId);
 		return R.ok();

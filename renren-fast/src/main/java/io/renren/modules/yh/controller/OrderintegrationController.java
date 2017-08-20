@@ -122,6 +122,7 @@ public class OrderintegrationController extends AbstractController {
 	}
 	
 	@RequestMapping("/rebate")
+	@RequiresPermissions("orderintegration:rebate")
 	public R rebate(String startTime,String endTime,String deliveryUserId,String sumIntegration){
 		
 	    Date dStartTime =null;
@@ -142,6 +143,7 @@ public class OrderintegrationController extends AbstractController {
 	}
 	
 	@RequestMapping("/rebateByIds")
+	@RequiresPermissions("orderintegration:rebateByIds")
 	public R rebateByIds(String ids,String sumIntegration,String deliveryUserId){
 		
 		ids = ids.substring(1, ids.length()-1);
