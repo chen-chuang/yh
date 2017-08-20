@@ -7,7 +7,8 @@ $(function () {
 			{ label: '用户名', name: 'userName', index: 'user_name', width: 80 }, 			
 			{ label: '订单id', name: 'orderId', index: 'order_id', width: 80 }, 			
 			{ label: '订单金额', name: 'orderSumPrice', index: 'order_sum_price', width: 80 }, 			
-			{ label: '生成积分', name: 'integration', index: 'integration', width: 80 }, 			
+			{ label: '生成积分', name: 'integration', index: 'integration', width: 80 }, 				
+			{ label: '配送完时间', name: 'time', index: 'time', width: 80 }, 				
 			{ label: '价格积分类型（1：配送积分?，2：销售积分）',hidden:true, name: 'priceIntegrationType', index: 'price_integration_type', width: 80 },
 			{ label: '是否返点', name: 'isRebate', index: 'is_rebate', width: 80, formatter: function(value, options, row){
 				  if(value==0){
