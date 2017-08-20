@@ -8,6 +8,7 @@
         <result property="id" column="id"/>
         <result property="enterpriseId" column="enterprise_id"/>
         <result property="price" column="price"/>
+        <result property="userName" column="user_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.AccountEntity">
@@ -37,12 +38,14 @@
 		insert into sys_account
 		(
 			`enterprise_id`, 
-			`price`
+			`price`,
+			user_name
 		)
 		values
 		(
 			#{enterpriseId}, 
-			#{price}
+			#{price},
+			#{userName}
 		)
 	</insert>
 	 
@@ -50,10 +53,17 @@
 		update sys_account 
 		<set>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
-			<if test="price != null">`price` = #{price}</if>
+			<if test="price != null">`price` = #{price},</if>
+			<if test="userName != null">`user_name` = #{userName}</if>
 		</set>
 		where id = #{id}
 	</update>
+	
+	
+	<update id="updateByAgency" parameterType="io.renren.modules.yh.entity.AccountEntity">
+		update sys_account set price = price + #{price} here enterprise_id = #{enterpriseId}
+	</update>
+	
 	
 	<delete id="delete">
 		delete from sys_account where id = #{value}

@@ -1,5 +1,6 @@
 package io.renren.modules.sys.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,9 +21,12 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.dao.AccountDao;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.IntegrationcashDao;
+import io.renren.modules.yh.entity.AccountEntity;
 import io.renren.modules.yh.entity.ConfigtableEntity;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.RegionService;
 
 
@@ -53,6 +57,9 @@ public class SysUserServiceImpl implements SysUserService {
 	
 	@Autowired
 	private ConfigtableDao configtableDao;
+	
+	@Autowired
+	private AccountDao accountDao;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -101,6 +108,15 @@ public class SysUserServiceImpl implements SysUserService {
 		List<Long> roleIdList =new ArrayList<Long>();
 		roleIdList.add(user.getUserPermission().longValue());
 		sysUserRoleService.saveOrUpdate(user.getUserId(), roleIdList);
+		
+		//保存用户  设置 区域管理员 账户
+		if(user.getUserPermission().equals(EnumPermission.AGENCY.getType())){
+			AccountEntity account = new AccountEntity();
+			account.setEnterpriseId(user.getUserId());
+			account.setPrice(new BigDecimal(0));
+			account.setUserName(user.getUsername());
+			accountDao.save(account);	
+		}
 	}
 
 	@Override

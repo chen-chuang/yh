@@ -35,11 +35,13 @@ import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.OrderProductions;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.yh.dao.AccountDao;
 import io.renren.modules.yh.dao.ConfigtableDao;
 import io.renren.modules.yh.dao.OrderDao;
 import io.renren.modules.yh.dao.OrderdetailDao;
 import io.renren.modules.yh.dao.OrderintegrationDao;
 import io.renren.modules.yh.dao.ProductDao;
+import io.renren.modules.yh.entity.AccountEntity;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.OrderdetailEntity;
@@ -78,6 +80,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private AccountDao accountDao;
 	
 	
 	
@@ -216,6 +221,13 @@ public class OrderServiceImpl implements OrderService {
 			  //支付
 			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
 			orderDao.update(orderEntity);
+			
+			//支付成功 像区域管理员加钱
+			AccountEntity account = new AccountEntity();
+			account.setEnterpriseId(userEntity.getBelongToAgencyId());
+			account.setPrice(orderEntity.getOrderAllPrice());
+			accountDao.updateByAgency(account);
+			
 			return R.ok("支付成功！");
 						
 		}else{//全额付款  +  金额、积分付款    并反积分，积分只反支付金额的那部分

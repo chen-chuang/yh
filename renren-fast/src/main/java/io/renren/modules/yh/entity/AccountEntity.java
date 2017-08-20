@@ -21,6 +21,8 @@ public class AccountEntity implements Serializable {
 	private Long enterpriseId;
 	//总金额
 	private BigDecimal price;
+	
+	private String userName;
 
 	/**
 	 * 设置：
@@ -57,5 +59,11 @@ public class AccountEntity implements Serializable {
 	 */
 	public BigDecimal getPrice() {
 		return price;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

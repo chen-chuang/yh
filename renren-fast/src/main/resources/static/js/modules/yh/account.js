@@ -3,8 +3,8 @@ $(function () {
         url: baseURL + 'account/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
-			{ label: '区域经销商id', name: 'enterpriseId', index: 'enterprise_id', width: 80 }, 			
+			{ label: '编号', name: 'id', index: 'id', width: 50, key: true },
+			{ label: '区域经销商', name: 'userName', index: 'user_name', width: 80 }, 			
 			{ label: '总金额', name: 'price', index: 'price', width: 80 }			
         ],
 		viewrecords: true,
