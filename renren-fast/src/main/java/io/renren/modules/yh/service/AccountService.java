@@ -27,4 +27,6 @@ public interface AccountService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+	void updateByAgency(AccountEntity account);
 }

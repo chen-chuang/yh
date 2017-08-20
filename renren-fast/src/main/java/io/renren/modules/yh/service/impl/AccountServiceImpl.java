@@ -52,4 +52,10 @@ public class AccountServiceImpl implements AccountService {
 		accountDao.deleteBatch(ids);
 	}
 	
+	@Override
+	public void updateByAgency(AccountEntity account){
+		accountDao.updateByAgency(account);
+	}
+	
+	
 }

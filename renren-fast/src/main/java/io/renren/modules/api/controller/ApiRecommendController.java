@@ -42,10 +42,12 @@ import io.renren.modules.api.entity.dto.ShoppingCartDTO;
 import io.renren.modules.api.entity.dto.TownDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.entity.AccountEntity;
 import io.renren.modules.yh.entity.ConfigtableEntity;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
+import io.renren.modules.yh.service.AccountService;
 import io.renren.modules.yh.service.CollectionService;
 import io.renren.modules.yh.service.ConfigtableService;
 import io.renren.modules.yh.service.OrderService;
@@ -83,6 +85,9 @@ public class ApiRecommendController {
 	
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@AuthIgnore
 	@RequestMapping("town")
@@ -248,6 +253,12 @@ public class ApiRecommendController {
 					
 					sysUserService.addIntegral(addIntegral,userEntity.getUserId());
 				}
+				
+				//支付成功 像区域管理员加钱
+				AccountEntity account = new AccountEntity();
+				account.setEnterpriseId(userEntity.getBelongToAgencyId());
+				account.setPrice(orderEntity.getOrderAllPrice());
+				accountService.updateByAgency(account);
                 
          
             } else {
@@ -336,6 +347,12 @@ public class ApiRecommendController {
 					    Long addIntegral = thisIntegral + userEntity.getUserIntegral()-luseIntegral;					
 						
 						sysUserService.addIntegral(addIntegral,userEntity.getUserId());
+						
+						//支付成功 像区域管理员加钱
+						AccountEntity account = new AccountEntity();
+						account.setEnterpriseId(userEntity.getBelongToAgencyId());
+						account.setPrice(orderEntity.getOrderAllPrice());
+						accountService.updateByAgency(account);
 				} else {
 					LOG.info("订单支付通知：签名错误");
 				}
