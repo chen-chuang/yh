@@ -26,7 +26,7 @@
 		    </if>
 		    
 		     <if test = "userId !=null">
-		        user_id = #{userId}
+		        user_id = #{userId} or user_id is null
 		    </if>
 		</where>
         <choose>
@@ -44,6 +44,15 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from sys_withdraw 
+		<where>
+		    <if test = "applyUserId !=null">
+		        apply_user_id = #{applyUserId}
+		    </if>
+		    
+		     <if test = "userId !=null">
+		        user_id = #{userId} or user_id is null
+		    </if>
+		</where>
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.WithdrawEntity" useGeneratedKeys="true" keyProperty="id">
