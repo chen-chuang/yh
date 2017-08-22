@@ -96,9 +96,9 @@ public class SysUserServiceImpl implements SysUserService {
 	public void save(SysUserEntity user) {
 		user.setCreateTime(new Date());
 		//sha256加密
-		String salt = RandomStringUtils.randomAlphanumeric(20);
-		user.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
-		user.setSalt(salt);
+		//String salt = RandomStringUtils.randomAlphanumeric(20);
+		user.setPassword(new Sha256Hash(user.getPassword()).toHex());
+		//user.setSalt(salt);
 		sysUserDao.save(user);
 		
 		//检查角色是否越权
@@ -125,7 +125,7 @@ public class SysUserServiceImpl implements SysUserService {
 		if(StringUtils.isBlank(user.getPassword())){
 			user.setPassword(null);
 		}else{
-			user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+			user.setPassword(new Sha256Hash(user.getPassword()).toHex());
 		}
 		sysUserDao.update(user);
 		
@@ -197,7 +197,7 @@ public class SysUserServiceImpl implements SysUserService {
 			return msg;
 		}
 		
-		password = new Sha256Hash(password,user.getSalt()).toHex();
+		//password = new Sha256Hash(password).toHex();
 		
 		LoginDTO info = sysUserDao.apiValidateLogin(phoneNumber,password);
 		
@@ -273,7 +273,6 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public void apiForgetPassword(String newPassword, String userPhoneNumber){		
 		SysUserEntity user = sysUserDao.apiGetUserByPhone(userPhoneNumber);
-		newPassword = new Sha256Hash(newPassword,user.getSalt()).toHex();
 		sysUserDao.apiForgetPassword(newPassword, userPhoneNumber);
 	}
 }
