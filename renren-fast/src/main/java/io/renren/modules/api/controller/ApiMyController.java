@@ -180,10 +180,10 @@ public class ApiMyController {
 			
 			SysUserEntity sysUserEntity = sysUserService.queryObject(Long.valueOf(map.get("userID")));
 			
-			//sha256加密
+		/*	//sha256加密
 			originalPassword = new Sha256Hash(originalPassword, sysUserEntity.getSalt()).toHex();
 			//sha256加密
-			newPassword = new Sha256Hash(newPassword,sysUserEntity.getSalt()).toHex();
+			newPassword = new Sha256Hash(newPassword,sysUserEntity.getSalt()).toHex();*/
 					
 			//更新密码
 			int count = sysUserService.updatePassword(Long.valueOf(userID), originalPassword, newPassword);

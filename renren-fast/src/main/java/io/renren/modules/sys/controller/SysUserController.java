@@ -83,9 +83,9 @@ public class SysUserController extends AbstractController {
 		Assert.isBlank(newPassword, "新密码不为能空");
 		
 		//sha256加密
-		password = new Sha256Hash(password, getUser().getSalt()).toHex();
+		password = new Sha256Hash(password).toHex();
 		//sha256加密
-		newPassword = new Sha256Hash(newPassword, getUser().getSalt()).toHex();
+		newPassword = new Sha256Hash(newPassword).toHex();
 				
 		//更新密码
 		int count = sysUserService.updatePassword(getUserId(), password, newPassword);
