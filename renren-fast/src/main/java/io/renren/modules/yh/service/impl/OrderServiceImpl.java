@@ -183,13 +183,21 @@ public class OrderServiceImpl implements OrderService {
 		
 		for(int i =0;i<orderProductionsIDs.length;i++){
 			
+			ProductEntity productEntity =productService.queryObject(Long.valueOf(orderProductionsIDs[i]));
+			
+			//查库存
+			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
+			if(store!=null){
+				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
+				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
+			}else{				
+				return R.error(productEntity.getProductName()+"库存不足！");
+			}
+			
 			OrderdetailEntity orderdetailEntity =new OrderdetailEntity();
 			orderdetailEntity.setOrderId(orderEntity.getOrderId());
 			orderdetailEntity.setProductId(Long.valueOf(orderProductionsIDs[i]));
-			orderdetailEntity.setProductNum(Long.valueOf(orderProductionsCounts[i]));
-			
-			ProductEntity productEntity =productService.queryObject(Long.valueOf(orderProductionsIDs[i]));
-			
+			orderdetailEntity.setProductNum(Long.valueOf(orderProductionsCounts[i]));				
 			orderdetailEntity.setProductPrice(productEntity.getProductRetailPrice());
 			orderdetailEntity.setProductSumPrice(productEntity.getProductRetailPrice().multiply(new BigDecimal(Long.valueOf(orderProductionsCounts[i]))));
 			orderdetailEntity.setEnterpriseId(productEntity.getEnterpriseId());
@@ -202,13 +210,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		//查库存
 		for(int i =0;i<orderProductionsIDs.length;i++){
-			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
-			if(store!=null){
-				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
-				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
-			}else{				
-				return R.error("商品库存不足！");
-			}
+			
 		/*	if(store==null){
 				return R.error("商品库存不足！");
 			}*/
@@ -247,14 +249,14 @@ public class OrderServiceImpl implements OrderService {
 			        param.put("charset", AlipayConstants.CHARSET_UTF8);
 			        param.put("timestamp", DatetimeUtil.formatDateTime(new Date()));
 			        param.put("version", "1.0");
-			        param.put("notify_url", "http:59.110.163.137/api/aliNotify"); // 支付宝服务器主动通知商户服务
+			        param.put("notify_url", "http://59.110.163.137/api/aliNotify"); // 支付宝服务器主动通知商户服务
 			        param.put("sign_type", AlipayConstants.SIGN_TYPE_RSA);
 
 			        Map<String, Object> pcont = new HashMap<>();
 			        // 支付业务请求参数
 			        String tradeNO = orderEntity.getOrderId();
 			        pcont.put("out_trade_no", tradeNO); // 商户订单号
-			        pcont.put("total_amount", orderEntity.getOrderAllPrice());// 交易金额
+			        pcont.put("total_amount", orderEntity.getActualPayPrice());// 交易金额
 			        pcont.put("subject", "标题"); // 订单标题
 			        pcont.put("body", "商品描述");// 对交易或商品的描述
 			        pcont.put("product_code", "QUICK_MSECURITY_PAY");// 销售产品码

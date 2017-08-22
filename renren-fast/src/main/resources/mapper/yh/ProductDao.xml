@@ -223,7 +223,7 @@
 	<!-- for update 防止并发 -->
 	<select id="apiQueryStore" resultType="java.lang.Long">
 	  <![CDATA[
-		select product_num from sys_product where product_id = #{orderProductionsID} and product_num>#{orderProductionsCount}
+		select product_num from sys_product where product_id = #{orderProductionsID} and product_num>=#{orderProductionsCount}
 		]]>
 	</select>	
 	
