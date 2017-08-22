@@ -90,6 +90,13 @@ var vm = new Vue({
 		},
 		rebate:function(){
 			//var type = $("#rebate").val();
+			var deliveryUser = $("#deliveryUser").val();
+			if(deliveryUser==null||deliveryUser==""){
+				$("#deliveryUserId").val("");
+				alert("为确保准确返点，请输入配送员名，按人头逐一返点！");
+				return;
+			}
+			
 			var deliveryUserId = $("#deliveryUserId").val();
 			if(deliveryUserId==null || deliveryUserId==""){
 				alert("为确保准确返点，请输入配送员名，按人头逐一返点！");

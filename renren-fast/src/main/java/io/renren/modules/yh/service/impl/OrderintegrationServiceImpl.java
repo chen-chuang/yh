@@ -91,6 +91,10 @@ public class OrderintegrationServiceImpl implements OrderintegrationService {
 	public R rebateDetailByIds(Integer[] ids) {
 		Map<String, Object> map = orderintegrationDao.rebateDetailByIds(ids);
 		
+		if(map==null){
+			return R.error("暂无未返点记录！");
+		}
+		
 		Long sum_integration = Long.parseLong(String.valueOf(map.get("sum_integration")));
 		/*	map.get("sum_price")
 			map.get("user_id")*/

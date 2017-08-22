@@ -1,5 +1,6 @@
 package io.renren.modules.api.controller;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.yunpian.sdk.YunpianClient;
 import com.yunpian.sdk.model.Result;
 import com.yunpian.sdk.model.SmsSingleSend;
@@ -22,6 +25,7 @@ import com.yunpian.sdk.model.SmsSingleSend;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.AppValidateUtils;
 import io.renren.common.utils.ConfigConstant;
+import io.renren.common.utils.FileUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.common.utils.alipay.RandomUtil;
@@ -29,6 +33,7 @@ import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.LoginDTO;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
+import io.renren.modules.api.entity.dto.VersionDTO;
 import io.renren.modules.api.entity.dto.WithDrawDTO;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
@@ -328,6 +333,44 @@ public class ApiMyController {
 		if(websign.equals(sign)){
 			sysUserService.apiForgetPassword(mapRequest.get("newPassword"),mapRequest.get("userPhoneNumber"));
 			return R.ok();
+			
+		}else{
+			return R.error();
+		}
+		
+	}
+	
+	@AuthIgnore
+	@RequestMapping("/getversion")
+	public R getversion(@RequestParam Map<String, String> mapRequest){	
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		String sign = mapRequest.get("sign");
+		mapRequest.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(mapRequest);
+		
+		if(websign.equals(sign)){
+			String version  = "";
+			
+			if(mapRequest.get("systemType").equals("iOS")){
+				version = FileUtils.readFileByLines(ConfigConstant.VERSION_DIR+File.separator+"ios_version.txt");
+				
+			}
+			
+			if(mapRequest.get("systemType").equals("Android")){
+				version = FileUtils.readFileByLines(ConfigConstant.VERSION_DIR+File.separator+"android_version.txt");
+			}
+			
+			List<VersionDTO> versionDTOs = new Gson().fromJson(version,new TypeToken<List<VersionDTO>>() {}.getType() );
+			
+			if(versionDTOs!=null){
+				return R.ok().put("info", versionDTOs.get(0));
+			}else{
+				return R.ok();
+			}
+			
 			
 		}else{
 			return R.error();
