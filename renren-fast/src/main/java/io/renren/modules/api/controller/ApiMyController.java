@@ -15,10 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yunpian.sdk.YunpianClient;
+import com.yunpian.sdk.model.Result;
+import com.yunpian.sdk.model.SmsSingleSend;
+
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.AppValidateUtils;
+import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.utils.alipay.RandomUtil;
 import io.renren.modules.api.annotation.AuthIgnore;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.LoginDTO;
@@ -266,6 +272,70 @@ public class ApiMyController {
 		}
 		
 	}
+	
+	@AuthIgnore
+	@RequestMapping("/verifyVerificationcode")
+	public R verifyVerificationcode(@RequestParam Map<String, String> mapRequest){	
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		int count = sysUserService.validatePhone(mapRequest.get("userPhoneNumber"));
+		if(count<1){
+			return R.error("系统中不存在该手机号！");
+		}
+		
+		String sign = mapRequest.get("sign");
+		mapRequest.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(mapRequest);
+		
+		if(websign.equals(sign)){
+			
+			int number = RandomUtil.getRandNum(1000, 9000);
+			//初始化client,apikey作为所有请求的默认值(可以为空)
+			YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
+
+			//修改账户信息API
+			Map<String, String> param = clnt.newParam(2);
+			param.put(YunpianClient.MOBILE, mapRequest.get("userPhoneNumber"));
+			param.put(YunpianClient.TEXT, "【恒通烟花易购】您正在找回密码，短信验证码为"+number);
+			Result<SmsSingleSend> r = clnt.sms().single_send(param);
+			clnt.close(); 
+			if(r.getCode().equals(0)){
+				map.put("verificationcode", number);
+				return R.ok().put("info", map);
+			}else{
+				return R.error(r.getMsg());
+			}
+			
+		}else{
+			return R.error();
+		}
+		
+	}
+	
+	@AuthIgnore
+	@RequestMapping("/forgetPassword")
+	public R forgetPassword(@RequestParam Map<String, String> mapRequest){	
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		String sign = mapRequest.get("sign");
+		mapRequest.remove("sign");
+		
+        String websign = AppValidateUtils.getSign(mapRequest);
+		
+		if(websign.equals(sign)){
+			sysUserService.apiForgetPassword(mapRequest.get("newPassword"),mapRequest.get("userPhoneNumber"));
+			return R.ok();
+			
+		}else{
+			return R.error();
+		}
+		
+	}
+	
+	
 	
 
 }

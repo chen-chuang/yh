@@ -204,7 +204,14 @@
 		</where>
 	</select>
 	
+	<select id="validatePhone" resultType="int">
+		select count(*) from sys_user where mobile=#{phone}
+	</select>
 	
+	<update id="apiForgetPassword" >
+		update sys_user set `password` = #{newPassword} 
+			where mobile = #{userPhoneNumber}
+	</update>
 	
 
 </mapper>

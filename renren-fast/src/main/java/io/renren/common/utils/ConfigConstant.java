@@ -19,4 +19,6 @@ public class ConfigConstant {
     public final static String ENTERPRISE_PRODUCT_PIC_DIR = "/upload"+File.separator+"enterprise";
     
     public final static String ENTERPRISE_PRODUCT_VIDEO_DIR = "/upload"+File.separator+"enterprise";
+    
+    public final static String YUPIAN_SMS_APIKEY="38fca53ebf6e8f92f5cbe35332d7e123";
 }

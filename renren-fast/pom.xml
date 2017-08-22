@@ -200,6 +200,12 @@
 			<artifactId>async-http-client</artifactId>
 			<version>1.9.40</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.yunpian.sdk</groupId>
+		    <artifactId>yunpian-java-sdk</artifactId>
+		    <version>1.2.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>

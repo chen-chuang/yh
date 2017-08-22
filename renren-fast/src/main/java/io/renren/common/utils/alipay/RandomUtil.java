@@ -88,7 +88,7 @@ public class RandomUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getRandNum(1000, 9999));
+		System.out.println(getRandNum(1000, 9000));
 	}
 
 }

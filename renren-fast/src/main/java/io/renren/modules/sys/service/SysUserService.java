@@ -98,4 +98,8 @@ public interface SysUserService {
 	void addIntegral(Long integral,Long userId);
 
 	List<Map<String, Object>> getDelivery(Long userId, String name);
+
+	int validatePhone(String phone);
+
+	void apiForgetPassword(String newPassword, String userPhoneNumber);
 }

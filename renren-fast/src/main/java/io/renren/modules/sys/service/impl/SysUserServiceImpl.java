@@ -264,4 +264,16 @@ public class SysUserServiceImpl implements SysUserService {
 	public void addIntegral(Long integral,Long userId){
 		sysUserDao.addIntegral(integral, userId);
 	}
+	
+	@Override
+	public int validatePhone(String phone){
+		return sysUserDao.validatePhone(phone);
+	}
+	
+	@Override
+	public void apiForgetPassword(String newPassword, String userPhoneNumber){		
+		SysUserEntity user = sysUserDao.apiGetUserByPhone(userPhoneNumber);
+		newPassword = new Sha256Hash(newPassword,user.getSalt()).toHex();
+		sysUserDao.apiForgetPassword(newPassword, userPhoneNumber);
+	}
 }
