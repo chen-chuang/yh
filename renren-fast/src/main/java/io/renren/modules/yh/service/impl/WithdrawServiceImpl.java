@@ -94,6 +94,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		//得到申请中的总金额
 		BigDecimal applySum = withdrawDao.getSumApplyCash(user.getUserId());
 		
+		applySum = applySum ==null?new BigDecimal(0):applySum;
+		
 		AccountEntity accountEntity = accountDao.queryByUserId(user.getUserId());
 		
 		if(accountEntity!=null){

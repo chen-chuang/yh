@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.druid.support.logging.Log;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.google.gson.Gson;
@@ -61,7 +61,7 @@ import io.renren.modules.yh.service.RegionService;
 @RestController
 public class ApiRecommendController {
 	
-	private static final Logger LOG = Logger.getLogger(ApiRecommendController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ApiRecommendController.class);
 	
 	@Autowired
 	private RegionService regionService;
@@ -127,14 +127,12 @@ public class ApiRecommendController {
 		String orderProductionsID = request.getParameter("orderProductionsID");
 		String orderProductionsCount = request.getParameter("orderProductionsCount");	
 		String actualPayPrice=request.getParameter("actualPayPrice");
+		String orderID = request.getParameter("orderID");
 		
-		OrderEntity orderEntity = new OrderEntity();
+		OrderEntity orderEntity = new OrderEntity();		
 		
-		orderEntity.setOrderCreateTime(new Date());
-		orderEntity.setOrderId(PayUtil.getTradeNo());
+		orderEntity.setOrderCreateTime(new Date());				
 		orderEntity.setOrderType(EnumOrderType.TOBEPAID.getStatus());//默认待支付
-		
-		
 		orderEntity.setUserId(Long.valueOf(userId));
 		orderEntity.setOrderAddress(orderAddress);
 		orderEntity.setTownId(Integer.valueOf(townId));
@@ -146,8 +144,8 @@ public class ApiRecommendController {
 		orderEntity.setUserIntegralCount(Long.valueOf(useIntegralCount));
 		orderEntity.setOrderPayType(Integer.valueOf(orderPayType));
 		orderEntity.setOrderAllPrice(new BigDecimal(orderAllPrice));
-		orderEntity.setOrderCreateTime(new Date());
 		orderEntity.setActualPayPrice(new BigDecimal(actualPayPrice));
+		
 		
 		Map<String, Object> info = new HashMap<String, Object>();
 		
@@ -167,6 +165,7 @@ public class ApiRecommendController {
         // 在上述验证通过后商户必须根据支付宝不同类型的业务通知，正确的进行不同的业务处理，并且过滤重复的通知结果数据。
         // 在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
 		LOG.info("----------------接收阿里Notify");
+		System.out.println("----------------接收阿里Notify");
         if ("TRADE_SUCCESS".equals(request.getParameter("trade_status"))) {
             Map<String, String> params = new HashMap<String, String>();
             Map requestParams = request.getParameterMap();
@@ -187,10 +186,13 @@ public class ApiRecommendController {
                 String orderNo = params.get("out_trade_no");
                 
                 LOG.info("----------------本次订单号（orderNo）:"+orderNo);
+                System.out.println("----------------本次订单号（orderNo）:"+orderNo);
                 
                 OrderEntity orderEntity = orderService.queryObject(orderNo);
                 if(orderEntity == null) {
                 	LOG.info("----------------不是本系统的订单！订单号:"+orderNo);
+                	System.out.println("----------------不是本系统的订单！订单号:"+orderNo);
+                	
                     PrintWriter writer = response.getWriter();
                     writer.write("success");//success通知支付宝不用再重复通知，但业务不处理此异常回调
                     writer.close();
@@ -224,6 +226,8 @@ public class ApiRecommendController {
                 }
                 
                 LOG.info("----------------订单支付验签成功:"+new Gson().toJson(params));
+            	System.out.println("----------------订单支付验签成功:"+new Gson().toJson(params));
+            	
                 PrintWriter writer = response.getWriter();
                 writer.write("success");
                 writer.close();
@@ -233,6 +237,7 @@ public class ApiRecommendController {
     			orderService.update(orderEntity);
     			
     			LOG.info("----------------订单支付成功:"+new Gson().toJson(params));
+    			System.out.println("----------------订单支付成功:"+new Gson().toJson(params));
                 
                 //支付成功 处理业务
                 //记得写销售员积分
@@ -257,8 +262,11 @@ public class ApiRecommendController {
 				    try{
 				    	orderintegrationService.save(orderintegration);
 				    	LOG.info("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral);
+				    	System.out.println("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral);
+				    	
 				    }catch (Exception e) {
 						LOG.error("---------------积分明细写入错误！"+e.getMessage(),e);
+						System.out.println("---------------积分明细写入错误！"+e.getMessage());
 					}
 				    
 					
@@ -271,8 +279,12 @@ public class ApiRecommendController {
 				    	sysUserService.addIntegral(addIntegral,userEntity.getUserId());
 				    	LOG.info("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral
 				    			+"用户使用积分："+useIntegral+"用户原积分："+userEntity.getUserIntegral()+"计算之后积分："+addIntegral);
+				    	System.out.println("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral
+				    			+"用户使用积分："+useIntegral+"用户原积分："+userEntity.getUserIntegral()+"计算之后积分："+addIntegral);
+				    	
 				    }catch (Exception e) {
 				    	LOG.error("---------------积分累加写入！"+e.getMessage(),e);
+				    	System.out.println("---------------积分累加写入！"+e.getMessage());
 					}
 					
 				}
@@ -284,14 +296,17 @@ public class ApiRecommendController {
 				try{
 					accountService.updateByAgency(account);
 					LOG.info("区域经销商id："+userEntity.getBelongToAgencyId()+"本次账户所加金额："+orderEntity.getOrderAllPrice());
+					System.out.println("区域经销商id："+userEntity.getBelongToAgencyId()+"本次账户所加金额："+orderEntity.getOrderAllPrice());
 				}catch (Exception e) {
 					LOG.error("---------------区域经销商账号加钱错误!"+e.getMessage(),e);
+					System.out.println("---------------区域经销商账号加钱错误!"+e.getMessage());
 				}
 				
                 
          
             } else {
                 LOG.info("--------------------订单支付验签失败：" +new Gson().toJson(params));
+                System.out.println("--------------------订单支付验签失败：" +new Gson().toJson(params));
                 // TODO 验签失败则记录异常日志，并在response中返回failure.
                 PrintWriter writer = response.getWriter();
                 writer.write("failure");
@@ -300,6 +315,7 @@ public class ApiRecommendController {
 
         }
         LOG.info("----------------trade_status:"+request.getParameter("trade_status"));
+        System.out.println("----------------trade_status:"+request.getParameter("trade_status"));
     }
 	
 	@AuthIgnore

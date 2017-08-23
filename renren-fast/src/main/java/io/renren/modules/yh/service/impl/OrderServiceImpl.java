@@ -174,25 +174,24 @@ public class OrderServiceImpl implements OrderService {
 		SysUserEntity userEntity = SysUserDao.queryObject(orderEntity.getUserId());
 		
 		orderEntity.setUserName(userEntity.getUsername());
-		orderDao.save(orderEntity);
+		
+		if(StringUtils.isBlank(orderEntity.getOrderId())){//不为空 则是待支付的 订单
+			orderEntity.setOrderId(PayUtil.getTradeNo());
+			orderDao.save(orderEntity);
+		}else{
+			orderDao.update(orderEntity);
+		}	
+		
 		
 		Long useIntegralCount = orderEntity.getUserIntegralCount();
 		
 		String[] orderProductionsIDs = orderProductionsID.split(",");
 		String[] orderProductionsCounts = orderProductionsCount.split(",");
 		
+		//保存信息
 		for(int i =0;i<orderProductionsIDs.length;i++){
 			
 			ProductEntity productEntity =productService.queryObject(Long.valueOf(orderProductionsIDs[i]));
-			
-			//查库存
-			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
-			if(store!=null){
-				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
-				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
-			}else{				
-				return R.error(productEntity.getProductName()+"库存不足！");
-			}
 			
 			OrderdetailEntity orderdetailEntity =new OrderdetailEntity();
 			orderdetailEntity.setOrderId(orderEntity.getOrderId());
@@ -206,16 +205,21 @@ public class OrderServiceImpl implements OrderService {
 			orderdetailEntity.setProductName(productEntity.getProductName());
 			
 			orderdetailDao.save(orderdetailEntity);
-		}
+			
+		}		
 		
 		//查库存
 		for(int i =0;i<orderProductionsIDs.length;i++){
 			
-		/*	if(store==null){
-				return R.error("商品库存不足！");
-			}*/
-			
-		}		
+			ProductEntity productEntity =productService.queryObject(Long.valueOf(orderProductionsIDs[i]));
+			Long store = productDao.apiQueryStore(orderProductionsIDs[i],orderProductionsCounts[i]);
+			if(store!=null){
+				Long remainderStore = store - Long.valueOf(orderProductionsCounts[i]);
+				Integer k = productDao.apiMinusStore(orderProductionsIDs[i],remainderStore);
+			}else{				
+				return R.error(productEntity.getProductName()+"库存不足！");
+			}
+		}
 		
 		if(orderEntity.getActualPayPrice().compareTo(new BigDecimal(0))==0){//积分付款
 		
@@ -257,8 +261,8 @@ public class OrderServiceImpl implements OrderService {
 			        String tradeNO = orderEntity.getOrderId();
 			        pcont.put("out_trade_no", tradeNO); // 商户订单号
 			        pcont.put("total_amount", orderEntity.getActualPayPrice());// 交易金额
-			        pcont.put("subject", "标题"); // 订单标题
-			        pcont.put("body", "商品描述");// 对交易或商品的描述
+			        pcont.put("subject", "恒通烟花易购支付"); // 订单标题
+			        pcont.put("body", "恒通烟花易购支付");// 对交易或商品的描述
 			        pcont.put("product_code", "QUICK_MSECURITY_PAY");// 销售产品码
 			        
 			        try {
