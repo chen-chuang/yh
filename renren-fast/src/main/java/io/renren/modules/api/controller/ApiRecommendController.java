@@ -131,6 +131,7 @@ public class ApiRecommendController {
 		
 		OrderEntity orderEntity = new OrderEntity();		
 		
+		orderEntity.setOrderId(orderID);
 		orderEntity.setOrderCreateTime(new Date());				
 		orderEntity.setOrderType(EnumOrderType.TOBEPAID.getStatus());//默认待支付
 		orderEntity.setUserId(Long.valueOf(userId));

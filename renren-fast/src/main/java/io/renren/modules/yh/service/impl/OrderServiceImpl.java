@@ -175,10 +175,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		orderEntity.setUserName(userEntity.getUsername());
 		
-		if(StringUtils.isBlank(orderEntity.getOrderId())){//不为空 则是待支付的 订单
+		Boolean bl = true;
+		
+		if(StringUtils.isBlank(orderEntity.getOrderId())){//为空 则是待支付的 订单
 			orderEntity.setOrderId(PayUtil.getTradeNo());
 			orderDao.save(orderEntity);
 		}else{
+			bl = false;
 			orderDao.update(orderEntity);
 		}	
 		
@@ -204,7 +207,12 @@ public class OrderServiceImpl implements OrderService {
 			orderdetailEntity.setProductPictureUrl(productEntity.getProductPictureUrl());
 			orderdetailEntity.setProductName(productEntity.getProductName());
 			
-			orderdetailDao.save(orderdetailEntity);
+			if(bl){
+				orderdetailDao.save(orderdetailEntity);
+			}else{
+				orderdetailDao.update(orderdetailEntity);
+			}
+			
 			
 		}		
 		
