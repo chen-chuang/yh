@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.druid.support.logging.Log;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.google.gson.Gson;
@@ -165,6 +166,7 @@ public class ApiRecommendController {
         // 4、验证app_id是否为该商户本身。上述1、2、3、4有任何一个验证不通过，则表明本次通知是异常通知，务必忽略。
         // 在上述验证通过后商户必须根据支付宝不同类型的业务通知，正确的进行不同的业务处理，并且过滤重复的通知结果数据。
         // 在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
+		LOG.info("----------------接收阿里Notify");
         if ("TRADE_SUCCESS".equals(request.getParameter("trade_status"))) {
             Map<String, String> params = new HashMap<String, String>();
             Map requestParams = request.getParameterMap();
@@ -184,8 +186,11 @@ public class ApiRecommendController {
                 String useIntegral = URLDecoder.decode(params.get("passback_params"), "UTF-8");
                 String orderNo = params.get("out_trade_no");
                 
+                LOG.info("----------------本次订单号（orderNo）:"+orderNo);
+                
                 OrderEntity orderEntity = orderService.queryObject(orderNo);
                 if(orderEntity == null) {
+                	LOG.info("----------------不是本系统的订单！订单号:"+orderNo);
                     PrintWriter writer = response.getWriter();
                     writer.write("success");//success通知支付宝不用再重复通知，但业务不处理此异常回调
                     writer.close();
@@ -196,12 +201,15 @@ public class ApiRecommendController {
                 SysUserEntity userEntity = sysUserService.queryObject(orderEntity.getUserId());
                 
                 BigDecimal amount = new BigDecimal(params.get("total_amount"));
-                if(amount.compareTo(orderEntity.getOrderAllPrice()) != 0) {
+                if(amount.compareTo(orderEntity.getActualPayPrice()) != 0) {
                     PrintWriter writer = response.getWriter();
                     writer.write("success");
                     writer.close();
                     return;
                 }
+                
+                LOG.info("----------------seller_id:"+params.get("seller_id"));
+                
                 if(!AlipayUtil.SELLER_ID.equals(params.get("seller_id"))) {
                     PrintWriter writer = response.getWriter();
                     writer.write("success");
@@ -214,8 +222,8 @@ public class ApiRecommendController {
                     writer.close();
                     return;
                 }
-
-                System.out.println("订单支付验签成功33：" + new Gson().toJson(params));
+                
+                LOG.info("----------------订单支付验签成功:"+new Gson().toJson(params));
                 PrintWriter writer = response.getWriter();
                 writer.write("success");
                 writer.close();
@@ -223,6 +231,8 @@ public class ApiRecommendController {
                 //支付
     			orderEntity.setOrderType(EnumOrderType.PAID.getStatus());//支付完成：已支付
     			orderService.update(orderEntity);
+    			
+    			LOG.info("----------------订单支付成功:"+new Gson().toJson(params));
                 
                 //支付成功 处理业务
                 //记得写销售员积分
@@ -244,25 +254,44 @@ public class ApiRecommendController {
 				    orderintegration.setTime(new Date());
 					//注意：这里设计的是给配送人员用的，是否兑换过
 					//orderintegration.setIsRebate(1);//0未兑换过，1兑换过
-				    orderintegrationService.save(orderintegration);
+				    try{
+				    	orderintegrationService.save(orderintegration);
+				    	LOG.info("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral);
+				    }catch (Exception e) {
+						LOG.error("---------------积分明细写入错误！"+e.getMessage(),e);
+					}
+				    
 					
 				    Long luseIntegral = StringUtils.isNotBlank(useIntegral)?Long.valueOf(useIntegral):0;
 				    
 					//计算积分    减去之前 加上 现在得到的
 				    Long addIntegral = thisIntegral + userEntity.getUserIntegral()-luseIntegral;					
 					
-					sysUserService.addIntegral(addIntegral,userEntity.getUserId());
+				    try{
+				    	sysUserService.addIntegral(addIntegral,userEntity.getUserId());
+				    	LOG.info("订单号："+orderEntity.getOrderId()+"销售员："+userEntity.getUserId()+"本次订单积分："+thisIntegral
+				    			+"用户使用积分："+useIntegral+"用户原积分："+userEntity.getUserIntegral()+"计算之后积分："+addIntegral);
+				    }catch (Exception e) {
+				    	LOG.error("---------------积分累加写入！"+e.getMessage(),e);
+					}
+					
 				}
 				
 				//支付成功 像区域管理员加钱
 				AccountEntity account = new AccountEntity();
 				account.setEnterpriseId(userEntity.getBelongToAgencyId());
 				account.setPrice(orderEntity.getOrderAllPrice());
-				accountService.updateByAgency(account);
+				try{
+					accountService.updateByAgency(account);
+					LOG.info("区域经销商id："+userEntity.getBelongToAgencyId()+"本次账户所加金额："+orderEntity.getOrderAllPrice());
+				}catch (Exception e) {
+					LOG.error("---------------区域经销商账号加钱错误!"+e.getMessage(),e);
+				}
+				
                 
          
             } else {
-                System.out.println("订单支付验签失败33：" +new Gson().toJson(params));
+                LOG.info("--------------------订单支付验签失败：" +new Gson().toJson(params));
                 // TODO 验签失败则记录异常日志，并在response中返回failure.
                 PrintWriter writer = response.getWriter();
                 writer.write("failure");
@@ -270,6 +299,7 @@ public class ApiRecommendController {
             }
 
         }
+        LOG.info("----------------trade_status:"+request.getParameter("trade_status"));
     }
 	
 	@AuthIgnore

@@ -29,4 +29,6 @@ public interface AccountService {
 	void deleteBatch(Integer[] ids);
 
 	void updateByAgency(AccountEntity account);
+	
+	public void queryByAgency(Long agencyId);
 }

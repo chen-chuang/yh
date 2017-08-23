@@ -23,5 +23,7 @@ public interface AccountDao extends BaseDao<AccountEntity> {
 	void updatePrice(@Param("applyUserId")Long applyUserId, @Param("surplusPrice")BigDecimal surplusPrice);
 
 	void updateByAgency(AccountEntity account);
+
+	void queryByAgency(Long agencyId);
 	
 }

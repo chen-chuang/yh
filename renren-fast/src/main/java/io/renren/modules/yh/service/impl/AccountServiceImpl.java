@@ -57,5 +57,10 @@ public class AccountServiceImpl implements AccountService {
 		accountDao.updateByAgency(account);
 	}
 	
+	@Override
+	public void queryByAgency(Long agencyId){
+		accountDao.queryByAgency(agencyId);
+	}
+	
 	
 }
