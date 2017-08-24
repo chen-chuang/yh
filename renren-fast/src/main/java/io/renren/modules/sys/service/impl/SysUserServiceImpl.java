@@ -275,4 +275,9 @@ public class SysUserServiceImpl implements SysUserService {
 		SysUserEntity user = sysUserDao.apiGetUserByPhone(userPhoneNumber);
 		sysUserDao.apiForgetPassword(newPassword, userPhoneNumber);
 	}
+	
+	@Override
+	public int validateUser(Map<String, Object> map){
+		return sysUserDao.validateUser(map);
+	}
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Console;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +119,22 @@ public class SysUserController extends AbstractController {
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:user:save")
 	public R save(@RequestBody SysUserEntity user){
+		
 		ValidatorUtils.validateEntity(user, AddGroup.class);
+		
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("userName", user.getUsername());
+		int ucount = sysUserService.validateUser(map);
+		if(ucount>0){
+			return R.error("用户名已存在，请重新输入！");
+		}
+		
+		map.remove("userName");
+		map.put("mobile", user.getMobile());
+		ucount=sysUserService.validateUser(map);
+		if(ucount>0){
+			return R.error("手机号已存在，请重新输入！");
+		}
 		
 		user.setCreateUserId(getUserId());
 		
@@ -164,6 +180,22 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:update")
 	public R update(@RequestBody SysUserEntity user){
 		ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("userName", user.getUsername());
+		map.put("userId", user.getUserId());
+		int ucount = sysUserService.validateUser(map);
+		if(ucount>0){
+			return R.error("用户名已存在，请重新输入！");
+		}
+		
+		map.remove("userName");
+		map.put("mobile", user.getMobile());
+		map.put("userId", user.getUserId());
+		ucount=sysUserService.validateUser(map);
+		if(ucount>0){
+			return R.error("手机号已存在，请重新输入！");
+		}
 		
 		user.setCreateUserId(getUserId());
 		

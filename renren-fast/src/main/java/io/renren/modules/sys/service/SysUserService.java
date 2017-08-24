@@ -102,4 +102,6 @@ public interface SysUserService {
 	int validatePhone(String phone);
 
 	void apiForgetPassword(String newPassword, String userPhoneNumber);
+	
+	int validateUser(Map<String, Object> map);
 }

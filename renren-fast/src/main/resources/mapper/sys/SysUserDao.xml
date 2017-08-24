@@ -213,5 +213,19 @@
 			where mobile = #{userPhoneNumber}
 	</update>
 	
+	<select id="validateUser" resultType="int" parameterType="map">
+		select count(*) from sys_user
+		<where>
+			<if test="userName!=null and username.trim() != ''">
+			 and username = #{userName}
+			</if>
+			<if test="mobile!=null and mobile.trim()!=''">
+			  and mobile = #{mobile}
+			</if>
+			<if test="userId!=null">
+			  and user_id !=#{userId}
+			</if>
+		</where> 
+	</select>
 
 </mapper>
