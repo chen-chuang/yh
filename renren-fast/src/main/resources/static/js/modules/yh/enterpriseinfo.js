@@ -8,7 +8,7 @@ $(function () {
 			{ label: '企业图片', align: 'center',name: 'enterpriseImageUrl', index: 'enterprise_image_url', width: 80, formatter: function(value, options, row){
 				
 				if(value!=""&&value!=null){
-					return '<img "width:80px;height:80px" src='+value+'>';
+					return '<img style="width:80px;height:80px" src='+value+'>';
 				}else{
 					return "";
 				}
@@ -81,6 +81,8 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.enterpriseinfo = {};	
+			
+			$("#picFile").val();
 			
 			this.getArea();
 			

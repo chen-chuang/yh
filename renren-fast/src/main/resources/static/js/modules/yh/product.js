@@ -18,7 +18,7 @@ $(function () {
 			{ label: '视频地址', align: 'center',name: 'productVideoUrl', index: 'product_video_url', formatter: function(value, options, row){
 				
 				if(value!=""||value!=null){
-					return '<a class="fa-caret-square-o-right"></a>';
+					return '<a style="cursor:pointer" href='+value+' class="fa fa-caret-square-o-right"></a>';
 				}else{
 					return "";
 				}
@@ -126,6 +126,9 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.product = {isHot:1};
+			
+			$("#picFile").val();
+			$("#videoFile").val();
 			
 			this.getEnterprise();
 			

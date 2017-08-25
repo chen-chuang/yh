@@ -58,6 +58,19 @@
 			   	<div class="col-sm-10">
 			      <!-- <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseImageUrl" placeholder="企业图片"/> -->
 			      <input type="file" name="picFile" id="picFile">
+			        <div class="mt10 clearfix" v-if="title == '修改'">
+						<p class="bd-hui02 fl pos-rel">
+					    <img v-if="enterpriseinfo.enterpriseImageUrl!=null && enterpriseinfo.enterpriseImageUrl!='' " id="img-cover" :src="product.productPictureUrl" width="80" height="80">
+						<img v-if="enterpriseinfo.enterpriseImageUrl==null || enterpriseinfo.enterpriseImageUrl=='' " id="img-cover" src="/img/nopic.jpg" width="160" height="80">
+					</p>
+				   </div>
+		   		   <input type="file" name = "picFile" id="picFile">
+		   		   <div class="fl" style="margin-top: 10px">
+						<p class="hui" id="imsg">
+							<span class="red01 f14 ">*&nbsp;</span>建议使用120X120像素的图片
+						</p>
+
+					</div>
 			    </div>
 			</div>
 			<div class="form-group">

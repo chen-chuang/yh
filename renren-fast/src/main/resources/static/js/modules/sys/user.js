@@ -50,7 +50,12 @@ $(function () {
 			}},
 			{ label: '积分', align: 'center',name: 'userIntegral',  index:"user_integral",width: 50, formatter: function(value, options, row){
 				if(value==""||value==null||value=="null"){
-					return "0";
+					if(row.belongToAgencyName!=""){
+						return "0";
+					}else{
+						return "--";
+					}
+					
 				}else{
 					return value;
 				}

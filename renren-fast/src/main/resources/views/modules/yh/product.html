@@ -26,6 +26,8 @@
 <link rel="stylesheet" href="../../plugins/autocomplete/jquery-ui.css">
 <script src="../../plugins/autocomplete/jquery-ui.js"></script>
 
+<link rel="stylesheet" href="../../css/pic.css">
+
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -80,16 +82,30 @@
 			<input type=hidden name = productTypeName id = productTypeName v-model = "product.productTypeName">
 			
 			<div class="form-group">
-			   	<div class="col-sm-2 control-label">图片地址</div>
+			   	<div class="col-sm-2 control-label">产品图片</div>
 			   	<div class="col-sm-10">
 			     <!--  <input type="text" class="form-control" name="productPictureUrl" v-model="product.productPictureUrl" placeholder="图片地址"/> -->
+			   		   
+			   		   <div class="mt10 clearfix" v-if="title == '修改'">
+						<p class="bd-hui02 fl pos-rel">
+						    <img v-if="product.productPictureUrl!=null && product.productPictureUrl!='' " id="img-cover" :src="product.productPictureUrl" width="160" height="80">
+							<img v-if="product.productPictureUrl==null || product.productPictureUrl=='' " id="img-cover" src="/img/nopic.jpg" width="160" height="80">
+						</p>
+					   </div>
 			   		   <input type="file" name = "picFile" id="picFile">
+			   		   <div class="fl" style="margin-top: 10px">
+							<p class="hui" id="imsg">
+								<span class="red01 f14 ">*&nbsp;</span>建议使用120X120像素的图片
+							</p>
+						</div>
 			    </div>
 			</div>
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">简介</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name="productDetail" v-model="product.productDetail" placeholder="简介"/>
+			   	  <textarea rows="8" cols="20" class="form-control" name="productDetail" v-model="product.productDetail" placeholder="简介">
+			   	  </textarea>
+			     <!--  <input type="text" class="form-control" name="productDetail" v-model="product.productDetail" placeholder="简介"/> -->
 			    </div>
 			</div>
 			
