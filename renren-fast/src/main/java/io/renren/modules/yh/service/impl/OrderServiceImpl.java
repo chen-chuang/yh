@@ -20,13 +20,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alipay.api.AlipayConstants;
 import com.google.gson.Gson;
+import com.yunpian.sdk.YunpianClient;
+import com.yunpian.sdk.model.Result;
+import com.yunpian.sdk.model.SmsSingleSend;
 
+import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
 import io.renren.common.utils.alipay.AlipayUtil;
 import io.renren.common.utils.alipay.CollectionUtil;
 import io.renren.common.utils.alipay.DatetimeUtil;
 import io.renren.common.utils.alipay.PayUtil;
+import io.renren.common.utils.alipay.RandomUtil;
 import io.renren.common.utils.wxpay.HttpUtils;
 import io.renren.common.utils.wxpay.WxPayUtil;
 import io.renren.common.utils.wxpay.WxUtil;
@@ -339,15 +344,32 @@ public class OrderServiceImpl implements OrderService {
 	
 	
 	@Override
-	public void dispatch(String orderId,String userId){
+	public R dispatch(String orderId){
 		
 		OrderEntity order = orderDao.queryObject(orderId);
-		SysUserEntity userEntity = SysUserDao.queryObject(Long.valueOf(userId));
-		order.setDeliveryUserId(Long.valueOf(userId));
-		order.setDeliveryUserName(userEntity.getUsername());
+		
+		if(order.getDeliveryUserId()==null){
+			return R.error("暂未指定配送员，不能进行配送！");
+		}
+		
+		SysUserEntity userEntity = SysUserDao.getAgencyByUser(order.getDeliveryUserId());
+		
 		order.setIsRebate(0);	
 		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
 		orderDao.update(order);
+		
+		int number = RandomUtil.getRandNum(1000, 9000);
+		//初始化client,apikey作为所有请求的默认值(可以为空)
+		YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
+
+		//修改账户信息API
+		Map<String, String> param = clnt.newParam(2);
+		param.put(YunpianClient.MOBILE, userEntity.getMobile());
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】您正在找回密码，短信验证码为"+number);
+		Result<SmsSingleSend> r = clnt.sms().single_send(param);
+		clnt.close(); 
+		
+		return R.ok();
 		
 	}
 	

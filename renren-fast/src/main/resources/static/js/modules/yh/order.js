@@ -37,6 +37,11 @@ $(function () {
 			{ label: '操作', width: 80,formatter: function(value, options, row){
 				if(row.orderType===1){
 					var content="";
+					
+					if(hasPermission('order:choiceDelivery')){
+						content +='<a class="btn btn-default btn-xs" onclick=choiceDelivery("'+row.orderId+'")>配送员</a>';
+					}
+					
 					if(hasPermission('order:dispatch')){
 						content +='<a class="btn btn-default btn-xs" onclick=dispatch("'+row.orderId+'")>配送</a>';
 					}
@@ -44,6 +49,11 @@ $(function () {
 					if(hasPermission('orderdetail:list')){
 						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 					}
+					
+					if(hasPermission('order:print')){
+						content +='<a href="javascript:;" class="btn btn-default btn-xs" onclick=print("'+row.orderId+'")>打印</a>';
+					}
+					
 					return content;
 				}else if(row.orderType===2){
 					
@@ -89,18 +99,45 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+  /* $("#view_right").delegate("ul li","click",function(){
+	   alert(11111);
+	   console.log(11111111111111);
+	   $("#userId").val($(this).attr("userid"));
+	   $(this).addClass("choiceLi").siblings().removeClass("choiceLi");
+   });*/
+    
+    $("#view_right ul").on("click","li",function(){
+ 	   alert(11111);
+ 	   console.log(11111111111111);
+ 	   $("#userId").val($(this).attr("userid"));
+ 	   $(this).addClass("choiceLi").siblings().removeClass("choiceLi");
+    });
 });
 
-function setUserId(userId,obj) {
+/*function setUserId(userId,obj) {
 	$("#userId").val(userId);
+	li.onclick(function(){
+        $(obj).addClass("choiceLi").siblings().removeClass("choiceLi");
+    });
 	
+}*/
+
+function print(orderId){
+	var headstr = "<html><head><title></title></head><body>";  
+	var footstr = "</body>";  
+	var printData = document.getElementById("print_container").innerHTML; 
+	var oldstr = document.body.innerHTML;  
+	document.body.innerHTML = headstr+printData+footstr;  
+	window.parent.print();  
+	//window.print();  
+	document.body.innerHTML = oldstr;  
 }
 
-//配送
-function dispatch(orderId){
-	
+//通知配送员
+function choiceDelivery(orderId){
 	var content ='<div class="user_select_view">'
-	
+		
 		/*	 +'  <div class="view_left" id="view_left">'
 			 +'   <ul>'
 			 +'    <li >1</li>'
@@ -120,7 +157,8 @@ function dispatch(orderId){
 			if (r.code == 0) {
 				if(r.deliveryPerson){
 					$.each(r.deliveryPerson,function(k,v){
-						content+='<li onclick = setUserId("'+v.user_id+'",this) userid = '+v["user_id"]+'>'+v.username+'</li>' ;
+						/*content+='<li onclick = setUserId("'+v.user_id+'",this) userid = '+v["user_id"]+'>'+v.username+'</li>' ;*/
+						content+='<li userid = '+v["user_id"]+'>'+v.username+'</li>' ;
 					})
 					
 				}
@@ -139,14 +177,11 @@ function dispatch(orderId){
 			        ,btn: ['确定', '关闭']
 			        ,moveType: 1 //拖拽模式，0或者1
 			        ,content: content
-			    	 ,yes: function(){    		 
-			    		
-			    		/* var regionId = $(window.frames["layui-layer-iframe1"].document).find("#regionId").val();
-			    		 var regionName = $(window.frames["layui-layer-iframe1"].document).find("#regionName").val();*/
+			    	 ,yes: function(){    	
 			    		
 		    			$.ajax({
 		    				type : "POST",
-		    				url : baseURL + "order/dispatch",
+		    				url : baseURL + "order/choiceDelivery",
 		    				data : {
 		    					orderId : orderId,
 		    					userId : $("#userId").val()
@@ -167,6 +202,29 @@ function dispatch(orderId){
 			          layer.closeAll();
 			        }
 			      });
+		}
+	});
+}
+
+//配送
+function dispatch(orderId){
+	
+	$.ajax({
+		type : "POST",
+		url : baseURL + "order/dispatch",
+		data : {
+			orderId : orderId,
+			userId : $("#userId").val()
+		},
+		success : function(r) {
+			if (r.code == 0) {
+				alert('指派成功！', function() {
+					vm.reload();
+					layer.closeAll();
+				});
+			} else {
+				alert(r.msg);
+			}
 		}
 	});
 }

@@ -52,6 +52,7 @@ var vm = new Vue({
 			});
 		},
 		updatePassword: function(){
+			window.print();
 			layer.open({
 				type: 1,
 				skin: 'layui-layer-molv',

@@ -16,4 +16,5 @@
 .user_select_view .view_right ul {overflow-y:auto;overflow-x:hidden;}
 .user_select_view .view_right ul li{display:block;line-height:25px;font-size:13px;cursor:pointer;font-size:13px;line-height:45px;padding-left:5px;}
 .user_select_view .view_right ul li:hover {background-color:rgb(30,119,218);color:#fff;}
-.user_select_view .view_right ul li:active {background-color:rgb(30,119,218);color:#fff;}
+
+.choiceLi {background-color:rgb(30,119,218);color:#fff;}

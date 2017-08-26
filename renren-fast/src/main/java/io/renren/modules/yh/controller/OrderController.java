@@ -12,15 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yunpian.sdk.YunpianClient;
+import com.yunpian.sdk.model.Result;
+import com.yunpian.sdk.model.SmsSingleSend;
+
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.OrderService;
+import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.utils.alipay.RandomUtil;
 
 
 
@@ -115,9 +121,9 @@ public class OrderController extends AbstractController{
 	
 	@RequestMapping("/dispatch")
 	@RequiresPermissions("order:dispatch")
-	public R dispatch(String orderId,String userId){
-	    orderService.dispatch(orderId,userId);
-		return R.ok();
+	public R dispatch(String orderId){
+	    R r = orderService.dispatch(orderId);
+		return r;
 	}
 	
 	@RequestMapping("/complete")
@@ -144,5 +150,35 @@ public class OrderController extends AbstractController{
 		List<Map<String, Object>> deliveryPerson = sysUserService.getDeliveryPerson(userId);
 		return R.ok().put("deliveryPerson", deliveryPerson);
 	}
+	
+	@RequestMapping("/choiceDelivery")
+	@RequiresPermissions("order:choiceDelivery")
+	public R choiceDelivery(String orderId,String userId){
+		
+		SysUserEntity user = sysUserService.queryObject(Long.valueOf(userId));
+		OrderEntity order = orderService.queryObject(orderId);
+		order.setDeliveryUserId(user.getUserId());
+		order.setDeliveryUserName(user.getUsername());
+		orderService.update(order);
+		
+		int number = RandomUtil.getRandNum(1000, 9000);
+		//初始化client,apikey作为所有请求的默认值(可以为空)
+		YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
+
+		//修改账户信息API
+		Map<String, String> param = clnt.newParam(2);
+		param.put(YunpianClient.MOBILE, user.getMobile());
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】您正在找回密码，短信验证码为"+number);
+		Result<SmsSingleSend> r = clnt.sms().single_send(param);
+		clnt.close(); 
+		if(r.getCode().equals(0)){
+			return R.ok();
+		}else{
+			return R.error(r.getMsg());
+		}
+		
+	}
+	
+	
 	
 }

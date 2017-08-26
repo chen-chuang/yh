@@ -36,7 +36,7 @@ public interface OrderService {
 
 	R apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID, String orderProductionsCount);
 
-	void dispatch(String orderId, String userId);
+	R dispatch(String orderId);
 	
 	void complete(String orderId);
 

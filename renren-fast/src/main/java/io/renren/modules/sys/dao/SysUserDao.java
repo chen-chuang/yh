@@ -71,4 +71,6 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	void apiForgetPassword(@Param("newPassword")String newPassword, @Param("userPhoneNumber")String userPhoneNumber);
 
 	int validateUser(Map<String, Object> map);
+	
+	SysUserEntity getAgencyByUser(Long userId);
 }

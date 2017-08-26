@@ -18,6 +18,7 @@
 <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
 <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="../../js/common.js"></script>
+<link rel="stylesheet" href="../../css/pic.css">
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -44,7 +45,19 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">图标</div>
 			   	<div class="col-sm-10">
-			   	<input type="file" name="picFile" id="picFile">
+			   	
+			   	 <div class="mt10 clearfix" v-if="title == '修改'">
+					<p class="bd-hui02 fl pos-rel">
+					    <img v-if="producttype.imageUrl!=null && producttype.imageUrl!='' " id="img-cover" :src="producttype.imageUrl" width="160" height="80">
+						<img v-if="producttype.imageUrl || producttype.imageUrl=='' " id="img-cover" src="/img/nopic.jpg" width="160" height="80">
+					</p>
+				   </div>
+		   		   <input type="file" name = "picFile" id="picFile">
+		   		   <div class="fl" style="margin-top: 10px">
+						<p class="hui" id="imsg">
+							<span class="red01 f14 ">*&nbsp;</span>建议使用120X120像素的图片
+						</p>
+					</div>
 			     <!--  <input type="text" class="form-control" v-model="producttype.imageUrl" placeholder="图标"/> -->
 			    </div>
 			</div>

@@ -227,5 +227,9 @@
 			</if>
 		</where> 
 	</select>
+	
+	<select id="getAgencyByUser" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where user_id = (select belong_to_agency_id from sys_user where user_id =#{userId})
+	</select>
 
 </mapper>
