@@ -107,9 +107,7 @@ $(function () {
 	   $(this).addClass("choiceLi").siblings().removeClass("choiceLi");
    });*/
     
-    $("#view_right ul").on("click","li",function(){
- 	   alert(11111);
- 	   console.log(11111111111111);
+    $("body").on("click","#view_right ul li",function(){    	
  	   $("#userId").val($(this).attr("userid"));
  	   $(this).addClass("choiceLi").siblings().removeClass("choiceLi");
     });
@@ -136,6 +134,9 @@ function print(orderId){
 
 //通知配送员
 function choiceDelivery(orderId){
+	
+	$("#userId").val("");
+	
 	var content ='<div class="user_select_view">'
 		
 		/*	 +'  <div class="view_left" id="view_left">'
@@ -177,7 +178,12 @@ function choiceDelivery(orderId){
 			        ,btn: ['确定', '关闭']
 			        ,moveType: 1 //拖拽模式，0或者1
 			        ,content: content
-			    	 ,yes: function(){    	
+			    	 ,yes: function(){    
+			    		 
+			    		 if($("#userId").val()==""|| $("#userId").val()==null){
+			    			 alert("请选择配送员之后在做操作！");
+			    			 return;
+			    		 }
 			    		
 		    			$.ajax({
 		    				type : "POST",
