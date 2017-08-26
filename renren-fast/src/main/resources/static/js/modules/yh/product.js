@@ -17,10 +17,10 @@ $(function () {
 			{ label: '产品类型',align: 'center', name: 'productTypeName', index: 'product_type_name', width: 80 }, 	
 			{ label: '视频地址', align: 'center',name: 'productVideoUrl', index: 'product_video_url', formatter: function(value, options, row){
 				
-				if(value!=""||value!=null){
+				if(value!=""&&value!=null){
 					return '<a style="cursor:pointer" href='+value+' class="fa fa-caret-square-o-right"></a>';
 				}else{
-					return "";
+					return "暂无视频";
 				}
 			}}, 			
 			{ label: '库存', align: 'center',name: 'productNum', index: 'product_num', width: 80 }, 			

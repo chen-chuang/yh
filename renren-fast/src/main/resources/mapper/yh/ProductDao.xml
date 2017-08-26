@@ -240,12 +240,12 @@
 	 	b.product_detail 
 	 	from sys_producttype a,sys_product b where a.id=b.product_type 
 	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) -->
-	 	select a.id,a.type,a.image_url,
+	 	select a.id,a.type,a.image_url,b.enter_person_id,
 	 	b.product_id,b.product_name,b.product_retail_price,b.product_picture_url,b.product_video_url,b.product_num,
 	 	(case (select count(*) from sys_collection where user_id=#{userId} and product_id = b.product_id)   when 0 then null when 1 then 1 end) isCollected,
 	 	b.product_detail 
-	 	from sys_producttype a  left join sys_product b on a.id=b.product_type 
-	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
+	 	from sys_producttype a  left join sys_product b on (a.id=b.product_type and a.enter_id=b.enter_person_id)  
+	 	where a.enter_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) 
 	</select>
 	
 	<select id="apiShoppingCartPFList" resultMap="apiShoppingCartPFMap">
@@ -255,12 +255,12 @@
 	 	b.product_detail 
 	 	from sys_producttype a,sys_product b where a.id=b.product_type 
 	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) -->
-	 	select a.id,a.type,a.image_url,
+	 	select a.id,a.type,a.image_url,b.enter_person_id,
 	 	b.product_id,b.product_name,b.product_trade_price,b.product_picture_url,b.product_video_url,b.product_num,
 	 	(case (select count(*) from sys_collection where user_id=#{userId} and product_id = b.product_id)   when 0 then null when 1 then 1 end) isCollected,
 	 	b.product_detail 
-	 	from sys_producttype a left join sys_product b on a.id=b.product_type 
-	 	and b.enter_person_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) and a.enter_id=b.enter_person_id
+	 	from sys_producttype a left join sys_product b on (a.id=b.product_type and a.enter_id=b.enter_person_id)  
+	 	where a.enter_id = (select belong_to_agency_id from sys_user where user_id=#{userId}) 
 	</select>
 	
 	

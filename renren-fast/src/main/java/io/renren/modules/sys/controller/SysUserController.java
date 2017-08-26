@@ -1,7 +1,22 @@
 package io.renren.modules.sys.controller;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.renren.common.annotation.SysLog;
-import io.renren.common.utils.Constant;
 import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -14,18 +29,6 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.yh.entity.enums.EnumPermission;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.Console;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 系统用户
@@ -287,6 +290,11 @@ public class SysUserController extends AbstractController {
 	public R getDelivery(String name){
 		List<Map<String, Object>> userinfo = sysUserService.getDelivery(getUserId(),name);
 		return R.ok().put("userinfo", userinfo);
+	}
+	
+	@Scheduled(cron="0/20 * *  * * ? ")
+	public void timeOut(){
+		System.out.println("11111111");
 	}
 	
 	

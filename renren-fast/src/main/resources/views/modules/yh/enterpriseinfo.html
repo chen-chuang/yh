@@ -58,7 +58,7 @@
 			   	<div class="col-sm-2 control-label">企业图片</div>
 			   	<div class="col-sm-10">
 			      <!-- <input type="text" class="form-control" v-model="enterpriseinfo.enterpriseImageUrl" placeholder="企业图片"/> -->
-			      <input type="file" name="picFile" id="picFile">
+			    
 			        <div class="mt10 clearfix" v-if="title == '修改'">
 						<p class="bd-hui02 fl pos-rel">
 					    <img v-if="enterpriseinfo.enterpriseImageUrl!=null && enterpriseinfo.enterpriseImageUrl!='' " id="img-cover" :src="enterpriseinfo.enterpriseImageUrl" width="80" height="80">
@@ -137,7 +137,10 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">简介</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" name = "enterpriseIntroduction" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/>
+			   	 <textarea rows="8" cols="20" class="form-control" name="enterpriseIntroduction" v-model=""enterpriseinfo.enterpriseIntroduction" placeholder="简介">
+			   	  </textarea>
+			   	  
+			      <!-- <input type="text" class="form-control" name = "enterpriseIntroduction" v-model="enterpriseinfo.enterpriseIntroduction" placeholder="简介"/> -->
 			    </div>
 			</div>		
 		
