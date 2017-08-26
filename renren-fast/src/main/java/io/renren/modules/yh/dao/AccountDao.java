@@ -25,5 +25,7 @@ public interface AccountDao extends BaseDao<AccountEntity> {
 	void updateByAgency(AccountEntity account);
 
 	void queryByAgency(Long agencyId);
+
+	BigDecimal sum();
 	
 }

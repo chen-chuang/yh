@@ -32,6 +32,19 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+    
+   
+	$.ajax({
+		type: "POST",
+	    url: baseURL + "account/detailInfo",
+	    success: function(r){
+			if(r.code == 0){
+				$("#sum").html(r.sum);
+				$("#ed").html(r.ed);
+				$("#ing").html(r.ing);
+			}
+		}
+	});
 });
 
 var vm = new Vue({

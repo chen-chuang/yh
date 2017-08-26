@@ -95,4 +95,13 @@ public class AccountController {
 		return R.ok();
 	}
 	
+	
+	@RequestMapping("/detailInfo")
+	public R detailInfo(){
+		R r = accountService.detailInfo();
+		
+		return r;
+	}
+	
+	
 }

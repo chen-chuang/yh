@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.common.utils.R;
 import io.renren.modules.yh.entity.AccountEntity;
 
 import java.util.List;
@@ -30,5 +31,7 @@ public interface AccountService {
 
 	void updateByAgency(AccountEntity account);
 	
-	public void queryByAgency(Long agencyId);
+	void queryByAgency(Long agencyId);
+
+	R detailInfo();
 }

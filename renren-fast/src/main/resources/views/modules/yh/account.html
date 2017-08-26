@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/AdminLTE.min.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
 <link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
@@ -23,6 +24,55 @@
 <div id="rrapp" v-cloak>
 	
 	<div v-show="showList">
+	<section class="content" style="padding:0;min-height:0">
+	<div class="row">
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 id="sum">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">平台资金总额</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3 id="ed">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">已提现总额</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3 id="ing">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">提现中总额</a>
+          </div>
+        </div>
+     
+      </div>
+      </section>
 		<div class="grid-btn">
 			<!-- <a v-if="hasPermission('account:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
 			<a v-if="hasPermission('account:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>

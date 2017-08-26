@@ -108,6 +108,8 @@
 		select sum(withdrawalAmount) from  sys_withdraw where apply_user_id =#{userId} and withdraw_status!=3
 	</select>
 	
-	
+	<select id="groupSum" resultType="java.util.Map">
+	    select withdraw_status,sum(withdrawalAmount) as withdrawalAmount from  sys_withdraw group by withdraw_status
+	</select>
 
 </mapper>
