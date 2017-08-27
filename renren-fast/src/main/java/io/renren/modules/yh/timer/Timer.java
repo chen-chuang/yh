@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class Timer {
      SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-        @Scheduled(fixedRate = 10000)
+       /* @Scheduled(fixedRate = 10000)
         public void timerRate() {
             System.out.println(dateFormat.format(new Date()));
         }
@@ -26,5 +26,5 @@ public class Timer {
         public void timerCron() {
         	System.out.println("每十秒");
             System.out.println("current time : "+ dateFormat.format(new Date()));
-        }
+        }*/
 }

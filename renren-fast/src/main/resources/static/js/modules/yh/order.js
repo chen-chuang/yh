@@ -121,15 +121,27 @@ $(function () {
 	
 }*/
 
-function print(orderId){
+/*function print(orderId){
 	var headstr = "<html><head><title></title></head><body>";  
 	var footstr = "</body>";  
 	var printData = document.getElementById("print_container").innerHTML; 
 	var oldstr = document.body.innerHTML;  
 	document.body.innerHTML = headstr+printData+footstr;  
-	window.parent.print();  
-	//window.print();  
+	//window.parent.print();  
+	window.print();  
 	document.body.innerHTML = oldstr;  
+}*/
+
+
+function print(orderId){
+	var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+	LODOP.PRINT_INIT("打印");  
+	LODOP.SET_PRINT_PAGESIZE(3,58,10,"");
+	var table_height= document.getElementById("print_container").offsetheight; 
+	console.log(document.getElementById("print_container").innerHTML);
+	LODOP.ADD_PRINT_HTM("0","5px","58", "1000px",document.getElementById("print_container").innerHTML); 
+	LODOP.PREVIEW();
+	//LODOP.PRINT(); 
 }
 
 //通知配送员
