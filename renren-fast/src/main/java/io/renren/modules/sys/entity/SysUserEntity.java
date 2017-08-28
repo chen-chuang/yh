@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -56,6 +57,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 手机号
 	 */
+	@Pattern(regexp="^1[3|4|5|7|8][0-9]{9}$",message="请输入正确的手机号码！", groups = {AddGroup.class, UpdateGroup.class})
 	private String mobile;
 
 	/**

@@ -167,7 +167,7 @@ public class DruidConfig {
      *@作者 ccchen
      *@时间 2017年7月14日下午4:37:46
      */
- /*   @Bean  
+    @Bean  
     public MultipartConfigElement multipartConfigElement() {  
         MultipartConfigFactory factory = new MultipartConfigFactory();  
         //单个文件最大  
@@ -175,6 +175,6 @@ public class DruidConfig {
         /// 设置总上传数据总大小  
         factory.setMaxRequestSize("102400KB");  
         return factory.createMultipartConfig();  
-    }  */
+    }  
 
 }
