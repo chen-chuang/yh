@@ -49,7 +49,7 @@
 			   	 <div class="mt10 clearfix" v-if="title == '修改'">
 					<p class="bd-hui02 fl pos-rel">
 					    <img v-if="producttype.imageUrl!=null && producttype.imageUrl!='' " id="img-cover" :src="producttype.imageUrl" width="160" height="80">
-						<img v-if="producttype.imageUrl || producttype.imageUrl=='' " id="img-cover" src="/img/nopic.jpg" width="160" height="80">
+						<img v-if="producttype.imageUrl==null || producttype.imageUrl=='' " id="img-cover" src="/img/nopic.jpg" width="160" height="80">
 					</p>
 				   </div>
 		   		   <input type="file" name = "picFile" id="picFile">
