@@ -8,7 +8,7 @@ $(function () {
 			{ label: '图标', name: 'imageUrl', index: 'image_url', width: 80 ,formatter: function(value, options, row){
 				
 				if(value!=""&&value!=null){
-					return '<img src='+value+'>';
+					return '<img style="width:80px;height:80px" src='+value+'>';
 				}else{
 					return "";
 				}
