@@ -11,7 +11,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ import io.renren.common.utils.wxpay.WxUtil;
 import io.renren.common.utils.wxpay.XmlUtil;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.OrderProductions;
+import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.yh.dao.AccountDao;
@@ -54,16 +56,14 @@ import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
 import io.renren.modules.yh.service.OrderService;
-import io.renren.modules.yh.service.OrderdetailService;
 import io.renren.modules.yh.service.ProductService;
 
 
 
 @Service("orderService")
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends AbstractController implements OrderService {
 	
-
-	private static final Logger LOG = Logger.getLogger(OrderServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(OrderServiceImpl.class);
 	
 	@Autowired
 	private OrderDao orderDao;
@@ -358,16 +358,17 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
 		orderDao.update(order);
 		
-		int number = RandomUtil.getRandNum(1000, 9000);
 		//初始化client,apikey作为所有请求的默认值(可以为空)
 		YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
 
 		//修改账户信息API
 		Map<String, String> param = clnt.newParam(2);
 		param.put(YunpianClient.MOBILE, userEntity.getMobile());
-		param.put(YunpianClient.TEXT, "【恒通烟花易购】您正在找回密码，短信验证码为"+number);
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】订单编号"+order.getOrderId()+"已由发货人"+getUser().getUsername()+"发货，配送人"+order.getDeliveryUserName()+"，订单金额"+order.getOrderAllPrice());
 		Result<SmsSingleSend> r = clnt.sms().single_send(param);
 		clnt.close(); 
+		LOG.info(r.toString());
+		System.out.println(r.toString());
 		
 		return R.ok();
 		

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import com.yunpian.sdk.YunpianClient;
 import com.yunpian.sdk.model.Result;
 import com.yunpian.sdk.model.SmsSingleSend;
 
+import io.renren.modules.api.controller.ApiRecommendController;
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
@@ -41,6 +44,8 @@ import io.renren.common.utils.alipay.RandomUtil;
 @RestController
 @RequestMapping("order")
 public class OrderController extends AbstractController{
+	
+	private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 	@Autowired
 	private OrderService orderService;
 	
@@ -161,21 +166,21 @@ public class OrderController extends AbstractController{
 		order.setDeliveryUserName(user.getUsername());
 		orderService.update(order);
 		
-		int number = RandomUtil.getRandNum(1000, 9000);
+		
 		//初始化client,apikey作为所有请求的默认值(可以为空)
 		YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
 
 		//修改账户信息API
 		Map<String, String> param = clnt.newParam(2);
 		param.put(YunpianClient.MOBILE, user.getMobile());
-		param.put(YunpianClient.TEXT, "【恒通烟花易购】您正在找回密码，短信验证码为"+number);
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】订单编号"+order.getOrderId()+"已由发货人"+getUser().getUsername()+"选择您来配送，请尽快完成配送。");
 		Result<SmsSingleSend> r = clnt.sms().single_send(param);
 		clnt.close(); 
-		if(r.getCode().equals(0)){
-			return R.ok();
-		}else{
-			return R.error(r.getMsg());
-		}
+		LOG.info(r.toString());
+		System.out.println(r.toString());
+		
+		return R.ok();
+		
 		
 	}
 	
