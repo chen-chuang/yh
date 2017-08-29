@@ -7,3 +7,13 @@
 .mt30{ margin-top:30px}
 .hui{color:#999}
 .red01{ color:#cb3932}
+
+.jy_popup_bg{position:absolute;top:0%;left:0%;width:100%;height:100%;background-color:#000;-moz-opacity:0.2;opacity:.20;filter:alpha(opacity=20);display:none;}
+
+/*加载中 begin*/
+.showbox{position:fixed;top:0;left:50%;z-index:9999;opacity:0;filter:alpha(opacity=0);margin-left:-80px;}
+.showbox,.overlay{position:absolute;top:expression(eval(document.documentElement.scrollTop));}
+#AjaxLoading{border:1px solid #8CBEDA;color:#37a;font-size:12px;font-weight:bold;}
+#AjaxLoading div.loadingWord{width:220px;height:50px;line-height:50px;border:2px solid #D6E7F2;background:#fff;}
+#AjaxLoading img{margin:10px 15px;float:left;display:inline;}
+/*加载中 end*/

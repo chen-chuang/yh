@@ -108,6 +108,20 @@ $(function () {
        });  
 });
 
+
+function loadingBegin(){
+	$("#load_mask").show();
+	var h = $(document).height();
+	$(".overlay").css({"height": h });
+	$(".overlay").css({'display':'block','opacity':'0.8'});
+	$(".showbox").stop(true).animate({'margin-top':'300px','opacity':'1'},200);
+}
+function loadingEnd(){
+	$(".showbox").stop(true).animate({'margin-top':'250px','opacity':'0'},400);
+	$(".overlay").css({'display':'none','opacity':'0'});
+	$("#load_mask").hide();
+}
+
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
@@ -175,6 +189,7 @@ var vm = new Vue({
             
 		},
 		saveOrUpdate: function (event) {
+			
 			var url = vm.product.productId == null ? "product/save" : "product/update";
 			
 			/*$("#enterpriseName").val($("#enterpriseId").find("option:selected").text());*/
@@ -202,7 +217,7 @@ var vm = new Vue({
 			}	
 			
 			var formData = new FormData($("form")[0]);				
-			
+			loadingBegin();
 			 $.ajax({  
 		            url : baseURL + url,  
 		            type : 'POST',  
@@ -219,7 +234,12 @@ var vm = new Vue({
 						}else{
 							alert(r.msg);
 						}
-		            }  
+		            	loadingEnd();
+		            },
+		            error:function(r){
+		            	loadingEnd();
+		            }
+			 
 		        }); 
 		},
 		del: function (event) {

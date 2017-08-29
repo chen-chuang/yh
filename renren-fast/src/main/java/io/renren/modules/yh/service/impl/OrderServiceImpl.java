@@ -392,7 +392,7 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 		//得到比例，算的积分
 		if(configtableEntity!=null){
 			String proportion = configtableEntity.getConfigValue();
-			Long thisIntegral = order.getOrderAllPrice().longValue()*Long.valueOf(proportion); 	
+			Long thisIntegral = order.getOrderAllPrice().multiply(new BigDecimal(proportion)).longValue(); 	
 			
 			orderintegration.setIntegration(thisIntegral);
 			
