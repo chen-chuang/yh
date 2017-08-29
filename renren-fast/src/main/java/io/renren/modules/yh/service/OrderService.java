@@ -6,6 +6,7 @@ import java.util.Map;
 import io.renren.common.utils.R;
 import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.dto.DeliveryOrderDTO;
 
 /**
  * 订单表
@@ -41,4 +42,6 @@ public interface OrderService {
 	void complete(String orderId);
 
 	void apiDelWaitingPayOrder(String userID, String orderID);
+
+	DeliveryOrderDTO printDelivery(String orderId);
 }

@@ -2,6 +2,7 @@ package io.renren.modules.yh.entity.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class DeliveryOrderDTO {
 	
@@ -9,13 +10,15 @@ public class DeliveryOrderDTO {
 	
 	private Date createTime;
 	
+	private String deliveryFaName;
+	
 	private String deliveryName;
 	
 	private String agency;
 	
 	private BigDecimal productAllPrice;
 	
-	private Long usrIntegral;
+	private Long useIntegral;
 	
 	private BigDecimal productActualPrice;
 	
@@ -24,6 +27,8 @@ public class DeliveryOrderDTO {
 	private String orderDetailAddress;
 	
 	private String receiverPhone;
+	
+	private List<DeliveryOrderDetailDTO> products;
 
 	public String getOrderId() {
 		return orderId;
@@ -65,12 +70,12 @@ public class DeliveryOrderDTO {
 		this.productAllPrice = productAllPrice;
 	}
 
-	public Long getUsrIntegral() {
-		return usrIntegral;
+	public Long getUseIntegral() {
+		return useIntegral;
 	}
 
-	public void setUsrIntegral(Long usrIntegral) {
-		this.usrIntegral = usrIntegral;
+	public void setUseIntegral(Long useIntegral) {
+		this.useIntegral = useIntegral;
 	}
 
 	public BigDecimal getProductActualPrice() {
@@ -103,6 +108,22 @@ public class DeliveryOrderDTO {
 
 	public void setReceiverPhone(String receiverPhone) {
 		this.receiverPhone = receiverPhone;
+	}
+
+	public String getDeliveryFaName() {
+		return deliveryFaName;
+	}
+
+	public void setDeliveryFaName(String deliveryFaName) {
+		this.deliveryFaName = deliveryFaName;
+	}
+
+	public List<DeliveryOrderDetailDTO> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<DeliveryOrderDetailDTO> products) {
+		this.products = products;
 	}
 	
 	

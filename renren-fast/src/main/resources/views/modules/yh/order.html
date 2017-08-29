@@ -167,10 +167,7 @@
 			</div>
 		</form>
 	</div>
-</div>
-	<input type="hidden" id= "userId">
-	
- <div id="print_container" class="print_container" style="display:none">
+	<div id="print_container" class="print_container" style="display:none">
          <div class="section1" style="width: 188px;">
              <h3 style="text-align: center;">
 				发货单
@@ -178,14 +175,14 @@
          </div>
  <span>*************************</span>
  <div class="section3">
-             <label>订单编号：567890</label><br>
-             <label>下单时间：1111</label>
+             <label>订单编号：{{delivery.orderId}}</label><br>
+             <label>下单时间：{{delivery.createTime}}</label>
          </div>
          <span>*************************</span>
          <div class="section2">
-             <label>发货人：5678</label><br>
-             <label>配送人：1111</label><br>
-             <label>经销商：1111</label>
+             <label>发货人：{{delivery.deliveryFaName}}</label><br>
+             <label>配送人：{{delivery.deliveryName}}</label><br>
+             <label>经销商：{{delivery.agency}}</label>
          </div>
          
         
@@ -217,12 +214,12 @@
              <div class="other_fee" style="width: 188px;">
                  <div class="canh">
 		    		 <label style="width:130px" class="left"><b>总价</b></label>
-                     <label class="right"><b>0</b></label>
+                     <label class="right"><b>{{delivery.productAllPrice}}</b></label>
                      <div class="clearfix"></div>                        
                  </div>
                  <div class="peis">
                      <label  style="width:130px" class="left"><b>积分抵扣</b></label>
-                     <label class="right"><b>10</b></label>
+                     <label class="right"><b>{{delivery.useIntegral}}</b></label>
                      <div class="clearfix"></div>
                  </div>
                  <!--<div class="manj">
@@ -233,7 +230,7 @@
              </div>
              <div class="total" style="width: 188px;">
                  <label  style="width:130px" class="left"><b>实收</b></label>
-                 <label class="right"><b>39</b></label>
+                 <label class="right"><b>{{delivery.productActualPrice}}</b></label>
                  <div class="clearfix"></div>
              </div>
             <!--<div style="text-align: right;">
@@ -242,12 +239,16 @@
              <span>*************************</span>
          </div>
          <div class="section5">
-             <label>姓名：小花</label><br>
-             <label>地址：北京</label><br>
-             <label>电话：67890</label>
+             <label>姓名：{{delivery.receiverName}}</label><br>
+             <label>地址：{{delivery.orderDetailAddress}}</label><br>
+             <label>电话：{{delivery.receiverPhone}}</label>
          </div>    
          <span>*************************</span>
      </div>
+</div>
+	<input type="hidden" id= "userId">
+	
+ 
 
 <script src="../../js/modules/yh/order.js"></script>
 </body>

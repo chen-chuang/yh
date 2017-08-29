@@ -22,7 +22,9 @@
         <result property="isRebate" column="is_rebate"/>
         <result property="userName" column="user_name"/>
         <result property="deliveryUserId" column="delivery_user_id"/>
-        <result property="deliveryUserName" column="delivery_user_name"/>
+        <result property="deliveryUserName" column="delivery_user_name"/>        
+        <result property="deliveryFUserId" column="delivery_f_user_id"/>
+        <result property="deliveryFUserName" column="delivery_f_user_name"/>
         <result property="actualPayPrice" column="actual_pay_price"/>
         
     </resultMap>
@@ -75,6 +77,29 @@
     </resultMap>
     
     
+     <resultMap type="io.renren.modules.yh.entity.dto.DeliveryOrderDTO" id="printDeliveryOrderMap">        
+       <result property="orderId" column="order_id"/>
+        <result property="createTime" column="order_create_time"/>
+        <result property="deliveryFaName" column="delivery_f_user_name"/>
+        <result property="deliveryName" column="delivery_user_name"/>
+        
+        <result property="productAllPrice" column="order_all_price"/>
+        <result property="useIntegral" column="user_integral_count"/>        
+        <result property="productActualPrice" column="actual_pay_price"/>
+        <result property="orderDetailAddress" column="order_address"/>
+        <result property="receiverName" column="receiver_name"/>        
+        <result property="orderDetailAddress" column="order_detail_address"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        
+        <collection property="products" ofType="io.renren.modules.yh.entity.dto.DeliveryOrderDetailDTO">
+         	<id property="productId" column="product_id"/>
+	        <result property="productName" column="product_name"/>	        
+            <result property="productSumPrice" column="product_sum_price"/>
+	        <result property="productNum" column="product_num"/>
+        </collection>
+        
+    </resultMap>
+    
     
     
 	<select id="queryObject" resultType="io.renren.modules.yh.entity.OrderEntity">
@@ -121,6 +146,8 @@
 			user_name,
 			delivery_user_id,
 			delivery_user_name,
+			delivery_f_user_id,
+			delivery_f_user_name,
 			actual_pay_price
 			
 		)
@@ -144,6 +171,8 @@
 			#{userName},
 			#{deliveryUserId},
 			#{deliveryUserName},
+			#{deliveryFUserId},
+			#{deliveryFUserName},
 			#{actualPayPrice}
 		)
 	</insert>
@@ -168,6 +197,8 @@
 			<if test="userName != null">`user_name` = #{userName},</if>
 			<if test="deliveryUserId != null">`delivery_user_id` = #{deliveryUserId},</if>
 			<if test="deliveryUserName != null">`delivery_user_name` = #{deliveryUserName},</if>
+			<if test="deliveryFUserId != null">`delivery_f_user_id` = #{deliveryFUserId},</if>
+			<if test="deliveryFUserName != null">`delivery_f_user_name` = #{deliveryFUserName},</if>
 			<if test="actualPayPrice != null">`actual_pay_price` = #{actualPayPrice}</if>
 			
 			
@@ -220,5 +251,9 @@
 	<delete id="apiDelWaitingPayOrder">
 		delete from sys_order where order_id=#{orderID}
 	</delete>
+	
+	<select id="printDelivery" resultMap="printDeliveryOrderMap">
+	    select a.*,b.* from sys_order a,sys_orderdetail b where a.order_id = b.order_id and a.order_id=#{orderId}	    
+	</select>
 
 </mapper>

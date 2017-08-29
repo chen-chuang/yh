@@ -223,19 +223,6 @@ $(function () {
 }*/
 
 
-function print(orderId){
-	var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
-	LODOP.PRINT_INIT("打印");  
-	LODOP.SET_PRINT_PAGESIZE(3,580,100,"");
-	//var table_height= document.getElementById("print_container").offsetHeight; 
-	var table_height= $('.print_container').actual('outerHeight');
-	console.log(table_height);
-	console.log(document.getElementById("print_container").innerHTML);
-	LODOP.ADD_PRINT_HTM("0","5px","580", table_height,document.getElementById("print_container").innerHTML); 
-	LODOP.PREVIEW();
-	//LODOP.PRINT(); 
-}
-
 //通知配送员
 function choiceDelivery(orderId){
 	
@@ -384,7 +371,8 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		order: {}
+		order: {},
+		delivery:{}
 	},
 	methods: {
 		query: function () {
@@ -461,3 +449,36 @@ var vm = new Vue({
 		}
 	}
 });
+
+
+function print(orderId){
+	
+	$.ajax({
+		type : "POST",
+		url : baseURL + "order/print",
+		data : {
+			orderId : orderId,
+			userId : $("#userId").val()
+		},
+		success : function(r) {
+			if (r.code == 0) {
+				console.log(r.order);
+				
+				vm.delivery = r.order;
+					$("#qwe").html(r.order.orderId);
+				var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+				LODOP.PRINT_INIT("打印");  
+				LODOP.SET_PRINT_PAGESIZE(3,580,100,"");
+				//var table_height= document.getElementById("print_container").offsetHeight; 
+				var table_height= $('.print_container').actual('outerHeight');
+				/*console.log(table_height);*/
+				console.log(document.getElementById("print_container").innerHTML);
+				LODOP.ADD_PRINT_HTM("0","5px","580", table_height,document.getElementById("print_container").innerHTML); 
+				LODOP.PREVIEW();
+				//LODOP.PRINT(); 
+			} else {
+				alert(r.msg);
+			}
+		}
+	});
+}

@@ -46,12 +46,18 @@ public class OrderEntity implements Serializable {
 	private Integer orderPayType;
 	//是否配送返点（已返点，未返点）
 	private Integer isRebate;
-	
+	//销售员名
 	private String userName;
 	
+	//配送员
 	private Long deliveryUserId;
 	
 	private String deliveryUserName;
+	
+	//发货员
+	private Long deliveryFUserId;
+	
+	private String deliveryFUserName;
 	
 	private BigDecimal actualPayPrice ;
 
@@ -252,5 +258,17 @@ public class OrderEntity implements Serializable {
 	}
 	public void setActualPayPrice(BigDecimal actualPayPrice) {
 		this.actualPayPrice = actualPayPrice;
+	}
+	public Long getDeliveryFUserId() {
+		return deliveryFUserId;
+	}
+	public void setDeliveryFUserId(Long deliveryFUserId) {
+		this.deliveryFUserId = deliveryFUserId;
+	}
+	public String getDeliveryFUserName() {
+		return deliveryFUserName;
+	}
+	public void setDeliveryFUserName(String deliveryFUserName) {
+		this.deliveryFUserName = deliveryFUserName;
 	}
 }

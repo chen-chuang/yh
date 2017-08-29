@@ -11,6 +11,7 @@ import io.renren.modules.api.entity.dto.OrderDetailInfo;
 import io.renren.modules.api.entity.dto.OrderInfo;
 import io.renren.modules.sys.dao.BaseDao;
 import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.dto.DeliveryOrderDTO;
 
 /**
  * 订单表
@@ -27,5 +28,7 @@ public interface OrderDao extends BaseDao<OrderEntity> {
 	List<OrderDetailInfo> apiQueryOrder(@Param("startTime") Date dStartTime, @Param("endTime") Date dEndTime,  @Param("townID") String townID);
 
 	void apiDelWaitingPayOrder(@Param("userID") String userID, @Param("orderID") String orderID);
+
+	DeliveryOrderDTO printDelivery(String orderId);
 	
 }

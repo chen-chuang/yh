@@ -54,7 +54,9 @@ import io.renren.modules.yh.entity.OrderEntity;
 import io.renren.modules.yh.entity.OrderdetailEntity;
 import io.renren.modules.yh.entity.OrderintegrationEntity;
 import io.renren.modules.yh.entity.ProductEntity;
+import io.renren.modules.yh.entity.dto.DeliveryOrderDTO;
 import io.renren.modules.yh.entity.enums.EnumOrderType;
+import io.renren.modules.yh.entity.enums.EnumPermission;
 import io.renren.modules.yh.service.OrderService;
 import io.renren.modules.yh.service.ProductService;
 
@@ -204,9 +206,19 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 			OrderdetailEntity orderdetailEntity =new OrderdetailEntity();
 			orderdetailEntity.setOrderId(orderEntity.getOrderId());
 			orderdetailEntity.setProductId(Long.valueOf(orderProductionsIDs[i]));
-			orderdetailEntity.setProductNum(Long.valueOf(orderProductionsCounts[i]));				
-			orderdetailEntity.setProductPrice(productEntity.getProductRetailPrice());
-			orderdetailEntity.setProductSumPrice(productEntity.getProductRetailPrice().multiply(new BigDecimal(Long.valueOf(orderProductionsCounts[i]))));
+			orderdetailEntity.setProductNum(Long.valueOf(orderProductionsCounts[i]));
+			
+			if(userEntity.getUserPermission().equals(EnumPermission.SALE.getType())){
+				orderdetailEntity.setProductPrice(productEntity.getProductRetailPrice());
+				orderdetailEntity.setProductSumPrice(productEntity.getProductRetailPrice().multiply(new BigDecimal(Long.valueOf(orderProductionsCounts[i]))));
+			}
+			
+			if(userEntity.getUserPermission().equals(EnumPermission.SALEP.getType())){
+				orderdetailEntity.setProductPrice(productEntity.getProductTradePrice());
+				orderdetailEntity.setProductSumPrice(productEntity.getProductTradePrice().multiply(new BigDecimal(Long.valueOf(orderProductionsCounts[i]))));
+			}
+			
+			
 			orderdetailEntity.setEnterpriseId(productEntity.getEnterpriseId());
 			orderdetailEntity.setEnterpriseName(productEntity.getEnterpriseName());
 			orderdetailEntity.setProductPictureUrl(productEntity.getProductPictureUrl());
@@ -418,4 +430,10 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 		orderDao.apiDelWaitingPayOrder(userID, orderID);
 		orderdetailDao.apiDelWaitingPayOrderDetail(userID, orderID);
 	}
+	
+	@Override
+	public DeliveryOrderDTO printDelivery(String orderId){
+		return orderDao.printDelivery(orderId);
+	}
 }
+

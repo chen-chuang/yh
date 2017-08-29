@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +17,17 @@ import com.yunpian.sdk.YunpianClient;
 import com.yunpian.sdk.model.Result;
 import com.yunpian.sdk.model.SmsSingleSend;
 
-import io.renren.modules.api.controller.ApiRecommendController;
-import io.renren.modules.sys.controller.AbstractController;
-import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.sys.service.SysUserService;
-import io.renren.modules.yh.entity.OrderEntity;
-import io.renren.modules.yh.entity.enums.EnumPermission;
-import io.renren.modules.yh.service.OrderService;
 import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
-import io.renren.common.utils.alipay.RandomUtil;
+import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserService;
+import io.renren.modules.yh.entity.OrderEntity;
+import io.renren.modules.yh.entity.dto.DeliveryOrderDTO;
+import io.renren.modules.yh.entity.enums.EnumPermission;
+import io.renren.modules.yh.service.OrderService;
 
 
 
@@ -161,9 +159,15 @@ public class OrderController extends AbstractController{
 	public R choiceDelivery(String orderId,String userId){
 		
 		SysUserEntity user = sysUserService.queryObject(Long.valueOf(userId));
+		SysUserEntity userF = this.getUser();
+		
 		OrderEntity order = orderService.queryObject(orderId);
 		order.setDeliveryUserId(user.getUserId());
 		order.setDeliveryUserName(user.getUsername());
+		
+		order.setDeliveryFUserId(userF.getUserId());
+		order.setDeliveryFUserName(userF.getUsername());
+		
 		orderService.update(order);
 		
 		
@@ -173,7 +177,7 @@ public class OrderController extends AbstractController{
 		//修改账户信息API
 		Map<String, String> param = clnt.newParam(2);
 		param.put(YunpianClient.MOBILE, user.getMobile());
-		param.put(YunpianClient.TEXT, "【恒通烟花易购】订单编号"+order.getOrderId()+"已由发货人"+getUser().getUsername()+"选择您来配送，请尽快完成配送。");
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】订单编号"+order.getOrderId()+"已由发货人"+userF.getUsername()+"选择您来配送，请尽快完成配送。");
 		Result<SmsSingleSend> r = clnt.sms().single_send(param);
 		clnt.close(); 
 		LOG.info(r.toString());
@@ -181,6 +185,16 @@ public class OrderController extends AbstractController{
 		
 		return R.ok();
 		
+		
+	}	
+	
+	@RequestMapping("/print")
+	@RequiresPermissions("order:print")
+	public R print(String orderId){
+		
+		DeliveryOrderDTO order = orderService.printDelivery(orderId);
+		
+		return R.ok().put("order", order);
 		
 	}
 	
