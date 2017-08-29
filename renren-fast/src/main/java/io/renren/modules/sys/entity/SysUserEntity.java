@@ -48,13 +48,6 @@ public class SysUserEntity implements Serializable {
 	private String salt;
 
 	/**
-	 * 邮箱
-	 */
-	@NotBlank(message="邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	@Email(message="邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
-	private String email;
-
-	/**
 	 * 手机号
 	 */
 	@Pattern(regexp="^1[3|4|5|7|8][0-9]{9}$",message="请输入正确的手机号码！", groups = {AddGroup.class, UpdateGroup.class})
@@ -158,22 +151,6 @@ public class SysUserEntity implements Serializable {
 	 */
 	public String getPassword() {
 		return password;
-	}
-	
-	/**
-	 * 设置：邮箱
-	 * @param email 邮箱
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
-	 * 获取：邮箱
-	 * @return String
-	 */
-	public String getEmail() {
-		return email;
 	}
 	
 	/**

@@ -5,7 +5,6 @@ $(function () {
         colModel: [			
 			{ label: '用户ID', hidden:true,name: 'userId', index: "user_id", width: 45, key: true },
 			{ label: '用户名',align: 'center', name: 'username', width: 100 },
-			{ label: '邮箱', align: 'center',name: 'email', width: 150 },
 			{ label: '手机号',align: 'center', name: 'mobile', width: 100 },
 			{ label: '状态', align: 'center',name: 'status', width: 80, formatter: function(value, options, row){
 				return value === 0 ? 
