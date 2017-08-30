@@ -82,7 +82,7 @@
         <result property="createTime" column="order_create_time"/>
         <result property="deliveryFaName" column="delivery_f_user_name"/>
         <result property="deliveryName" column="delivery_user_name"/>
-        
+        <result property="agency" column="belong_to_agency_name"/>        
         <result property="productAllPrice" column="order_all_price"/>
         <result property="useIntegral" column="user_integral_count"/>        
         <result property="productActualPrice" column="actual_pay_price"/>
@@ -253,7 +253,7 @@
 	</delete>
 	
 	<select id="printDelivery" resultMap="printDeliveryOrderMap">
-	    select a.*,b.* from sys_order a,sys_orderdetail b where a.order_id = b.order_id and a.order_id=#{orderId}	    
+	    select a.*,b.*,(select belong_to_agency_name from sys_user where user_id=a.user_id) as belong_to_agency_name  from sys_order a,sys_orderdetail b where a.order_id = b.order_id and a.order_id=#{orderId}	    
 	</select>
 
 </mapper>

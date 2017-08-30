@@ -93,18 +93,18 @@ $(function () {
         url: baseURL + 'order/list',
         datatype: "json",
         colModel: [			
-			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 50, key: true },
+			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 230, key: true },
 			{ label: '销售员id',hidden:true, name: 'userId', index: 'user_id', width: 80 }, 			
-			{ label: '订单生成时间', name: 'orderCreateTime', index: 'order_create_time', width: 80 }, 			
+			{ label: '订单生成时间', name: 'orderCreateTime', index: 'order_create_time', width: 140 }, 			
 			{ label: '使用积分数', name: 'userIntegralCount', index: 'user_integral_count', width: 80 }, 			
 			{ label: '订单总价格', name: 'orderAllPrice', index: 'order_all_price', width: 80 }, 
 			{ label: '下单地址ID', hidden:true,name: 'townId', index: 'town_id', width: 80 }, 			
-			{ label: '下单地址', name: 'orderAddress', index: 'order_address', width: 80 }, 			
-			{ label: '要求配送时间', name: 'orderSendTime', index: 'order_send_time', width: 80 }, 			
-			{ label: '详细地址', name: 'orderDetailAddress', index: 'order_detail_address', width: 80 }, 			
-			{ label: '买者电话', name: 'receiverPhone', index: 'receiver_phone', width: 80 }, 			
+			{ label: '下单地址', name: 'orderAddress', index: 'order_address', width: 150 }, 			
+			{ label: '要求配送时间', name: 'orderSendTime', index: 'order_send_time', width: 140 }, 			
+			{ label: '详细地址', name: 'orderDetailAddress', index: 'order_detail_address', width: 250 }, 			
+			{ label: '买者电话', name: 'receiverPhone', index: 'receiver_phone', width: 120 }, 			
 			{ label: '买者姓名', name: 'receiverName', index: 'receiver_name', width: 80 }, 			
-			{ label: '备注', name: 'mark', index: 'mark', width: 80 }, 			
+			{ label: '备注', name: 'mark', index: 'mark', width: 180 }, 			
 			{ label: '订单支付方式（1：支付宝，2：微信）', hidden:true,name: 'orderPayType', index: 'order_pay_type', width: 80, formatter: function(value, options, row){
 				if(value===1){
 					return '<span>支付宝</span>';
@@ -123,8 +123,8 @@ $(function () {
 					return '<span>已完成</span>';
 				}
 		    }},	
-		    { label: '配送员', name: 'deliveryUserName', index: 'delivery_user_name', width: 80 }, 	
-			{ label: '操作', width: 80,formatter: function(value, options, row){
+		    { label: '配送员', name: 'deliveryUserName', index: 'delivery_user_name', width: 120 }, 	
+			{ label: '操作', width: 200,formatter: function(value, options, row){
 				if(row.orderType===1){
 					var content="";
 					
@@ -140,8 +140,10 @@ $(function () {
 						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 					}
 					
-					if(hasPermission('order:print')){
-						content +='<a href="javascript:;" class="btn btn-default btn-xs" onclick=print("'+row.orderId+'")>打印</a>';
+					if(row["deliveryUserName"]!=null&&row["deliveryUserName"]!=""){
+						if(hasPermission('order:print')){
+							content +='<a href="javascript:;" class="btn btn-default btn-xs" onclick=print("'+row.orderId+'")>打印</a>';
+						}
 					}
 					
 					return content;
@@ -172,6 +174,8 @@ $(function () {
         rownumWidth: 25, 
         autowidth:true,
         multiselect: true,
+        shrinkToFit:false,
+        autoScroll: false,
         pager: "#jqGridPager",
         jsonReader : {
             root: "page.list",
@@ -475,7 +479,6 @@ function print(orderId){
 				$("#orderDetailAddress").html(r.order.orderDetailAddress);
 				$("#receiverPhone").html(r.order.receiverPhone);
 				
-				//$("#products").html(r.order.products);
 				if(r.order.products){
 					var content ="";
 					
