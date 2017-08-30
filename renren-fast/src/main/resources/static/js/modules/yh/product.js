@@ -222,10 +222,17 @@ var vm = new Vue({
 		            url : baseURL + url,  
 		            type : 'POST',  
 		            data : formData,  
-		            async : false,  
 		            cache : false,  
 		            contentType : false,// 告诉jQuery不要去设置Content-Type请求头  
 		            processData : false,// 告诉jQuery不要去处理发送的数据  
+		            xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
+		            	myXhr = $.ajaxSettings.xhr();
+		            	if(myXhr.upload){ //检查upload属性是否存在
+			            	//绑定progress事件的回调函数
+			            	myXhr.upload.addEventListener('progress',this.progressHandlingFunction, false);
+		            	}
+		            	return myXhr; //xhr对象返回给jQuery使用
+	            	},
 		            success : function(r) {  
 		            	if(r.code === 0){
 							alert('操作成功', function(index){
@@ -281,3 +288,11 @@ var vm = new Vue({
 		}
 	}
 });
+
+function progressHandlingFunction(e) {
+	if (e.lengthComputable) {
+	$('progress').attr({value : e.loaded, max : e.total}); //更新数据到进度条
+	var percent = e.loaded/e.total*100;
+		$('#progress').html(e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+	}
+}
