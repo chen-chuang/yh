@@ -167,70 +167,55 @@
 			</div>
 		</form>
 	</div>
-	<div id="print_container" class="print_container" style="display:none">
+	<div id="print_container" class="print_container">
          <div class="section1" style="width: 188px;">
              <h3 style="text-align: center;">
 				发货单
 			</h3>
          </div>
- <span>*************************</span>
- <div class="section3">
-             <label>订单编号：{{delivery.orderId}}</label><br>
-             <label>下单时间：{{delivery.createTime}}</label>
+		 <span>*************************</span>
+		 <div class="section3" style="width: 188px;">
+             <label>订单编号：<br><span id="orderId1"></span></label><br>
+             <label>下单时间：<br><span id="createTime"></span></label>
          </div>
          <span>*************************</span>
-         <div class="section2">
-             <label>发货人：{{delivery.deliveryFaName}}</label><br>
-             <label>配送人：{{delivery.deliveryName}}</label><br>
-             <label>经销商：{{delivery.agency}}</label>
+         <div class="section2" style="width: 188px;">
+             <label>发货人：<span id="deliveryFaName"></span></label><br>
+             <label>配送人：<span id="deliveryName"></span></label><br>
+             <label>经销商：<span id="agency"></span></label>
          </div>
          
         
          <span>*************************</span>
-         <div class="section4">
+         <div class="section4" style="width: 188px;">
              <div style="border-bottom: 1px solid #DADADA;width: 188px;">
                  <table style="width: 188px;">
                      <thead>
                          <tr>
-                             <td width="60%">产品</td>
+                             <td width="50%">产品</td>
                              <td width="20%">数量</td>
-                             <td width="20%">价格</td>
+                             <td width="30%">价格</td>
                          </tr>
                      </thead>
-                     <tbody>
-                         <tr>
-                             <td>轰天雷</td>
-                             <td>2</td>
-                             <td>28.00</td>
-                         </tr>
-                         <tr>
-                             <td>大红炮</td>
-                             <td>2</td>
-                             <td>28.00</td>
-                         </tr>
+                     <tbody id="tbody">                        
                      </tbody>
                  </table>
              </div>
              <div class="other_fee" style="width: 188px;">
                  <div class="canh">
 		    		 <label style="width:130px" class="left"><b>总价</b></label>
-                     <label class="right"><b>{{delivery.productAllPrice}}</b></label>
+                     <label class="right"><b><span id="productAllPrice"></span></b></label>
                      <div class="clearfix"></div>                        
                  </div>
                  <div class="peis">
                      <label  style="width:130px" class="left"><b>积分抵扣</b></label>
-                     <label class="right"><b>{{delivery.useIntegral}}</b></label>
+                     <label class="right"><b><span id="useIntegral"></span></b></label>
                      <div class="clearfix"></div>
                  </div>
-                 <!--<div class="manj">
-                     <label class="left">立减优惠</label>
-                     <label class="right">0</label>
-                     <div class="clearfix"></div>
-                 </div>-->
              </div>
              <div class="total" style="width: 188px;">
                  <label  style="width:130px" class="left"><b>实收</b></label>
-                 <label class="right"><b>{{delivery.productActualPrice}}</b></label>
+                 <label class="right"><b><span id="productActualPrice"></span></b></label>
                  <div class="clearfix"></div>
              </div>
             <!--<div style="text-align: right;">
@@ -238,10 +223,10 @@
              </div>-->
              <span>*************************</span>
          </div>
-         <div class="section5">
-             <label>姓名：{{delivery.receiverName}}</label><br>
-             <label>地址：{{delivery.orderDetailAddress}}</label><br>
-             <label>电话：{{delivery.receiverPhone}}</label>
+         <div class="section5" style="width: 188px;">
+             <label>姓名：<span id="receiverName"></span></label><br>
+             <label>地址：<span style="word-wrap:break-word;" id="orderDetailAddress"></span></label><br>
+             <label>电话：<span id="receiverPhone"></span></label>
          </div>    
          <span>*************************</span>
      </div>

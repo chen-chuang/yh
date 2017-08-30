@@ -186,7 +186,7 @@ $(function () {
         },
         gridComplete:function(){
         	//隐藏grid底部滚动条
-        	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        	//$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
     
@@ -462,17 +462,34 @@ function print(orderId){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				console.log(r.order);
 				
-				vm.delivery = r.order;
-					$("#qwe").html(r.order.orderId);
+				$("#orderId1").html(r.order.orderId);
+				$("#createTime").html(r.order.createTime);
+				$("#deliveryFaName").html(r.order.deliveryFaName);
+				$("#deliveryName").html(r.order.deliveryName);
+				$("#agency").html(r.order.agency);
+				$("#productAllPrice").html(r.order.productAllPrice);
+				$("#useIntegral").html(r.order.useIntegral);
+				$("#productActualPrice").html(r.order.productActualPrice);
+				$("#receiverName").html(r.order.receiverName);
+				$("#orderDetailAddress").html(r.order.orderDetailAddress);
+				$("#receiverPhone").html(r.order.receiverPhone);
+				
+				//$("#products").html(r.order.products);
+				if(r.order.products){
+					var content ="";
+					
+					$.each(r.order.products, function(k,v){
+						content += ' <tr><td>'+v.productName+'</td><td>'+v.productNum+'</td><td>'+v.productSumPrice+'</td></tr>';
+					})
+					$("#tbody").append(content);
+				}
+				
 				var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
 				LODOP.PRINT_INIT("打印");  
 				LODOP.SET_PRINT_PAGESIZE(3,580,100,"");
 				//var table_height= document.getElementById("print_container").offsetHeight; 
 				var table_height= $('.print_container').actual('outerHeight');
-				/*console.log(table_height);*/
-				console.log(document.getElementById("print_container").innerHTML);
 				LODOP.ADD_PRINT_HTM("0","5px","580", table_height,document.getElementById("print_container").innerHTML); 
 				LODOP.PREVIEW();
 				//LODOP.PRINT(); 
