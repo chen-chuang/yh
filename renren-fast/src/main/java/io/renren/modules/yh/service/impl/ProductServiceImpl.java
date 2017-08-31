@@ -2,10 +2,12 @@ package io.renren.modules.yh.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.FileUtils;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
@@ -57,7 +59,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteBatch(Long[] productIds){
+		
+		for(long productId : productIds){
+			ProductEntity productEntity = productDao.queryObject(productId);
+			String picFile = productEntity.getProductPictureUrl();
+			String videoFile = productEntity.getProductVideoUrl();
+			FileUtils.deleteFile(picFile);
+			FileUtils.deleteFile(videoFile);
+		}
 		productDao.deleteBatch(productIds);
 	}
 	

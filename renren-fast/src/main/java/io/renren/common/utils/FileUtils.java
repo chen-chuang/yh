@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
+import org.omg.PortableServer.ServantActivator;
+
 public class FileUtils {
 	
 	public static void makeDir(String path) {
@@ -47,5 +50,20 @@ public class FileUtils {
     public static void main(String[] args) {
     	System.out.println(readFileByLines("D:\\新建文本文档.txt"));
 	}
+    
+    public static void deleteFile(String filePath){
+    	
+    	if(StringUtils.isBlank(filePath)){
+    		return;
+    	}
+    	try{
+    		
+    		File file = new File(filePath);
+        	file.delete(); 
+        	
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}    	   	
+    }
 
 }

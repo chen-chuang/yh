@@ -106,6 +106,37 @@ $(function () {
               return false;  
           }  
        });  
+	  
+	  $('#videoFile').change(function() {  
+	        var file = this.files[0]; //假设file标签没打开multiple属性，那么只取第一个文件就行了  
+	           
+	        name = file.name;  
+	        size = file.size;  
+	        type = file.type;  
+	        url = window.URL.createObjectURL(file); //获取本地文件的url，如果是图片文件，可用于预览图片  
+	        
+	        if(type)
+	        
+	        if((size/1024)>51200){
+	        	alert("上传视频不能大于50M");
+	        	$('#videoFile').val("");
+	        	return false;
+	        }
+	       
+	          
+	    });  
+	  
+	  $('#picFile').change(function() {  
+	        var file = this.files[0]; //假设file标签没打开multiple属性，那么只取第一个文件就行了  
+	        name = file.name;  
+	        size = file.size;  
+	        type = file.type;  
+	        
+	        url = window.URL.createObjectURL(file); //获取本地文件的url，如果是图片文件，可用于预览图片  
+	          
+	        
+	          
+	    });  
 });
 
 
@@ -141,8 +172,8 @@ var vm = new Vue({
 			vm.title = "新增";
 			vm.product = {isHot:1};
 			
-			$("#picFile").val();
-			$("#videoFile").val();
+			$("#picFile").val("");
+			$("#videoFile").val("");
 			
 			this.getEnterprise();
 			

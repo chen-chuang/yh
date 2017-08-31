@@ -238,9 +238,8 @@ public class ProductController extends AbstractController {
 	 */
 	@RequestMapping("/delete")
 	@RequiresPermissions("product:delete")
-	public R delete(@RequestBody Long[] productIds){
+	public R delete(@RequestBody Long[] productIds){		
 		productService.deleteBatch(productIds);
-		
 		return R.ok();
 	}
 	

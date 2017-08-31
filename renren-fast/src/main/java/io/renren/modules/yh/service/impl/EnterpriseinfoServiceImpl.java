@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import io.renren.common.utils.FileUtils;
 import io.renren.modules.api.entity.dto.EnterpriseDeatailInfoDTO;
 import io.renren.modules.yh.dao.EnterpriseinfoDao;
 import io.renren.modules.yh.entity.EnterpriseinfoEntity;
+import io.renren.modules.yh.entity.ProductEntity;
 import io.renren.modules.yh.service.EnterpriseinfoService;
 
 
@@ -49,7 +52,14 @@ public class EnterpriseinfoServiceImpl implements EnterpriseinfoService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteBatch(Long[] enterpriseIds){
+		
+		for(long enterpriseId : enterpriseIds){
+			EnterpriseinfoEntity enterpriseinfoEntity = enterpriseinfoDao.queryObject(enterpriseId);
+			String picFile = enterpriseinfoEntity.getEnterpriseImageUrl();
+			FileUtils.deleteFile(picFile);
+		}
 		enterpriseinfoDao.deleteBatch(enterpriseIds);
 	}
 	
