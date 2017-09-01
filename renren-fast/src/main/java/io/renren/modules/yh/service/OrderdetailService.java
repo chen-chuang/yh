@@ -1,5 +1,6 @@
 package io.renren.modules.yh.service;
 
+import io.renren.common.utils.Query;
 import io.renren.modules.yh.entity.OrderdetailEntity;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface OrderdetailService {
 	void delete(String orderId);
 	
 	void deleteBatch(String[] orderIds);
+
+	List<OrderdetailEntity> queryPcList(Map<String, Object> map);
+
+	int queryPcTotal(Map<String, Object> map);
 }

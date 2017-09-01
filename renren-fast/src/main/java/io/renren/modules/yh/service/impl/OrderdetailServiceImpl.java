@@ -52,4 +52,14 @@ public class OrderdetailServiceImpl implements OrderdetailService {
 		orderdetailDao.deleteBatch(orderIds);
 	}
 	
+	@Override
+	public List<OrderdetailEntity> queryPcList(Map<String, Object> map){
+		return orderdetailDao.queryPcList(map);
+	}
+	
+	@Override
+	public int queryPcTotal(Map<String, Object> map){
+		return orderdetailDao.queryPcTotal(map);
+	}
+	
 }

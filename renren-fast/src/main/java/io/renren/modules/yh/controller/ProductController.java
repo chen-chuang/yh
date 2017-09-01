@@ -70,6 +70,24 @@ public class ProductController extends AbstractController {
 		return R.ok().put("page", pageUtil);
 	}
 	
+	@RequestMapping("/pclist")
+	@RequiresPermissions("product:pclist")
+	public R pcList(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		Long currentUserId  = this.getUserId();
+		
+		params.put("currentUserId", currentUserId);
+        Query query = new Query(params);
+
+		List<ProductEntity> productList = productService.queryPcList(query);
+		int total = productList.size();
+		
+		PageUtils pageUtil = new PageUtils(productList, total);
+		
+		return R.ok().put("page", pageUtil);
+	}
+	
+	
 	
 	/**
 	 * 信息

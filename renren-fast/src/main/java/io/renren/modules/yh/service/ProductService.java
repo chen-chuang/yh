@@ -39,4 +39,8 @@ public interface ProductService {
 	List<ShoppingCartDTO> apiShoppingCartList(String userID, String areaID);
 
 	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
+
+	List<ProductEntity> queryPcList(Map<String, Object> map);
+
+	int queryPcTotal(Map<String, Object> map);
 }

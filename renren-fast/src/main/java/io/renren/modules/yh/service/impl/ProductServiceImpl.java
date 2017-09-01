@@ -1,6 +1,7 @@
 package io.renren.modules.yh.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.renren.common.utils.FileUtils;
+import io.renren.common.utils.Query;
 import io.renren.modules.api.entity.dto.CollectionDTO;
 import io.renren.modules.api.entity.dto.EnterpriseProductions;
 import io.renren.modules.api.entity.dto.ShoppingCartDTO;
@@ -98,4 +100,13 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.apiEnterpriseProducts(map);
 	}
 	
+	@Override
+	public List<ProductEntity> queryPcList(Map<String, Object> map){
+		return productDao.queryPcList(map);
+	}
+	
+	@Override
+	public int queryPcTotal(Map<String, Object> map){
+		return productDao.queryPcTotal(map);
+	}
 }

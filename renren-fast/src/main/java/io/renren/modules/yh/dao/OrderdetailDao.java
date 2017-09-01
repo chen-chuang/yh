@@ -5,6 +5,7 @@ import io.renren.modules.api.entity.dto.OrderProductions;
 import io.renren.modules.sys.dao.BaseDao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,5 +23,9 @@ public interface OrderdetailDao extends BaseDao<OrderdetailEntity> {
 	List<OrderProductions> apiOrderDetailList(String orderID);
 
 	void apiDelWaitingPayOrderDetail(@Param("userID")String userID, @Param("orderID")String orderID);
+
+	List<OrderdetailEntity> queryPcList(Map<String, Object> map);
+
+	int queryPcTotal(Map<String, Object> map);
 	
 }

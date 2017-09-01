@@ -40,5 +40,9 @@ public interface ProductDao extends BaseDao<ProductEntity> {
 	List<EnterpriseProductions> apiEnterpriseProducts(Map<String, Object> map);
 
 	List<ShoppingCartDTO> apiShoppingCartPFList(@Param("userId")String userId, @Param("areaID")String areaID);
+
+	List<ProductEntity> queryPcList(Map<String, Object> map);
+
+	int queryPcTotal(Map<String, Object> map);
 	
 }

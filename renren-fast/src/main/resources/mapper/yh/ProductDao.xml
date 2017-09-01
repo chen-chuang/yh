@@ -125,6 +125,35 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="queryPcList" resultType="io.renren.modules.yh.entity.ProductEntity">
+		select * from sys_product
+		<where>
+			<if test="currentUserId !=null">
+				enter_person_id = #{currentUserId}
+			</if>
+		</where>
+       <!--  <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by product_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if> -->
+	</select>
+	
+ 	<select id="queryPcTotal" resultType="int">
+		select count(*) from sys_product 
+		<where>
+			<if test="currentUserId !=null">
+				enter_person_id = #{currentUserId}
+			</if>
+		</where>
+	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.ProductEntity" useGeneratedKeys="true" keyProperty="productId">
 		insert into sys_product

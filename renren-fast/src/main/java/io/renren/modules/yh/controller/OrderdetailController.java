@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mchange.v1.lang.holders.ThreadSafeIntHolder;
+
+import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.yh.entity.OrderdetailEntity;
 import io.renren.modules.yh.service.OrderdetailService;
 import io.renren.common.utils.PageUtils;
@@ -29,7 +32,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("orderdetail")
-public class OrderdetailController {
+public class OrderdetailController extends AbstractController {
 	@Autowired
 	private OrderdetailService orderdetailService;
 	
@@ -44,6 +47,21 @@ public class OrderdetailController {
 
 		List<OrderdetailEntity> orderdetailList = orderdetailService.queryList(query);
 		int total = orderdetailService.queryTotal(query);
+		
+		PageUtils pageUtil = new PageUtils(orderdetailList, total, query.getLimit(), query.getPage());
+		
+		return R.ok().put("page", pageUtil);
+	}
+	
+	@RequestMapping("/pclist")
+	@RequiresPermissions("orderdetail:pclist")
+	public R pcList(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		params.put("userId", getUserId());
+        Query query = new Query(params);
+
+		List<OrderdetailEntity> orderdetailList = orderdetailService.queryPcList(query);
+		int total = orderdetailService.queryPcTotal(query);
 		
 		PageUtils pageUtil = new PageUtils(orderdetailList, total, query.getLimit(), query.getPage());
 		
