@@ -146,6 +146,7 @@ public class ApiRecommendController {
 		orderEntity.setOrderPayType(Integer.valueOf(orderPayType));
 		orderEntity.setOrderAllPrice(new BigDecimal(orderAllPrice));
 		orderEntity.setActualPayPrice(new BigDecimal(actualPayPrice));
+		orderEntity.setOrderCreateType(1);
 		
 		
 		Map<String, Object> info = new HashMap<String, Object>();

@@ -116,8 +116,9 @@ public class ApiMyController {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
 			String townID = map.get("townID");
+			String userID = map.get("userID");
 			
-			List<OrderDetailInfo> orderDetailInfo = orderService.apiQueryOrder(startTime,endTime,townID);
+			List<OrderDetailInfo> orderDetailInfo = orderService.apiQueryOrder(startTime,endTime,townID,userID);
 			
 			return R.ok().put("info", orderDetailInfo);
 		}else{

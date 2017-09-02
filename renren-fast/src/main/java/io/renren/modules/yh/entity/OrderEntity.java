@@ -4,6 +4,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import io.renren.common.validator.group.AddGroup;
+import io.renren.common.validator.group.UpdateGroup;
+
 
 
 /**
@@ -33,12 +42,15 @@ public class OrderEntity implements Serializable {
 	//下单地址
 	private String orderAddress;
 	//要求配送时间
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date orderSendTime;
 	//详细地址
 	private String orderDetailAddress;
 	//买者电话
+	@Pattern(regexp="^1[3|4|5|7|8][0-9]{9}$",message="请输入正确的手机号码！", groups = {AddGroup.class})
 	private String receiverPhone;
 	//买者姓名
+	@NotBlank(message="买者姓名不能为空", groups = {AddGroup.class})
 	private String receiverName;
 	//备注
 	private String mark;
@@ -60,6 +72,9 @@ public class OrderEntity implements Serializable {
 	private String deliveryFUserName;
 	
 	private BigDecimal actualPayPrice ;
+	
+	//1app订单 2pc订单
+	private Integer orderCreateType;
 
 	public Integer getIsRebate() {
 		return isRebate;
@@ -270,5 +285,11 @@ public class OrderEntity implements Serializable {
 	}
 	public void setDeliveryFUserName(String deliveryFUserName) {
 		this.deliveryFUserName = deliveryFUserName;
+	}
+	public Integer getOrderCreateType() {
+		return orderCreateType;
+	}
+	public void setOrderCreateType(Integer orderCreateType) {
+		this.orderCreateType = orderCreateType;
 	}
 }

@@ -21,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alipay.api.AlipayConstants;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yunpian.sdk.YunpianClient;
 import com.yunpian.sdk.model.Result;
 import com.yunpian.sdk.model.SmsSingleSend;
@@ -143,7 +144,7 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 	}
 	
 	@Override
-	public List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID){
+	public List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID, String userID){
 		
 		Date dStartTime = null;
 		
@@ -160,7 +161,7 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 			dEndTime = DateUtils.parse(DateUtils.addByDay(dEndTime, 1, DateUtils.DATE_PATTERN),DateUtils.DATE_PATTERN);
 		}
 		
-		List<OrderDetailInfo> orderDetailInfo = orderDao.apiQueryOrder(dStartTime, dEndTime, townID);
+		List<OrderDetailInfo> orderDetailInfo = orderDao.apiQueryOrder(dStartTime, dEndTime, townID,userID);
 		
 		for(OrderDetailInfo order : orderDetailInfo){
 			List<OrderProductions> orderProductions = orderdetailDao.apiOrderDetailList(order.getOrderInfo().getOrderID());
@@ -435,5 +436,138 @@ public class OrderServiceImpl extends AbstractController implements OrderService
 	public DeliveryOrderDTO printDelivery(String orderId){
 		return orderDao.printDelivery(orderId);
 	}
+	
+	@Override
+	@Transactional
+	public R pcCreateOrdere(OrderEntity order){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		SysUserEntity userEntity = SysUserDao.queryObject(getUserId());
+		
+		order.setOrderId(PayUtil.getTradeNo());
+		order.setOrderCreateTime(new Date());				
+		order.setOrderType(EnumOrderType.PAID.getStatus());//默认待支付
+		order.setUserId(getUserId());
+		order.setOrderPayType(3);		
+		order.setUserName(userEntity.getUsername());
+		order.setOrderCreateType(2);
+		
+		System.out.println(order.getMark());
+		String[] productsArray = order.getMark().split("@");
+		String productsJson = productsArray[1];
+		
+		order.setMark(productsArray[0]);
+		
+		List<Map<String,String>> lm = new Gson().fromJson(productsJson, new TypeToken<List<Map<String, String>>>() {}.getType());
+
+		for(Map<String,String> pm : lm){
+			ProductEntity productEntity =productService.queryObject(Long.valueOf(pm.get("productId")));
+			Long store = productDao.apiQueryStore(pm.get("productId"),pm.get("productNum"));
+			if(store!=null){
+				Long remainderStore = store - Long.valueOf(pm.get("productNum"));
+				Integer k = productDao.apiMinusStore(pm.get("productId"),remainderStore);
+			}else{				
+				return R.error(productEntity.getProductName()+"库存不足！");
+			}
+		}
+		
+		//保存信息
+		orderDao.save(order);
+		
+		for(Map<String,String> pm : lm){
+			
+			ProductEntity productEntity =productService.queryObject(Long.valueOf(pm.get("productId")));
+			
+			OrderdetailEntity orderdetailEntity =new OrderdetailEntity();
+			orderdetailEntity.setOrderId(order.getOrderId());
+			orderdetailEntity.setProductId(Long.valueOf(pm.get("productId")));
+			orderdetailEntity.setProductNum(Long.valueOf(pm.get("productNum")));
+			
+			orderdetailEntity.setProductPrice(new BigDecimal(pm.get("productPrice")));
+			orderdetailEntity.setProductSumPrice(new BigDecimal(pm.get("productSumPrice")));
+			
+			
+			orderdetailEntity.setEnterpriseId(productEntity.getEnterpriseId());
+			orderdetailEntity.setEnterpriseName(productEntity.getEnterpriseName());
+			orderdetailEntity.setProductPictureUrl(productEntity.getProductPictureUrl());
+			orderdetailEntity.setProductName(productEntity.getProductName());
+			
+			orderdetailDao.save(orderdetailEntity);
+			
+		}
+		
+		return R.ok();
+	}
+	
+	@Override
+	public R pcDispatch(String orderId){
+		
+		OrderEntity order = orderDao.queryObject(orderId);
+		
+		if(order.getDeliveryUserId()==null){
+			return R.error("暂未指定配送员，不能进行配送！");
+		}
+		
+		SysUserEntity userEntity = SysUserDao.queryObject(order.getUserId());
+		
+		order.setIsRebate(0);	
+		order.setOrderType(EnumOrderType.DISPATCHING.getStatus());
+		orderDao.update(order);
+		
+		//初始化client,apikey作为所有请求的默认值(可以为空)
+		YunpianClient clnt = new YunpianClient(ConfigConstant.YUPIAN_SMS_APIKEY).init();
+
+		//修改账户信息API
+		Map<String, String> param = clnt.newParam(2);
+		param.put(YunpianClient.MOBILE, userEntity.getMobile());
+		param.put(YunpianClient.TEXT, "【恒通烟花易购】订单编号"+order.getOrderId()+"已由发货人"+getUser().getUsername()+"发货，配送人"+order.getDeliveryUserName()+"，订单金额"+order.getOrderAllPrice());
+		Result<SmsSingleSend> r = clnt.sms().single_send(param);
+		clnt.close(); 
+		LOG.info(r.toString());
+		System.out.println(r.toString());
+		
+		return R.ok();
+		
+	}
+	
+	@Override
+	public void pcComplete(String orderId){
+		
+		OrderEntity order = orderDao.queryObject(orderId);
+		
+		//写入积分明显表
+		OrderintegrationEntity orderintegration = new OrderintegrationEntity();
+		orderintegration.setUserId(order.getDeliveryUserId());
+		orderintegration.setUserName(order.getDeliveryUserName());
+		orderintegration.setOrderId(orderId);
+		orderintegration.setOrderSumPrice(order.getOrderAllPrice());
+		
+		//计算得到相应积分
+		SysUserEntity userEntity = SysUserDao.queryObject(order.getDeliveryUserId());
+		ConfigtableEntity configtableEntity = configtableDao.getConfig(userEntity);			
+		//得到比例，算的积分
+		if(configtableEntity!=null){
+			String proportion = configtableEntity.getConfigValue();
+			Long thisIntegral = order.getOrderAllPrice().multiply(new BigDecimal(proportion)).longValue(); 	
+			
+			orderintegration.setIntegration(thisIntegral);
+			
+			Long userIntegral = userEntity.getUserIntegral()==null?0:userEntity.getUserIntegral();
+			userEntity.setUserIntegral(userIntegral+thisIntegral);
+		}		
+		orderintegration.setPriceIntegrationType(1);//2销售积分 1配送积分			
+		//注意：这里设计的是给配送人员用的，是否兑换过
+		orderintegration.setIsRebate(0); //0未兑换过，1兑换过
+		orderintegration.setTime(new Date());
+		orderintegrationDao.save(orderintegration);
+		
+		SysUserDao.update(userEntity);
+		
+		//订单完成
+		order.setOrderType(EnumOrderType.COMPLETE.getStatus());
+		orderDao.update(order);
+	}
+	
 }
 

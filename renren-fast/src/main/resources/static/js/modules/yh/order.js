@@ -319,7 +319,7 @@ function dispatch(orderId){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('指派成功！', function() {
+				alert('操作成功！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
@@ -339,7 +339,7 @@ function complete(orderId){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('受理成功！', function() {
+				alert('操作成功！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
@@ -352,7 +352,6 @@ function complete(orderId){
 
 
 function showdetail(orderId){
-	console.log(orderId);
 	$("#orderId").val(orderId);
 	 layer.open({
 	        type: 2
@@ -476,7 +475,7 @@ function print(orderId){
 				$("#useIntegral").html(r.order.useIntegral);
 				$("#productActualPrice").html(r.order.productActualPrice);
 				$("#receiverName").html(r.order.receiverName);
-				$("#orderDetailAddress").html(r.order.orderDetailAddress);
+				$("#orderDetailAddress").html(r.order.orderAddress+r.order.orderDetailAddress);
 				$("#receiverPhone").html(r.order.receiverPhone);
 				
 				if(r.order.products){

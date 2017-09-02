@@ -21,6 +21,8 @@ import io.renren.common.utils.ConfigConstant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
+import io.renren.common.validator.ValidatorUtils;
+import io.renren.common.validator.group.AddGroup;
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
@@ -66,6 +68,8 @@ public class PcOrderController extends AbstractController{
 			params.put("userId", user.getBelongToAgencyId());
 		}
 		
+		params.put("orderCreateType", 2);
+		
 		//查询列表数据
         Query query = new Query(params);
 
@@ -95,9 +99,9 @@ public class PcOrderController extends AbstractController{
 	@RequestMapping("/save")
 	@RequiresPermissions("pcorder:save")
 	public R save(@RequestBody OrderEntity order){
-		orderService.save(order);
+		ValidatorUtils.validateEntity(order, AddGroup.class);
 		
-		return R.ok();
+		return orderService.pcCreateOrdere(order);
 	}
 	
 	/**
@@ -125,14 +129,14 @@ public class PcOrderController extends AbstractController{
 	@RequestMapping("/dispatch")
 	@RequiresPermissions("pcorder:dispatch")
 	public R dispatch(String orderId){
-	    R r = orderService.dispatch(orderId);
+	    R r = orderService.pcDispatch(orderId);
 		return r;
 	}
 	
 	@RequestMapping("/complete")
 	@RequiresPermissions("pcorder:complete")
 	public R complete(String orderId){
-		orderService.complete(orderId);
+		orderService.pcComplete(orderId);
 		return R.ok();
 	}
 	

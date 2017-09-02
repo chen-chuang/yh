@@ -33,7 +33,7 @@ public interface OrderService {
 
 	List<OrderDetailInfo> apiOrderList(Map<String, Object> params);
 
-	List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID);
+	List<OrderDetailInfo> apiQueryOrder(String startTime, String endTime, String townID, String userID);
 
 	R apiSubmitOrder(OrderEntity orderEntity, String orderProductionsID, String orderProductionsCount);
 
@@ -44,4 +44,10 @@ public interface OrderService {
 	void apiDelWaitingPayOrder(String userID, String orderID);
 
 	DeliveryOrderDTO printDelivery(String orderId);
+
+	R pcCreateOrdere(OrderEntity order);
+
+	R pcDispatch(String orderId);
+
+	void pcComplete(String orderId);
 }

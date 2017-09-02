@@ -66,6 +66,8 @@ public class OrderController extends AbstractController{
 			params.put("userId", user.getBelongToAgencyId());
 		}
 		
+		params.put("orderCreateType", 1);
+		
 		//查询列表数据
         Query query = new Query(params);
 

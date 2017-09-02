@@ -2,6 +2,9 @@
 <html>
 <head>
 <title>订单表</title>
+<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -18,17 +21,23 @@
 <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
 <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
 <script src="../../js/common.js"></script>
+<script src="../../libs/LodopFuncs.js"></script>
+<script src="../../plugins/My97DatePicker/WdatePicker.js"></script>
+
+<link rel="stylesheet" href="../../css/delivery.css">
 </head>
 <body>
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
-			<a v-if="hasPermission('pcorder:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>			
+			<a v-if="hasPermission('pcorder:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;创建订单</a>			
 			<!-- <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a> -->
 		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
     </div>
+    
+    <input type="hidden" id="orderId">
     
     <div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
@@ -51,31 +60,31 @@
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">要求配送时间</div>
 			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="order.orderSendTime" placeholder="要求配送时间"/>
-			    </div>
+			       <input class="form-control" id="orderSendTime" placeholder="要求配送时间" v-model="order.orderSendTime" onClick="WdatePicker()">
+			   </div>
 			</div>
 			
-		<!-- 	<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">省</div>
 			   	<div class="col-sm-10">
-			   	  <select id="province" v-model="province" class="form-control"></select>
+			   	  <select id="province" class="form-control"></select>
 			    </div>
 			    	
 			    <div class="col-sm-2 control-label">市</div>
 			   	<div class="col-sm-10">
-			   		<select id="city" v-model="city" class="form-control"></select>
+			   		<select id="city" class="form-control"></select>
 			    </div>
 			    
 			    <div class="col-sm-2 control-label">区/县</div>
 			   	<div class="col-sm-10">
-			   		<select id="county" v-model="county" class="form-control"></select>
+			   		<select id="county" class="form-control"></select>
 			    </div>
 			    
 			</div>
 			
 			<input type="hidden" id="regionId">
 			
-			<input type="hidden" id="regionName"> -->
+			<input type="hidden" id="regionName">
 			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">详细地址</div>
@@ -84,17 +93,18 @@
 			    </div>
 			</div>
 			
-		<!-- 	<div class="form-group">
+			<div class="form-group">
 			   	<div class="col-sm-2 control-label">备注</div>
 			   	<div class="col-sm-10">
-			      <textarea rows="8" cols="20" class="form-control" name="mark" v-model="order.mark" placeholder="备注">			      
+			       <textarea rows="8" cols="20" class="form-control" v-model="order.mark" placeholder="备注">
+			   	  </textarea>
 			    </div>
-			</div> -->
+			</div>
 			
 			<div class="form-group">
 			   	<div class="col-sm-2 control-label">选择产品</div>
 			   	<div class="col-sm-10">
-			      <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="产品"/>
+			      <input type="button" class="btn btn-primary" @click="productList" value="产品"/>
 			    </div>
 			</div>
 			
@@ -112,18 +122,17 @@
 				        <th>价格</th> 
 				        <th>数量</th> 
 				        <th>总价</th> 
+				        <th></th> 
 				       </tr> 
 				      </thead> 
-				      <tbody> 
-				       <tr> 
-				        <td>Call of Duty IV</td> 
-				        <td><a href="pages/examples/invoice.html">OR9842</a></td> 
-				        <td><span class="label label-success">Shipped</span></td> 
-				        <td> 
-				         <div class="sparkbar" data-color="#00a65a" data-height="20">
-				          <canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas>
-				         </div> </td> 
-				       </tr> 
+				      <tbody id="productsTable"> 
+				      <!--  <tr> 
+				        <td></td> 
+				        <td><input type="text" style="width:40px"/></td> 
+				        <td><input type="text" style="width:40px"/></td> 
+				        <td><input type="text" style="width:40px"/></td> 
+				        <td>删除</td> 
+				       </tr>  -->
 				      
 				      </tbody> 
 				     </table> 
@@ -132,8 +141,9 @@
 				   </div> 
 				   <!-- /.box-body --> 
 				   <div class="box-footer clearfix"> 
-				    <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a> 
-				    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a> 
+				    <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>  -->
+				    <!-- <a href="javascript:void(0)" id="allPrice" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>  -->
+					<span class="pull-right">总价：<input type="text" v-model="order.orderAllPrice" style="width:100px"/></span>
 				   </div> 
 				   <!-- /.box-footer --> 
 				  </div>
@@ -141,12 +151,12 @@
 			</div>
 			
 			
-			<div class="form-group">
+			<!-- <div class="form-group">
 			   	<div class="col-sm-2 control-label">订单总价格</div>
 			   	<div class="col-sm-10">
 			      <input type="text" class="form-control" v-model="order.orderAllPrice" placeholder="订单总价格"/>
 			    </div>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<div class="col-sm-2 control-label"></div> 
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="创建订单"/>
@@ -155,6 +165,8 @@
 			
 		</form>
 	</div>
+</div>
+	<input type="hidden" id= "userId">
 <div id="print_container" class="print_container" style="display: none;">
          <div class="section1" style="width: 188px;">
              <h3 style="text-align: center;">
@@ -218,8 +230,6 @@
          </div>    
          <span>*************************</span>
      </div>
-</div>
-	<input type="hidden" id= "userId">
 <script src="../../js/modules/yh/pcorder.js"></script>
 </body>
 </html>

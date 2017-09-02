@@ -26,6 +26,7 @@
         <result property="deliveryFUserId" column="delivery_f_user_id"/>
         <result property="deliveryFUserName" column="delivery_f_user_name"/>
         <result property="actualPayPrice" column="actual_pay_price"/>
+        <result property="orderCreateType" column="order_create_type"/>
         
     </resultMap>
 
@@ -107,7 +108,13 @@
 	</select>
 
 	<select id="queryList" resultType="io.renren.modules.yh.entity.OrderEntity">
-		select * from sys_order where user_id in (select user_id from sys_user where belong_to_agency_id =#{userId}) 
+		select * from sys_order where order_create_type = #{orderCreateType} 
+		<if test="orderCreateType==1">
+		    and user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
+		</if>
+		<if test="orderCreateType==2">
+		    and user_id=#{userId} 
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -122,7 +129,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_order  where user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
+		select count(*) from sys_order  where user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})  and order_create_type = #{orderCreateType}
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.OrderEntity">
@@ -148,8 +155,8 @@
 			delivery_user_name,
 			delivery_f_user_id,
 			delivery_f_user_name,
-			actual_pay_price
-			
+			actual_pay_price,
+			order_create_type
 		)
 		values
 		(
@@ -173,7 +180,8 @@
 			#{deliveryUserName},
 			#{deliveryFUserId},
 			#{deliveryFUserName},
-			#{actualPayPrice}
+			#{actualPayPrice},
+			#{orderCreateType}
 		)
 	</insert>
 	 
@@ -200,6 +208,7 @@
 			<if test="deliveryFUserId != null">`delivery_f_user_id` = #{deliveryFUserId},</if>
 			<if test="deliveryFUserName != null">`delivery_f_user_name` = #{deliveryFUserName},</if>
 			<if test="actualPayPrice != null">`actual_pay_price` = #{actualPayPrice}</if>
+			<if test="orderCreateType != null">`order_create_type` = #{orderCreateType}</if>
 			
 			
 		</set>
@@ -234,7 +243,7 @@
 	  
 	    select a.* from sys_order a
 	    <where>
-	        order_type = 3
+	        order_type = 3 and order_create_type =1 and user_id=#{userID}
 	        <if test ="startTime!=null">
 	            and order_create_time &gt;= #{startTime}
 	        </if>

@@ -90,7 +90,7 @@
 
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'order/list',
+        url: baseURL + 'pcorder/list',
         datatype: "json",
         colModel: [			
 			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 230, key: true },
@@ -137,7 +137,7 @@ $(function () {
 						content +='<a class="btn btn-default btn-xs" onclick=dispatch("'+row.orderId+'")>配送</a>';
 					}
 					
-					if(hasPermission('pcorderdetail:list')){
+					if(hasPermission('orderdetail:list')){
 						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 					}
 					
@@ -155,13 +155,13 @@ $(function () {
 						content +='<a class="btn btn-success btn-xs" onclick=complete("'+row.orderId+'")>完成</a>';
 					}
 					
-					if(hasPermission('pcorderdetail:list')){
+					if(hasPermission('orderdetail:list')){
 						content +='<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 					}
 					return content;					
 					
 				}else{
-					if(hasPermission('pcorderdetail:list')){
+					if(hasPermission('orderdetail:list')){
 					  return '<a class="btn btn-info btn-xs" onclick=showdetail("'+row.orderId+'")>查看明细</a>';
 					}
 				}
@@ -320,7 +320,7 @@ function dispatch(orderId){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('指派成功！', function() {
+				alert('操作成功！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
@@ -340,7 +340,7 @@ function complete(orderId){
 		},
 		success : function(r) {
 			if (r.code == 0) {
-				alert('受理成功！', function() {
+				alert('操作成功！', function() {
 					vm.reload();
 					layer.closeAll();
 				});
@@ -353,7 +353,6 @@ function complete(orderId){
 
 
 function showdetail(orderId){
-	console.log(orderId);
 	$("#orderId").val(orderId);
 	 layer.open({
 	        type: 2
@@ -364,7 +363,7 @@ function showdetail(orderId){
 	        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
 	        ,btn: ['确定']
 	        ,moveType: 1 //拖拽模式，0或者1
-	        ,content: '/modules/yh/pcorderdetail.html'
+	        ,content: '/modules/yh/orderdetail.html'
 	    	 ,yes: function(){
 	    		 layer.closeAll();
 	        }
@@ -376,8 +375,7 @@ var vm = new Vue({
 	data:{
 		showList: true,
 		title: null,
-		order: {},
-		delivery:{}
+		order: {}
 	},
 	methods: {
 		query: function () {
@@ -385,8 +383,11 @@ var vm = new Vue({
 		},
 		add: function(){
 			vm.showList = false;
-			vm.title = "新增";
+			vm.title = "创建订单";
 			vm.order = {};
+			this.getArea();
+			$("#regionId").val("");
+			$("#regionName").val("");
 		},
 		update: function (event) {
 			var orderId = getSelectedRow();
@@ -398,22 +399,99 @@ var vm = new Vue({
             
             vm.getInfo(orderId)
 		},
+		productList:function(){
+			 layer.open({
+			        type: 2
+			        ,title: '选择产品' 
+			        ,area: ['800px', '600px']
+			        ,shade: 0
+			        ,maxmin: true
+			        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			        ,btn: ['确定']
+			        ,moveType: 1 //拖拽模式，0或者1
+			        ,content: '/modules/yh/pcproduct.html'
+			    	 ,yes: function(){
+			    		 
+			    		 var grid =  $('#LAY_layuipro iframe').contents().find('#jqGrid').getGridParam("selarrrow");	
+			    		 
+			    		 for(var i=0;i<grid.length;i++){
+			    			 var rowData = $('#LAY_layuipro iframe').contents().find('#jqGrid').getRowData(grid[i]);
+			    			 var content = "";
+			    			 content += "<tr>" 
+				    	     content += '<td style="display:none">'+rowData.productId+'</td>' 
+			    			 content += '<td>'+rowData.productName+'</td>' 
+			    			 content += '<td><input type="text" style="width:40px" value="'+rowData.productTradePrice+'"/></td> '
+			    		     content += '<td><input type="text" style="width:40px"/></td> '
+			    		     content += '<td><input type="text" style="width:40px"/></td> '
+			    		     content += '<td><a onclick="deltr(this)">删除</a></td>'
+			    		     content += '</tr>' 
+			    			 $("#productsTable").append(content);
+			    		 }
+			    	
+			    		 layer.closeAll();
+			        }
+			      });
+		},
 		saveOrUpdate: function (event) {
 			var url = vm.order.orderId == null ? "pcorder/save" : "pcorder/update";
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.order),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
+			var content ="[";
+			var trList = $("#productsTable").children("tr")
+		    for (var i=0;i<trList.length;i++) {
+		    	content+="{";
+		        var tdArr = trList.eq(i).find("td");
+		        var productId = tdArr.eq(0).text();
+		        if(productId==""||productId==null){
+		        	alert("没选产品不能下单！");
+		        	return;
+		        }
+		        var productPrice = tdArr.eq(2).find('input').val();//
+		        var productNum = tdArr.eq(3).find('input').val();//   
+		        var productSumPrice = tdArr.eq(4).find('input').val();//   
+		        
+		        if(productPrice==""){
+		        	productPrice=0;		        	
+		        }
+		        
+		        if(productNum==""){
+		        	productNum=0;		        	
+		        }
+		        
+		        if(productSumPrice==""){
+		        	productSumPrice=0;		        	
+		        }
+		        
+		        content+="productId:"+productId+",";
+		        content+="productPrice:"+productPrice+",";
+		        content+="productNum:"+productNum+",";
+		        content+="productSumPrice:"+productSumPrice+"},";
+		        
+		    }
+			content = content.substring(0, content.length - 1)
+			content+="]";
+			vm.order.mark ="";
+			vm.order.mark +="@"+ content;
+			console.log(vm.order.mark);
+			
+			vm.order.townId =$("#regionId").val();
+			vm.order.orderAddress=$("#regionName").val();
+			vm.order.orderSendTime=$('#orderSendTime').val();
+			
+			confirm('订单一经创建不能修改，立减库存，确定吗？', function(){
+				$.ajax({
+					type: "POST",
+				    url: baseURL + url,
+		            contentType: "application/json",
+				    data: JSON.stringify(vm.order),
+				    success: function(r){
+				    	if(r.code === 0){
+							alert('操作成功', function(index){
+								vm.reload();
+							});
+						}else{
+							alert(r.msg);
+						}
 					}
-				}
+				});
 			});
 		},
 		del: function (event) {
@@ -451,10 +529,90 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam',{ 
                 page:page
             }).trigger("reloadGrid");
+		},
+	    getArea:function(){
+			
+			selectDataBindByHql('province',baseURL+"region/getCitys/0");
+			
+			$('#province').change(function() {
+				var selectProvinceId = $("#province").val();
+				
+				if(selectProvinceId!=-1&&selectProvinceId!=null){
+					selectDataBindByHql('city', baseURL+"region/getCitys/"+selectProvinceId);
+				}
+				
+				if(selectProvinceId!=-1){
+					$('#regionId').val(selectProvinceId);
+					$('#regionName').val($("#province").find("option:selected").text());
+				}
+				
+			});
+			
+			$('#city').change(function() {
+				var selectCityId = $('#city').val();
+				
+				if(selectCityId!=-1&&selectCityId!=null){
+					selectDataBindByHql('county',  baseURL+"region/getCitys/"+selectCityId);
+				}
+				
+				if(selectCityId==-1){
+					$('#regionId').val($("#province").val());
+					$('#regionName').val($("#province").find("option:selected").text());
+				}else{
+					$('#regionId').val(selectCityId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text());
+				}			
+			});
+			
+			$('#county').change(function(){
+				var countySelectId = $('#county').val();
+				
+				if(countySelectId!=-1&&countySelectId!=null){
+					selectDataBindByHql('town',  baseURL+"region/getCitys/"+countySelectId);
+				}
+				
+				if(countySelectId==-1){
+					$('#regionId').val($("#city").val());
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text());
+				}else{
+					$('#regionId').val(countySelectId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text());
+				}
+				
+			});
+			
+			$('#town').change(function(){
+				var townSelectId = $('#town').val();
+				if(townSelectId==-1){
+					$('#regionId').val($("#county").val());
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text());
+				}else{
+					$('#regionId').val(townSelectId);
+					$('#regionName').val($("#province").find("option:selected").text()
+							+$("#city").find("option:selected").text()
+							+$("#county").find("option:selected").text()
+							+$("#town").find("option:selected").text());
+				}
+				
+			});
+			
+			
+			
 		}
 	}
 });
 
+
+function deltr(obj){
+	  var tr = $(obj).parent().parent();  
+	    tr.remove();  
+}
 
 function print(orderId){
 	
@@ -477,7 +635,7 @@ function print(orderId){
 				$("#useIntegral").html(r.order.useIntegral);
 				$("#productActualPrice").html(r.order.productActualPrice);
 				$("#receiverName").html(r.order.receiverName);
-				$("#orderDetailAddress").html(r.order.orderDetailAddress);
+				$("#orderDetailAddress").html(r.order.orderAddress+r.order.orderDetailAddress);
 				$("#receiverPhone").html(r.order.receiverPhone);
 				
 				if(r.order.products){

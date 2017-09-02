@@ -5,7 +5,6 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: '订单编号', name: 'orderId', index: 'order_id', width: 50, key: true },		
-			{ label: '产品', name: 'productPictureUrl', index: 'product_picture_url', width: 80 }	,
 			{ label: '产品名称', name: 'productName', index: 'product_name', width: 80 }, 	
 			{ label: '产品编号', hidden:true,name: 'productId', index: 'product_id', width: 80 }, 			
 			{ label: '产品数量', name: 'productNum', index: 'product_num', width: 80 }, 			

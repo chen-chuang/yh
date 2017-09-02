@@ -71,7 +71,6 @@ public class ProductController extends AbstractController {
 	}
 	
 	@RequestMapping("/pclist")
-	@RequiresPermissions("product:pclist")
 	public R pcList(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		Long currentUserId  = this.getUserId();
