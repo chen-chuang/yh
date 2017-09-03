@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/AdminLTE.min.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
 <link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
@@ -23,7 +24,7 @@
 <body>
 <div id="rrapp" v-cloak>
 	
-	<div class="cw_infon" id="glance">
+	<!-- <div class="cw_infon" id="glance">
 		<div class="cw_infon_pic"></div>
 		<div class="cw_infon_2">
 			<div class="cw_infon_2_name">资金账户</div>
@@ -38,7 +39,57 @@
 				<a v-if="hasPermission('withdraw:apply')" href="javascript:openAccount()" class="cw_zhuanchu">提现</a>
 			</div>				
 		</div>
-	</div>
+	</div> -->
+	
+	<section class="content" style="padding:0;min-height:0">
+	<div class="row">
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 id="remainMoney">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">总资金</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3 id="ableCash">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon" style="cursor: pointer;">
+              <i v-if="hasPermission('withdraw:apply')" onclick="javascript:openAccount()" class="fa fa-jpy">提现</i>
+            </div>
+            <a href="#" class="small-box-footer">可提现</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6" style="width:33%">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3 id="applySum">0</h3>
+
+              <p>元</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">申请中（冻结）</a>
+          </div>
+        </div>
+     
+      </div>
+      </section>
 	
 	<div v-show="showList">
 		<!-- <div class="grid-btn">
