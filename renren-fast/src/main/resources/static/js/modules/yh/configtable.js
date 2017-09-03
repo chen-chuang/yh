@@ -57,25 +57,25 @@ var vm = new Vue({
 			vm.configtable = {};
 			
 			if(type==1){
-				vm.title = "设置销售员订单积分比例设置";
+				vm.title = "销售员积分返点设置";
 				vm.configtable.configKey="sale";
-				vm.configtable.configName="销售员订单积分比例设置";
+				vm.configtable.configName="销售员积分返点设置";
 			}else if(type==2){
-				vm.title = "设置配送员订单积分比例设置";
+				vm.title = "配送员积分返点设置";
 				vm.configtable.configKey="delivery"
-				vm.configtable.configName="配送员订单积分比例设置";
+				vm.configtable.configName="配送员积分返点设置";
 			}else if(type==3){
-				vm.title = "设置起送金额";
+				vm.title = "订单起送金额设置";
 				vm.configtable.configKey="delivery_amount";
-				vm.configtable.configName="起送金额";
+				vm.configtable.configName="订单起送金额设置";
 			}else if(type==4){
-				vm.title = "设置销售员积分兑现比例设置";
+				vm.title = "销售员积分提现设置";
 				vm.configtable.configKey="sale_integration_cash";
-				vm.configtable.configName="销售员积分兑现比例设置";
+				vm.configtable.configName="销售员积分提现设置";
 			}else if(type==5){
-				vm.title = "设置配送员积分兑现比例设置";
+				vm.title = "配送员积分提现设置";
 				vm.configtable.configKey="delivery_integration_cash";
-				vm.configtable.configName="配送员积分兑现比例设置";
+				vm.configtable.configName="配送员积分提现设置";
 			}
 		},
 		update: function (event) {

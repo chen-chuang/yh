@@ -129,7 +129,13 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from sys_order  where user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})  and order_create_type = #{orderCreateType}
+		select count(*) from sys_order  where order_create_type = #{orderCreateType} 
+		<if test="orderCreateType==1">
+		    and user_id in (select user_id from sys_user where belong_to_agency_id =#{userId})
+		</if>
+		<if test="orderCreateType==2">
+		    and user_id=#{userId} 
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="io.renren.modules.yh.entity.OrderEntity">

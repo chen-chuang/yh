@@ -23,11 +23,11 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
-			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(1)"><i class="fa fa-plus"></i>&nbsp;销售员订单积分比例设置</a>
-			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(4)"><i class="fa fa-plus"></i>&nbsp;销售员积分兑现比例设置</a>
-			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(2)"><i class="fa fa-plus"></i>&nbsp;配送员订单积分比例设置</a>			
-			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(5)"><i class="fa fa-plus"></i>&nbsp;配送员积分兑现比例设置</a>
-			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(3)"><i class="fa fa-plus"></i>&nbsp;起送金额设置</a>
+			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(1)"><i class="fa fa-plus"></i>&nbsp;销售员积分返点设置</a>
+			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(4)"><i class="fa fa-plus"></i>&nbsp;销售员积分提现设置</a>
+			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(2)"><i class="fa fa-plus"></i>&nbsp;配送员积分返点设置</a>			
+			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(5)"><i class="fa fa-plus"></i>&nbsp;配送员积分提现设置</a>
+			<a v-if="hasPermission('configtable:save')" class="btn btn-primary" @click="add(3)"><i class="fa fa-plus"></i>&nbsp;订单起送金额设置</a>
 			<a v-if="hasPermission('configtable:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
 			<a v-if="hasPermission('configtable:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
 		</div>
