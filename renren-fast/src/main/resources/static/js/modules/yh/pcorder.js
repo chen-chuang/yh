@@ -436,14 +436,14 @@ var vm = new Vue({
 			var url = vm.order.orderId == null ? "pcorder/save" : "pcorder/update";
 			var content ="[";
 			var trList = $("#productsTable").children("tr")
+			if(trList.length<1){
+				alert("没选择产品不能下单！");
+	        	return;
+			}
 		    for (var i=0;i<trList.length;i++) {
 		    	content+="{";
 		        var tdArr = trList.eq(i).find("td");
-		        var productId = tdArr.eq(0).text();
-		        if(productId==""||productId==null){
-		        	alert("没选产品不能下单！");
-		        	return;
-		        }
+		        var productId = tdArr.eq(0).text();		       
 		        var productPrice = tdArr.eq(2).find('input').val();//
 		        var productNum = tdArr.eq(3).find('input').val();//   
 		        var productSumPrice = tdArr.eq(4).find('input').val();//   

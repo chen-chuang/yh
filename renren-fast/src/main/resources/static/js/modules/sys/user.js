@@ -62,7 +62,7 @@ $(function () {
 			
         ],
 		viewrecords: true,
-        height: "100%",
+        height: '100%',
         rowNum: 10,
 		rowList : [10,30,50],
         rownumbers: true, 
@@ -87,6 +87,7 @@ $(function () {
         	$("th[role='columnheader']").css('text-align','center');
         }
     });    
+    
 
 	
 });

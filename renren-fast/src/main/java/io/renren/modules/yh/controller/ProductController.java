@@ -81,7 +81,7 @@ public class ProductController extends AbstractController {
 		List<ProductEntity> productList = productService.queryPcList(query);
 		int total = productList.size();
 		
-		PageUtils pageUtil = new PageUtils(productList, total);
+		PageUtils pageUtil = new PageUtils(productList, total,total,1);
 		
 		return R.ok().put("page", pageUtil);
 	}
