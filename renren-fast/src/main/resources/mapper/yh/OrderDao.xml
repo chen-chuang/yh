@@ -87,7 +87,7 @@
         <result property="productAllPrice" column="order_all_price"/>
         <result property="useIntegral" column="user_integral_count"/>        
         <result property="productActualPrice" column="actual_pay_price"/>
-        <result property="orderDetailAddress" column="order_address"/>
+        <result property="orderAddress" column="order_address"/>
         <result property="receiverName" column="receiver_name"/>        
         <result property="orderDetailAddress" column="order_detail_address"/>
         <result property="receiverPhone" column="receiver_phone"/>
@@ -213,7 +213,7 @@
 			<if test="deliveryUserName != null">`delivery_user_name` = #{deliveryUserName},</if>
 			<if test="deliveryFUserId != null">`delivery_f_user_id` = #{deliveryFUserId},</if>
 			<if test="deliveryFUserName != null">`delivery_f_user_name` = #{deliveryFUserName},</if>
-			<if test="actualPayPrice != null">`actual_pay_price` = #{actualPayPrice}</if>
+			<if test="actualPayPrice != null">`actual_pay_price` = #{actualPayPrice},</if>
 			<if test="orderCreateType != null">`order_create_type` = #{orderCreateType}</if>
 			
 			
