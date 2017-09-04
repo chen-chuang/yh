@@ -302,10 +302,10 @@ var vm = new Vue({
 		    		$("#city").removeAttr("disabled");
 		    		$("#county").removeAttr("disabled");
 		    		
-		    		/*$("#permissionSelect option[value='4']").remove();
+		    		$("#permissionSelect option[value='4']").remove();
 		    		$("#permissionSelect option[value='5']").remove();
 		    		$("#permissionSelect option[value='6']").remove();
-		    		$("#permissionSelect option[value='7']").remove();*/
+		    		$("#permissionSelect option[value='7']").remove();
 		    		
 		    	}else if(r.currentLoginUser.userPermission==3){
 		    		
