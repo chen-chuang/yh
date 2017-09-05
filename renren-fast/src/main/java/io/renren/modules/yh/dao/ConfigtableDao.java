@@ -37,6 +37,6 @@ public interface ConfigtableDao extends BaseDao<ConfigtableEntity> {
 
 	String apiPriceLimit(@Param("userID")String userID, @Param("areaID")String areaID);
 
-	int validateOnly(String configKey);
+	int validateOnly(@Param("configKey")String configKey, @Param("userId")Long userId);
 	
 }

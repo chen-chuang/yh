@@ -71,7 +71,7 @@ public class ConfigtableServiceImpl implements ConfigtableService {
 	}
 	
 	@Override
-	public int validateOnly(String configKey){
-		return configtableDao.validateOnly(configKey);
+	public int validateOnly(String configKey, Long userId){
+		return configtableDao.validateOnly(configKey,userId);
 	}
 }

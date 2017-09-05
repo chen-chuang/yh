@@ -74,9 +74,9 @@ public class ConfigtableController extends AbstractController {
 	@RequiresPermissions("configtable:save")
 	public R save(@RequestBody ConfigtableEntity configtable){
 		
-		int count = configtableService.validateOnly(configtable.getConfigKey());
+		int count = configtableService.validateOnly(configtable.getConfigKey(),getUserId());
 		if(count>0){
-			return R.error("该配置项以创建不能再次创建！");
+			return R.error("该配置项已创建不能再次创建！");
 		}
 		
 		

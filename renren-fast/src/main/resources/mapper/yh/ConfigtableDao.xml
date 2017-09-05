@@ -134,7 +134,7 @@
 	</select>
 	
 	<select id="validateOnly" resultType="int">	    
-	    select count(*) from sys_configtable where config_key =#{configKey}
+	    select count(*) from sys_configtable where config_key =#{configKey} and config_user_id=#{userId}
 	</select>
 	
 

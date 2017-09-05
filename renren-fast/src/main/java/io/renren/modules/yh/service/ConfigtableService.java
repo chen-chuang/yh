@@ -35,5 +35,5 @@ public interface ConfigtableService {
 
 	String apiPriceLimit(String userID, String areaID);
 
-	int validateOnly(String configKey);
+	int validateOnly(String configKey, Long userId);
 }
