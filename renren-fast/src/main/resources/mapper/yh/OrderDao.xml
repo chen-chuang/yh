@@ -236,7 +236,7 @@
 	    <!-- select a.*,b.product_name,b.product_price,b.product_picture_url,b.product_num from sys_order a,sys_orderdetail b 
 	    where a.order_id=b.order_id and a.user_id = #{userID} and a.order_type = #{orderType} -->
 	    select a.* from sys_order a
-	    where a.user_id = #{userID} and a.order_type = #{orderType} order by order_create_time desc 
+	    where a.user_id = #{userID} and a.order_type = #{orderType} and order_create_type =1 order by order_create_time desc 
 	    <if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
