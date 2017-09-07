@@ -57,9 +57,15 @@ public class ProductController extends AbstractController {
 	@RequiresPermissions("product:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
-		Long currentUserId  = this.getUserId();
+		SysUserEntity userEntity = this.getUser();		
+		Long currentUserId  = userEntity.getUserId();
+		if(userEntity.getUserPermission().equals(EnumPermission.ADMIN.getType())){
+			params.put("enterType", 1);
+		}else{
+			params.put("currentUserId", currentUserId);
+		}		
 		
-		params.put("currentUserId", currentUserId);
+		
         Query query = new Query(params);
 
 		List<ProductEntity> productList = productService.queryList(query);

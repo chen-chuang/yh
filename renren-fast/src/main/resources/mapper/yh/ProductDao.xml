@@ -103,6 +103,9 @@
 			<if test="currentUserId !=null">
 				enter_person_id = #{currentUserId}
 			</if>
+			<if test="enterType!=null">
+				and enter_type=#{enterType}
+			</if>
 		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -122,6 +125,9 @@
 		<where>
 			<if test="currentUserId !=null">
 				enter_person_id = #{currentUserId}
+			</if>
+			<if test="enterType!=null">
+				and enter_type=#{enterType}
 			</if>
 		</where>
 	</select>
