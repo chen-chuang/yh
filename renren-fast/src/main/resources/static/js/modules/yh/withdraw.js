@@ -106,7 +106,6 @@ function openAccount() {
 			if(accountNum==null || accountNum==0 ){
 				return;
 			}
-			
 			if(parseFloat(accountNum)>parseFloat($("#ableCashValue").val())){
 				alert('您输入的金额超过提现的限额！');
 			    return;

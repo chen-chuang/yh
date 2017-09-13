@@ -101,7 +101,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		if(accountEntity!=null){
 			BigDecimal ableCash = accountEntity.getPrice().subtract(applySum);
 			map.put("ableCash", ableCash);
-			if(ableCash.compareTo(new BigDecimal(0))==-1){
+			if(ableCash.compareTo(new BigDecimal(0))==0){
 				map.put("ableCash", 0);
 			}
 		}
