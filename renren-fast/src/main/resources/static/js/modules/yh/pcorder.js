@@ -357,7 +357,7 @@ function showdetail(orderId){
 	 layer.open({
 	        type: 2
 	        ,title: '订单明细' 
-	        ,area: ['800px', '600px']
+	        ,area: ['800px', '400px']
 	        ,shade: 0
 	        ,maxmin: true
 	        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
@@ -403,10 +403,10 @@ var vm = new Vue({
 			 layer.open({
 			        type: 2
 			        ,title: '选择产品' 
-			        ,area: ['800px', '600px']
+			        ,area: ['800px', '400px']
 			        ,shade: 0
 			        ,maxmin: true
-			        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			        ,id: 'LAY_layuipro1' //设定一个id，防止重复弹出
 			        ,btn: ['确定']
 			        ,moveType: 1 //拖拽模式，0或者1
 			        ,content: '/modules/yh/pcproduct.html'

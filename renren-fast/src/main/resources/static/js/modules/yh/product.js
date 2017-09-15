@@ -240,9 +240,34 @@ var vm = new Vue({
 					alert("产品隶属于分类下，请先录入分类哦~");
 					return;
 				}
+				
+				var productName= $("#productName").val();
+				if(productName==null||productName==""){
+					alert("产品名不允许为空");
+					return;
+				}
+				
 				var productType = $("#productType").val();
 				if(productType==null){
 					alert("分类不允许为空");
+					return;
+				}
+				
+				var productNum = $("#productNum").val();
+				if(productNum==null||productNum==""){
+					alert("库存不允许为空");
+					return;
+				}
+				
+				var productTradePrice = $("#productTradePrice").val();
+				if(productTradePrice==null||productTradePrice==""){
+					alert("批发价不允许为空");
+					return;
+				}
+				
+				var  productRetailPrice= $("#productRetailPrice").val();
+				if(productRetailPrice==null||productRetailPrice==""){
+					alert("零售价不允许为空");
 					return;
 				}
 			}	
